@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -50,10 +51,24 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
+//screens
+const Users = React.lazy(() => import('./screens/Users'))
+const AddUser = React.lazy(() => import('./screens/AddUser'))
+const UserMoreInformation = React.lazy(() => import('./screens/UserMoreInformation'))
+const BankDetails = React.lazy(() => import('./screens/BankDetails'))
+const Roles = React.lazy(() => import('./screens/Roles'))
+const AddRoles = React.lazy(() => import('./screens/AddRoles'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
+  { path: '/users-management/users', name: 'Users', element: Users },
+  { path: '/users-management/users/add-user', name: 'AddUser', element: AddUser },
+  { path: '/users-management/users/add-user/more-information', name: 'User More Information', element: UserMoreInformation },
+  { path: '/users-management/users/add-user/more-information/bank-details', name: 'Bank Details', element: BankDetails },
+  { path: '/users-management/roles', name: 'Roles', element: Roles },
+  { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
