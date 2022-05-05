@@ -9,19 +9,19 @@ import UserSteps from 'src/components/UserSteps';
 function AddRoles() {
 
   const [role, setRole] = useState();
-  const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
-  const [userame, setUsername] = useState();
+  const [generalAdd, setGeneralAdd] = useState('secondary');
+  const [generalView, setGeneralView] = useState('secondary');
+  const [generalEdit, setGeneralEdit] = useState('secondary');
+  const [generalDelete, setGeneralDelete] = useState('secondary');
+  const [salesAdd, setSalesAdd] = useState('secondary');
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const addGeneral = (e) => {
-    alert(e.currentTarget.getAttribute('variant')); 
-  }
 
+ 
   const submitHandler = () => {
   
      navigate("/users-management/users/add-user/more-information");
@@ -47,16 +47,16 @@ function AddRoles() {
                  <CButton color="danger">Select All</CButton>
             </CCol>
             <CCol md={2}>
-                <CButton color="secondary" variant={"outline"} onClick={addGeneral}>Add</CButton>
+                <CButton color={generalAdd}  onClick={() => setGeneralAdd((generalAdd) => generalAdd === "secondary" ? "danger" : "secondary" )}>Add</CButton>
             </CCol>
             <CCol md={2}>
-                <CButton color="secondary" variant="outline">View</CButton>
+                <CButton color={generalView}  onClick={() => setGeneralView((generalView) => generalView === "secondary" ? "danger" : "secondary" )}>View</CButton>
             </CCol>
             <CCol md={2}>
-                <CButton color="secondary" variant="outline">Edit</CButton>
+                <CButton color={generalEdit}  onClick={() => setGeneralEdit((generalEdit) => generalEdit === "secondary" ? "danger" : "secondary" )}>Edit</CButton>
             </CCol>
             <CCol md={2}>
-                <CButton color="secondary" variant="outline">Delete</CButton>
+                <CButton color={generalDelete}  onClick={() => setGeneralDelete((generalDelete) => generalDelete === "secondary" ? "danger" : "secondary" )}>Delete</CButton>
             </CCol>
         </CRow>
 
@@ -66,7 +66,7 @@ function AddRoles() {
                  <CButton color="danger">Select All</CButton>
             </CCol>
             <CCol md={2}>
-                <CButton color="secondary" variant="outline">Add</CButton>
+                <CButton color={salesAdd}  onClick={() => setGeneralAdd((generalAdd) => generalAdd === "secondary" ? "danger" : "secondary" )}>Add</CButton>
             </CCol>
             <CCol md={2}>
                 <CButton color="secondary" variant="outline">View</CButton>

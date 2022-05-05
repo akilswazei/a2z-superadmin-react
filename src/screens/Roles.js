@@ -11,8 +11,7 @@ const Roles = () => {
   
   const dispatch = useDispatch();
 
-  const allUsers = useSelector(state => state.allUsers);
-  const {loading, users, error} = allUsers;
+
 
   let sr_no = 0;
 
@@ -33,19 +32,7 @@ const Roles = () => {
         </CTableHead>
         <CTableBody>
           
-          {
-            loading ? "Loading" : error ? "Error" : (
-              users.map((user, key) => {
-                return (
-                  <CTableRow key={key}>
-                    <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                    <CTableDataCell>admin</CTableDataCell>
-                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={() => dispatch(deleteUser(user.id)) }/> </CTableDataCell>
-                  </CTableRow>
-                ) 
-              })
-            )
-          }
+         
         </CTableBody>
       </CTable>
     </>

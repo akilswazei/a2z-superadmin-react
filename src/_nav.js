@@ -49,7 +49,7 @@ const _nav = [
       },
     ],
   },
-  /*{
+  {
     component: CNavItem,
     name: 'Colors',
     to: '/theme/colors',
@@ -312,7 +312,7 @@ const _nav = [
         to: '/500',
       },
     ],
-  }, */
+  },
 ]
 
 export default _nav

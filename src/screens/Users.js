@@ -2,24 +2,30 @@
 import { cilPencil, cilTrash, cilUserPlus } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from '@coreui/react';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { deleteUser, getUsers } from 'src/actions/UserActions';
 
 const Users = () => {
-  
+ 
   const dispatch = useDispatch();
 
   const allUsers = useSelector(state => state.allUsers);
   const {loading, users, error} = allUsers;
 
+  console.log(users, 'users')
+
   let sr_no = 0;
+  const userSignin = useSelector(state => state.userSignin);
+  const { userInfo } = userSignin;
+  
+  const token = userInfo.data.token;
 
   useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
-
+    dispatch(getUsers(userInfo.data.token));
+  }, [dispatch, userInfo.data.token]);
+  
   return (
     <>
       <Link to="/users-management/users/add-user"><CButton color="danger">Add User <CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
@@ -36,21 +42,21 @@ const Users = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          
-          {
+        {
             loading ? "Loading" : error ? "Error" : (
-              users.map((user, key) => {
+              
+              users ?. data ?. data ?.map((user, key) => {
                 return (
                   <CTableRow key={key}>
                     <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
                     <CTableDataCell>{user.username}</CTableDataCell>
                     <CTableDataCell>{user.name}</CTableDataCell>
-                    <CTableDataCell>admin</CTableDataCell>
+                    <CTableDataCell>{user.role}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
                     <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
-                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={() => dispatch(deleteUser(user.id)) }/> </CTableDataCell>
+                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={() => dispatch(deleteUser(token, user.eid)) }/> </CTableDataCell>
                   </CTableRow>
-                ) 
+                ) ;
               })
             )
           }

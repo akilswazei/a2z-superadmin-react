@@ -59,8 +59,12 @@ const BankDetails = React.lazy(() => import('./screens/BankDetails'))
 const Roles = React.lazy(() => import('./screens/Roles'))
 const AddRoles = React.lazy(() => import('./screens/AddRoles'))
 
+const Login = React.lazy(() => import('./views/pages/login/Login'))
+
+//data
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  //{ path: '/', exact: true, name: 'Home' },
+  { path: '/login', exact: true, name: 'Login', element: Login },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/users-management/users', name: 'Users', element: Users },
