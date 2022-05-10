@@ -69,7 +69,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 
 //Team
-const TeamList = React.lazy(() => import('./screens/team/TeamList'))
+const TeamList = React.lazy(() => import('./screens/Team/TeamList'))
 
 
 //data
