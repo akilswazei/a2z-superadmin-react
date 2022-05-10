@@ -5,7 +5,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { deleteUser, getUsers } from 'src/actions/UserActions';
+import { deleteUser, getUsers } from 'src/redux/actions/UserActions';
 
 const Users = () => {
  

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CButton, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { addUser } from 'src/actions/UserActions';
+import { addUser } from 'src/redux/actions/UserActions';
 import UserSteps from 'src/components/UserSteps';
 
 function AddUser() {
@@ -53,7 +53,7 @@ function AddUser() {
         <CRow>
             <CCol md={6}>
                 <CFormLabel htmlFor="name" className="col-sm-2 col-form-label">Name</CFormLabel>
-                <CFormInput placeholder="Please enter your name" aria-label="Name" name="name" id="name" onChange={(e) => setName(e.target.value)} required/>
+                <CFormInput placeholder="Please enter your name" aria-label="Name" name="name" id="name"  onChange={(e) => setName(e.target.value)} required/>
             </CCol>
             <CCol md={6}>
                 <CFormLabel htmlFor="email" className="col-sm-2 col-form-label">Email</CFormLabel>

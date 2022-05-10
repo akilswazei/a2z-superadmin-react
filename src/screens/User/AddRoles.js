@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CButton, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { addUser } from 'src/actions/UserActions';
+import { addUser } from 'src/redux/actions/UserActions';
 import UserSteps from 'src/components/UserSteps';
 
 function AddRoles() {

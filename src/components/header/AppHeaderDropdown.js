@@ -25,7 +25,7 @@ import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
 import { useDispatch } from 'react-redux'
-import { signout } from 'src/actions/UserActions'
+import { signout } from 'src/redux/actions/UserActions'
 import { useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {

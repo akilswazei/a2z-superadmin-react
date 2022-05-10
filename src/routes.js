@@ -1,6 +1,21 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 
+
+
+//Users
+const Users = React.lazy(() => import('./screens/User/Users'))
+const AddUser = React.lazy(() => import('./screens/User/AddUser'))
+const UserMoreInformation = React.lazy(() => import('./screens/User/UserMoreInformation'))
+const BankDetails = React.lazy(() => import('./screens/User/BankDetails'))
+const Roles = React.lazy(() => import('./screens/User/Roles'))
+const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
+
+//Login
+const Login = React.lazy(() => import('./views/pages/login/Login'))
+
+
+
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -51,15 +66,11 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-//screens
-const Users = React.lazy(() => import('./screens/Users'))
-const AddUser = React.lazy(() => import('./screens/AddUser'))
-const UserMoreInformation = React.lazy(() => import('./screens/UserMoreInformation'))
-const BankDetails = React.lazy(() => import('./screens/BankDetails'))
-const Roles = React.lazy(() => import('./screens/Roles'))
-const AddRoles = React.lazy(() => import('./screens/AddRoles'))
 
-const Login = React.lazy(() => import('./views/pages/login/Login'))
+
+//Team
+const TeamList = React.lazy(() => import('./screens/team/TeamList'))
+
 
 //data
 const routes = [
@@ -73,6 +84,10 @@ const routes = [
   { path: '/users-management/users/add-user/more-information/bank-details', name: 'Bank Details', element: BankDetails },
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
+
+  { path: '/teamlist', name: 'Team List', element: TeamList },
+
+
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },

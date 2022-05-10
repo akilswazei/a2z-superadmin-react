@@ -17,7 +17,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { signin } from 'src/actions/UserActions'
+import { signin } from 'src/redux/actions/UserActions'
 
 const Login = () => {
  

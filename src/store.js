@@ -2,7 +2,7 @@
 // eslint-disable-next-line prettier/prettier
 import { compose, applyMiddleware, createStore, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import { updateUserReducers, userListReducers, userReducers, userSigninReducer } from './reducers/UserReducers'
+import { updateUserReducers, userListReducers, userReducers, userSigninReducer } from './redux/reducers/UserReducers'
 
 
 const initialState = {
