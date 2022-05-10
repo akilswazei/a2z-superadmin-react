@@ -1,5 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -15,8 +16,42 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { signin } from 'src/redux/actions/UserActions'
 
 const Login = () => {
+ 
+  const [validated, setValidated] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+ 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userSignin = useSelector(state => state.userSignin);
+  const { userInfo } = userSignin;
+
+
+
+  const submitHandler = (e) => {
+       e.preventDefault();
+      const form = e.currentTarget;
+      if (form.checkValidity() === false) {
+        e.preventDefault();
+        e.stopPropagation();
+      } else{
+        setValidated(true);
+        if(form.checkValidity() === true) {
+          dispatch(signin(email, password));
+        }
+      }
+  }
+
+  useEffect(() => {
+    if(userInfo){
+      navigate("/#/dashboard");
+    }
+  }, [userInfo, navigate])
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,28 +60,31 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={submitHandler} noValidate validated={validated}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput 
+                        placeholder="Email" 
+                        type="email" 
+                        autoComplete="email" 
+                        name='email' 
+                        label='Email' 
+                        id="email"
+                        onChange={(e) => setEmail(e.target.value)} required/>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                      />
+                      <CFormInput type="password" placeholder="Password" autoComplete="current-password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} required/>
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton type="submit" color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>

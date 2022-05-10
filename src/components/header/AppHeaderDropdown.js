@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import {
   CAvatar,
@@ -23,8 +24,20 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { useDispatch } from 'react-redux'
+import { signout } from 'src/redux/actions/UserActions'
+import { useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
+ 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(signout())
+    navigate("/#/login");
+  }
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -84,8 +97,8 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" />
+        <CDropdownItem href="/" onClick={logoutHandler}>
+         <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
         </CDropdownItem>
       </CDropdownMenu>
@@ -93,4 +106,4 @@ const AppHeaderDropdown = () => {
   )
 }
 
-export default AppHeaderDropdown
+export default AppHeaderDropdown;
