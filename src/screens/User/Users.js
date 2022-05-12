@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { cilPencil, cilTrash, cilUserPlus } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from '@coreui/react';
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CPagination, CPaginationItem } from '@coreui/react';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
@@ -33,7 +33,6 @@ const Users = () => {
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Username</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -49,11 +48,10 @@ const Users = () => {
                 return (
                   <CTableRow key={key}>
                     <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                    <CTableDataCell>{user.username}</CTableDataCell>
                     <CTableDataCell>{user.name}</CTableDataCell>
                     <CTableDataCell>{user.role}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
-                    <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
+                    <CTableDataCell><CButton color={user.status === 1 ? "success" : "danger"} size="sm">Active</CButton></CTableDataCell>
                     <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={() => dispatch(deleteUser(token, user.eid)) }/> </CTableDataCell>
                   </CTableRow>
                 ) ;
@@ -62,6 +60,13 @@ const Users = () => {
           }
         </CTableBody>
       </CTable>
+      <CPagination align="end" aria-label="Paginationa">
+        <CPaginationItem disabled>Previous</CPaginationItem>
+        <CPaginationItem>1</CPaginationItem>
+        <CPaginationItem>2</CPaginationItem>
+        <CPaginationItem>3</CPaginationItem>
+        <CPaginationItem>Next</CPaginationItem>
+      </CPagination>
     </>
   )
 }

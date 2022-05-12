@@ -3,6 +3,7 @@
 import { compose, applyMiddleware, createStore, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { userRoleReducers } from './redux/reducers/RoleReducers';
+import { allStoresReducers } from './redux/reducers/StoreReducers';
 import { teamReducers } from './redux/reducers/TeamReducers';
 import { updateUserReducers, userListReducers, userReducers, userSigninReducer } from './redux/reducers/UserReducers'
 
@@ -22,7 +23,8 @@ const reducer = combineReducers({
   userSignin: userSigninReducer,
   userRole : userRoleReducers,
   // Team all about yours
-  allTeams: teamReducers
+  allTeams: teamReducers,
+  allStores : allStoresReducers
 })
 
 const componseEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
