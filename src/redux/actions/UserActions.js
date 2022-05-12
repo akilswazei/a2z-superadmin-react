@@ -15,7 +15,12 @@ export const addUser = (userData) => async(dispatch) => {
 }
 export const getUsers = (token) => async(dispatch) => {
     try {
-        const {data} = await axios.post( process.env.REACT_APP_BASE_URL + "/admin/user/list", {token})
+        const {data} = await axios.get( process.env.REACT_APP_BASE_URL + "/admin/user/list", {
+            headers:{
+                Authorization:'Bearer '+token
+            }    
+            
+        })
         dispatch({type: GET_USER, payload: data});
     } catch (error) {
         dispatch({
