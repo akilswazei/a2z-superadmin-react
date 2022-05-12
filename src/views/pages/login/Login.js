@@ -17,10 +17,9 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { signin } from 'src/actions/UserActions'
+import { signin } from 'src/redux/actions/UserActions'
 
 const Login = () => {
- 
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -31,10 +30,8 @@ const Login = () => {
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
 
-
-
   const submitHandler = (e) => {
-       e.preventDefault();
+      e.preventDefault();
       const form = e.currentTarget;
       if (form.checkValidity() === false) {
         e.preventDefault();
@@ -46,7 +43,6 @@ const Login = () => {
         }
       }
   }
-
   useEffect(() => {
     if(userInfo){
       navigate("/#/dashboard");
@@ -67,14 +63,8 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Email" 
-                        type="email" 
-                        autoComplete="email" 
-                        name='email' 
-                        label='Email' 
-                        id="email"
-                        onChange={(e) => setEmail(e.target.value)} required/>
+
+                      <CFormInput placeholder="Email" type="email" autoComplete="email" name='email' label='Email' id="email" onChange={(e) => setEmail(e.target.value)} required/>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>

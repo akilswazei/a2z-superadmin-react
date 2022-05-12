@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -50,6 +51,43 @@ const _nav = [
     ],
   },
   {
+    component: CNavGroup,
+    name: 'Outsource',
+    to: '/outsource',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Individuals',
+        to: '/outsource/individuals',
+      },
+      {
+        component: CNavItem,
+        name: 'Teams',
+        to: '/outsource/teams',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Store Management',
+    to: '/store-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Store',
+        to: '/store-management/stores',
+      },
+      {
+        component: CNavItem,
+        name: 'Add Store',
+        to: '/store-management/stores/add-store',
+      },
+    ],
+  },
+ /*
+ {
     component: CNavItem,
     name: 'Colors',
     to: '/theme/colors',
@@ -312,7 +350,7 @@ const _nav = [
         to: '/500',
       },
     ],
-  },
+  }, */
 ]
 
 export default _nav

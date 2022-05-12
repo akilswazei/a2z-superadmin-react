@@ -52,12 +52,18 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 //screens
-const Users = React.lazy(() => import('./screens/Users'))
-const AddUser = React.lazy(() => import('./screens/AddUser'))
-const UserMoreInformation = React.lazy(() => import('./screens/UserMoreInformation'))
-const BankDetails = React.lazy(() => import('./screens/BankDetails'))
-const Roles = React.lazy(() => import('./screens/Roles'))
-const AddRoles = React.lazy(() => import('./screens/AddRoles'))
+const Users = React.lazy(() => import('./screens/User/Users'))
+const AddUser = React.lazy(() => import('./screens/User/AddUser'))
+
+const Teams = React.lazy(() => import('./screens/Team/Teams'))
+const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
+
+
+const Roles = React.lazy(() => import('./screens/Roles/Roles'))
+const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
+
+const StoreList = React.lazy(() => import('./screens/Store/StoreList'))
+const AddStore = React.lazy(() => import('./screens/Store/AddStore'))
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
@@ -69,10 +75,13 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/users-management/users', name: 'Users', element: Users },
   { path: '/users-management/users/add-user', name: 'AddUser', element: AddUser },
-  { path: '/users-management/users/add-user/more-information', name: 'User More Information', element: UserMoreInformation },
-  { path: '/users-management/users/add-user/more-information/bank-details', name: 'Bank Details', element: BankDetails },
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
+  { path: '/outsource/teams', name: 'Teams', element: Teams },
+  { path: '/outsource/teams/add-team', name: 'Add Team', element: AddTeam },
+  { path: '/store-management/stores', name: 'Store List', element: StoreList },
+  { path: '/store-management/stores/add-store', name: 'Add Store', element: AddStore },
+ 
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
