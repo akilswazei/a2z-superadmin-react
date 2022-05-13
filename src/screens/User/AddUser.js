@@ -42,7 +42,6 @@ function AddUser() {
   const submitHandler = (e) => {
     e.preventDefault();
     const userData = {
-        token:token,
         name: name,
         email: email,
         password: password,
@@ -58,13 +57,12 @@ function AddUser() {
         bank_name: bank_name,
         bank_identifer_code: bank_identifer_code,
         bank_branch: bank_branch,
-        image: image.name,
         role: role,
-        status: status
-        
-    } 
-    dispatch(addUser(userData));
+        status: status,
+        image: image.name
+    }; 
     
+    dispatch(addUser(userData));
 }
 
 useEffect(()=>{

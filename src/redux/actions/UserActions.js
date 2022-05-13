@@ -6,7 +6,7 @@ import { ADD_USER, ADD_USER_FAIL, DELETE_USER, GET_USER, GET_USER_FAIL, USER_DET
 export const addUser = (userData) => async(dispatch, getState) => {
     try {
         const {userSignin: {userInfo}} = getState();
-        const {data} = await axios.post( process.env.REACT_APP_BASE_URL + "/admin/user/store", userData, {
+        const {data} = await axios.post( process.env.REACT_APP_BASE_URL + "/admin/user/store", userData , {
             headers : {
                 Authorization : "Bearer " + userInfo.data.token,
             }

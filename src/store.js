@@ -2,6 +2,7 @@
 // eslint-disable-next-line prettier/prettier
 import { compose, applyMiddleware, createStore, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
+import { allMerchantsReducers } from './redux/reducers/MerchantReducers';
 import { userRoleReducers } from './redux/reducers/RoleReducers';
 import { allStoresReducers } from './redux/reducers/StoreReducers';
 import { teamReducers } from './redux/reducers/TeamReducers';
@@ -24,7 +25,8 @@ const reducer = combineReducers({
   userRole : userRoleReducers,
   // Team all about yours
   allTeams: teamReducers,
-  allStores : allStoresReducers
+  allStores : allStoresReducers,
+  allMerchants: allMerchantsReducers
 })
 
 const componseEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

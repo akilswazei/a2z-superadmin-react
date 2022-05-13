@@ -48,6 +48,11 @@ const _nav = [
         name: 'Roles',
         to: '/users-management/roles',
       },
+      {
+        component: CNavItem,
+        name: 'Profile',
+        to: '/users-management/profile',
+      },
     ],
   },
   {
@@ -65,6 +70,11 @@ const _nav = [
         component: CNavItem,
         name: 'Teams',
         to: '/outsource/teams',
+      },
+      {
+        component: CNavItem,
+        name: 'Team Details',
+        to: '/outsource/teams/team-details',
       },
     ],
   },
@@ -86,7 +96,24 @@ const _nav = [
       },
     ],
   },
- /*
+  {
+    component: CNavGroup,
+    name: 'Merchant Management',
+    to: '/merchant-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Merchant',
+        to: '/merchant-management/merchants/add-merchant',
+      },
+      {
+        component: CNavItem,
+        name: 'View Merchant',
+        to: '/merchant-management/merchants/view-merchant',
+      },
+    ],
+  },
  {
     component: CNavItem,
     name: 'Colors',
@@ -350,7 +377,7 @@ const _nav = [
         to: '/500',
       },
     ],
-  }, */
+  }, 
 ]
 
 export default _nav

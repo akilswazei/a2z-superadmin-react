@@ -54,9 +54,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 //screens
 const Users = React.lazy(() => import('./screens/User/Users'))
 const AddUser = React.lazy(() => import('./screens/User/AddUser'))
+const UserProfile = React.lazy(() => import('./screens/User/UserProfile'))
 
 const Teams = React.lazy(() => import('./screens/Team/Teams'))
 const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
+const TeamDetails = React.lazy(() => import('./screens/Team/TeamDetails'))
 
 
 const Roles = React.lazy(() => import('./screens/Roles/Roles'))
@@ -64,6 +66,9 @@ const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
 
 const StoreList = React.lazy(() => import('./screens/Store/StoreList'))
 const AddStore = React.lazy(() => import('./screens/Store/AddStore'))
+
+const AddMerchant = React.lazy(() => import('./screens/Merchants/AddMerchant'));
+const ViewMerchant = React.lazy(() => import('./screens/Merchants/ViewMerchant'));
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
@@ -75,12 +80,16 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/users-management/users', name: 'Users', element: Users },
   { path: '/users-management/users/add-user', name: 'AddUser', element: AddUser },
+  { path: '/users-management/profile', name: 'User Profile', element: UserProfile },
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
   { path: '/outsource/teams', name: 'Teams', element: Teams },
   { path: '/outsource/teams/add-team', name: 'Add Team', element: AddTeam },
+  { path: '/outsource/teams/team-details', name: 'Team Details', element: TeamDetails },
   { path: '/store-management/stores', name: 'Store List', element: StoreList },
   { path: '/store-management/stores/add-store', name: 'Add Store', element: AddStore },
+  { path: '/merchant-management/merchants/add-merchant', name: 'Add Merchant', element: AddMerchant },
+  { path: '/merchant-management/merchants/view-merchant', name: 'View Merchant', element: ViewMerchant },
  
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
