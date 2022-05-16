@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { CButton, CCol, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CRow } from '@coreui/react'
+import { CButton, CCol, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CFormTextarea, CRow } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -92,7 +92,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
         </CRow>
         </CRow>
        
-
+        <hr></hr>
         <h4 className='mb-5 mt-5'>Business Detail</h4>
         <CRow>
             <CCol md={3}>
@@ -122,6 +122,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
                 <CFormInput locale="en-US" placeholder="Please enter Zipcode" aria-label="ZipCode" name="zipCode" id="zipCode" onChange = {(e) => setZipCode(e.target.value)}/>
             </CCol>
         </CRow>
+        <hr></hr>
         <h4 className='mb-5 mt-5'>Business Contact</h4>
         <CRow>
             <CCol md={3}>
@@ -140,7 +141,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
             </CCol>
             
         </CRow>
-
+        <hr></hr>
         <h4 className='mb-5 mt-5'>Tax Detail</h4>
         <CRow>
             <CCol md={3}>
@@ -153,7 +154,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
                 <CFormInput placeholder="Please enter state tax id" aria-label="StateTaxId" name="stateTaxId" id="stateTaxId" onChange={(e) => setStateTaxId(e.target.value)} required/>
             </CCol>
         </CRow>
-
+        <hr></hr>
         <h4 className='mb-5 mt-5'>Store Type</h4>
         <p>Does The Store Sell Snacks, Sodas/Beverages or Grocery Items?</p>
         <CRow>
@@ -163,7 +164,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
             </CCol>
         
         </CRow>
-
+        <hr></hr>
         <h4 className='mb-5 mt-5'>Onwership Type</h4>
         <CRow>
             <CCol md={3}>
@@ -180,7 +181,7 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
                 <CFormInput placeholder="Please specify others" aria-label="Other" name="other" id="other" onChange={(e) => setOther(e.target.value)} required/>
             </CCol>
         </CRow>
-
+        <hr></hr>
         <h4 className='mb-5 mt-5'>State of incorporation</h4>
         <CRow>
         <CCol md={3}>
@@ -190,6 +191,13 @@ Consent is not a condition of purchase and you can opt out at any time. Message 
             <CCol md={3}>
                 <CFormLabel htmlFor="CustomerName" className="col-form-label">Customer name</CFormLabel>
                 <CFormInput placeholder="Please enter customer name" aria-label="CustomerName" name="customerName" id="customerName" onChange={(e) => setCustomerName(e.target.value)} required/>
+            </CCol>
+        </CRow>
+        <hr></hr>
+        <h4 className='mb-5 mt-5'>More info</h4>
+        <CRow>
+            <CCol md={12}>
+                <CFormTextarea id="More info" label="Example textarea" rows="3" text="Must be 8-20 words long." ></CFormTextarea>
             </CCol>
         </CRow>
 

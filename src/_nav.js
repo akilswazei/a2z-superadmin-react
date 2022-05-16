@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { BsFillAlarmFill } from 'react-bootstrap'
+
 import {
   cilSpeedometer,
   cilUser,
@@ -145,6 +145,11 @@ const _nav = [
     items: [
       {
         component: CNavItem,
+        name: 'Merchants',
+        to: '/merchant-management/merchants/merchant-list',
+      },
+      {
+        component: CNavItem,
         name: 'Add Merchant',
         to: '/merchant-management/merchants/add-merchant',
       },
@@ -153,6 +158,19 @@ const _nav = [
         name: 'View Merchant',
         to: '/merchant-management/merchants/view-merchant',
       },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Invoices',
+    to: '/invoices',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Invoice',
+        to: '/invoices/add-invoice',
+      }
     ],
   },
   /*{

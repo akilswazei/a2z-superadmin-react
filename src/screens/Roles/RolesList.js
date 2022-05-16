@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { getRoles } from 'src/redux/actions/UserRoles';
 
-const Roles = () => {
+const RolesList = () => {
   
   const dispatch = useDispatch();
 
@@ -52,4 +52,4 @@ const Roles = () => {
     </>
   )
 }
-export default Roles;
+export default RolesList;
