@@ -5,18 +5,19 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { deleteUser, getUsers } from 'src/redux/actions/UserActions';
+import { getRoles } from 'src/redux/actions/UserRoles';
 
 const Roles = () => {
   
   const dispatch = useDispatch();
 
-
-
+  const userRole = useSelector(state => state.userRole);
+  const {loading, roles, error} = userRole;
+  
   let sr_no = 0;
 
   useEffect(() => {
-    dispatch(getUsers());
+    dispatch(getRoles());
   }, [dispatch]);
 
   return (
@@ -31,7 +32,20 @@ const Roles = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          
+        {
+            loading ? "Loading" : error ? "Error" : (
+              
+              roles ?. data ?.map((role, key) => {
+                return (
+                  <CTableRow key={key}>
+                    <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
+                    <CTableDataCell>{role.name}</CTableDataCell>
+                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg'/> </CTableDataCell>
+                  </CTableRow>
+                ) ;
+              })
+            )
+          }
          
         </CTableBody>
       </CTable>
