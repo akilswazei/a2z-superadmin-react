@@ -29,14 +29,13 @@ import { signout } from 'src/redux/actions/UserActions'
 import { useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
- 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const logoutHandler = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     dispatch(signout())
-    navigate("/#/login");
+    navigate('/#/login')
   }
   return (
     <CDropdown variant="nav-item">
@@ -98,7 +97,7 @@ const AppHeaderDropdown = () => {
         </CDropdownItem>
         <CDropdownDivider />
         <CDropdownItem href="/" onClick={logoutHandler}>
-         <CIcon icon={cilLockLocked} className="me-2" />
+          <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
         </CDropdownItem>
       </CDropdownMenu>
@@ -106,4 +105,4 @@ const AppHeaderDropdown = () => {
   )
 }
 
-export default AppHeaderDropdown;
+export default AppHeaderDropdown

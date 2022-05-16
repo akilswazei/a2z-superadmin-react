@@ -1,18 +1,15 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import CIcon from '@coreui/icons-react'
+import { BsFillAlarmFill } from 'react-bootstrap'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDrop,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
   cilSpeedometer,
-  cilStar,
   cilUser,
-  cilUserPlus,
+  cilBullhorn,
+  cibOpsgenie,
+  cilChatBubble,
+  cilVector,
+  cilGauge,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -35,7 +32,7 @@ const _nav = [
     component: CNavGroup,
     name: 'Users Management',
     to: '/users-management',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilGauge} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -47,9 +44,82 @@ const _nav = [
         name: 'Roles',
         to: '/users-management/roles',
       },
+      {
+        component: CNavGroup,
+        name: 'Outsource',
+        to: '/outsource',
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+        items: [
+          {
+            component: CNavItem,
+            name: 'Individuals',
+            to: '/outsource/individuals',
+          },
+          {
+            component: CNavItem,
+            name: 'Teams',
+            to: '/outsource/teams',
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    component: CNavGroup,
+    name: 'Store Management',
+    to: '/store-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Store',
+        to: '/store-management/stores',
+      },
+      {
+        component: CNavItem,
+        name: 'Add Store',
+        to: '/store-management/stores/add-store',
+      },
     ],
   },
   {
+    component: CNavItem,
+    name: 'Leads',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilVector} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Merchant',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cibOpsgenie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Marketplace',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Sales Invoice',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cibOpsgenie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Support',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
+  },
+  /*
+ {
     component: CNavItem,
     name: 'Colors',
     to: '/theme/colors',
@@ -312,7 +382,7 @@ const _nav = [
         to: '/500',
       },
     ],
-  },
+  }, */
 ]
 
 export default _nav

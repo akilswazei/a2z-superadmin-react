@@ -1,8 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 
-
-
 //Users
 const Users = React.lazy(() => import('./screens/User/Users'))
 const AddUser = React.lazy(() => import('./screens/User/AddUser'))
@@ -13,8 +11,6 @@ const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
 
 //Login
 const Login = React.lazy(() => import('./views/pages/login/Login'))
-
-
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -66,11 +62,8 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-
-
 //Team
-const TeamList = React.lazy(() => import('./screens/Team/TeamList'))
-
+const TeamList = React.lazy(() => import('./screens/team/TeamList'))
 
 //data
 const routes = [
@@ -80,13 +73,20 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/users-management/users', name: 'Users', element: Users },
   { path: '/users-management/users/add-user', name: 'AddUser', element: AddUser },
-  { path: '/users-management/users/add-user/more-information', name: 'User More Information', element: UserMoreInformation },
-  { path: '/users-management/users/add-user/more-information/bank-details', name: 'Bank Details', element: BankDetails },
+  {
+    path: '/users-management/users/add-user/more-information',
+    name: 'User More Information',
+    element: UserMoreInformation,
+  },
+  {
+    path: '/users-management/users/add-user/more-information/bank-details',
+    name: 'Bank Details',
+    element: BankDetails,
+  },
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
 
   { path: '/teamlist', name: 'Team List', element: TeamList },
-
 
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
