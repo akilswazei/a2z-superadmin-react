@@ -34,7 +34,6 @@ export const userListReducers = (state = {loading: true, users: []}, action) => 
     }
 }
 
-
 export const updateUserReducers = (state = initialState, {type, payload}) => {
     switch (type) {
         case USER_UPDATE: 

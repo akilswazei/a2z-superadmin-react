@@ -74,6 +74,60 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Store',
+        to: '/store-management/stores'
+      },
+      {
+        component: CNavItem,
+        name: 'Add Store',
+        to: '/store-management/stores/add-store'
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Lead',
+    to: '/leads',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Lead',
+        to: '/leads/add-lead',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Outsource',
+    to: '/outsource',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Individuals',
+        to: '/outsource/individuals',
+      },
+      {
+        component: CNavItem,
+        name: 'Teams',
+        to: '/outsource/teams',
+      },
+      {
+        component: CNavItem,
+        name: 'Team Details',
+        to: '/outsource/teams/team-details',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Store Management',
+    to: '/store-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Store',
         to: '/store-management/stores',
       },
       {
@@ -84,6 +138,24 @@ const _nav = [
     ],
   },
   {
+    component: CNavGroup,
+    name: 'Merchant Management',
+    to: '/merchant-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Merchant',
+        to: '/merchant-management/merchants/add-merchant',
+      },
+      {
+        component: CNavItem,
+        name: 'View Merchant',
+        to: '/merchant-management/merchants/view-merchant',
+      },
+    ],
+  },
+  /*{
     component: CNavItem,
     name: 'Leads',
     //correct the links when modules are ready
