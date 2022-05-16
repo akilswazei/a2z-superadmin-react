@@ -1,7 +1,7 @@
-function TeamList(){
-  return (
-    <div>I am Team</div>
-  )
+import React from 'react'
+
+const TeamList = () => {
+  return <div>Team</div>
 }
 
 export default TeamList
