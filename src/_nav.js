@@ -47,9 +47,86 @@ const _nav = [
         name: 'Roles',
         to: '/users-management/roles',
       },
+      {
+        component: CNavItem,
+        name: 'Profile',
+        to: '/users-management/profile',
+      },
     ],
   },
   {
+    component: CNavGroup,
+    name: 'Lead',
+    to: '/leads',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Lead',
+        to: '/leads/add-lead',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Outsource',
+    to: '/outsource',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Individuals',
+        to: '/outsource/individuals',
+      },
+      {
+        component: CNavItem,
+        name: 'Teams',
+        to: '/outsource/teams',
+      },
+      {
+        component: CNavItem,
+        name: 'Team Details',
+        to: '/outsource/teams/team-details',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Store Management',
+    to: '/store-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Store',
+        to: '/store-management/stores',
+      },
+      {
+        component: CNavItem,
+        name: 'Add Store',
+        to: '/store-management/stores/add-store',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Merchant Management',
+    to: '/merchant-management',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Add Merchant',
+        to: '/merchant-management/merchants/add-merchant',
+      },
+      {
+        component: CNavItem,
+        name: 'View Merchant',
+        to: '/merchant-management/merchants/view-merchant',
+      },
+    ],
+  },
+  /*{
     component: CNavItem,
     name: 'Colors',
     to: '/theme/colors',
@@ -312,7 +389,7 @@ const _nav = [
         to: '/500',
       },
     ],
-  },
+  }, */
 ]
 
 export default _nav
