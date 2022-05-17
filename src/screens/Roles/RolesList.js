@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getRoles } from 'src/redux/actions/UserRoles'
 
-  const RolesList = () => {
-  const dispatch = useDispatch();
+const RolesList = () => {
+  const dispatch = useDispatch()
 
   const userRole = useSelector((state) => state.userRole)
   const { loading, roles, error } = userRole
@@ -32,7 +32,7 @@ import { getRoles } from 'src/redux/actions/UserRoles'
       <h5>Roles</h5>
       <div className="flex-column background-white-theme p-2">
         <Link to="/users-management/roles/add-roles" className="justify-end">
-          <CButton color="danger custon-theme-btn">
+          <CButton color="danger custom-theme-btn">
             Add Role
             <CIcon icon={cilUserPlus} size="lg" />
           </CButton>
@@ -87,4 +87,4 @@ import { getRoles } from 'src/redux/actions/UserRoles'
     </>
   )
 }
-export default RolesList;
+export default RolesList

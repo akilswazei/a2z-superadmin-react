@@ -33,12 +33,12 @@
     color: $font-color-gray;
 }
 .icon-color-blue{  
-    color:#4F9ADF;
+    color:#3F78E0;
 }
 .icon-color-red{
-    color:red;
+    color:#E2626B;
 }
-.custon-theme-btn{
+.custom-theme-btn, .custon-theme-btn{
     background-color:$theme-color-blue;
     color:white;
     border:none;
@@ -111,5 +111,51 @@
         background-color: #F9F9FC;
         color:$theme-color-blue;
         outline: none;
+    }
+}
+//custom font size 
+.custom-font-size{
+    font-size: 0.67em;
+    font-weight: 600;
+}
+//this will align text center 
+.text-align-center-nowrap{  
+    text-align: center;
+    white-space: wrap;
+}
+//grid for 6 columns
+.grid-6-align-center{
+   display: grid;
+   grid-template-columns: repeat(auto-fill, 5% 15% 20% 30% 15% 15%);
+   align-items: center;
+}
+//custom green success btn
+.custom-success-green-btn{
+    background-color:  $success-btn-green;
+    color: white;
+    text-transform:capitalize;
+    border:none;
+    &:hover, &:focus, &:active{
+        border: $success-btn-green;
+        background-color: white;
+        color: $success-btn-green;
+    }
+    // &:focus{
+    //     background-color: white;
+    //     color:black;
+    //     border:none;
+    //     outline: none;
+    //     outline-style: none;
+    // }
+}
+.custom-fail-red-btn{
+    background-color: #E2626B;
+    color: white;
+    text-transform:capitalize;
+    border:none;
+    &:hover, &:focus, &:active{
+        border: $fail-btn-red;
+        background-color: white;
+        color: $fail-btn-red;
     }
 }
