@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 
-
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -52,12 +51,6 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-<<<<<<< HEAD
-//Team
-const TeamList = React.lazy(() => import('./screens/team/TeamList'))
-=======
-
-
 //screens
 const Users = React.lazy(() => import('./screens/User/Users'))
 const AddUser = React.lazy(() => import('./screens/User/AddUser'))
@@ -65,10 +58,9 @@ const UserProfile = React.lazy(() => import('./screens/User/UserProfile'))
 
 const AddLead = React.lazy(() => import('./screens/Lead/AddLead'))
 
-const Teams = React.lazy(() => import('./screens/Team/Teams'))
-const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
-const TeamDetails = React.lazy(() => import('./screens/Team/TeamDetails'))
-
+const Teams = React.lazy(() => import('./screens/team/Teams'))
+const AddTeam = React.lazy(() => import('./screens/team/AddTeam'))
+const TeamDetails = React.lazy(() => import('./screens/team/TeamDetails'))
 
 const Roles = React.lazy(() => import('./screens/Roles/Roles'))
 const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
@@ -76,13 +68,10 @@ const AddRoles = React.lazy(() => import('./screens/User/AddRoles'))
 const StoreList = React.lazy(() => import('./screens/Store/StoreList'))
 const AddStore = React.lazy(() => import('./screens/Store/AddStore'))
 
-const AddMerchant = React.lazy(() => import('./screens/Merchants/AddMerchant'));
-const ViewMerchant = React.lazy(() => import('./screens/Merchants/ViewMerchant'));
+const AddMerchant = React.lazy(() => import('./screens/Merchants/AddMerchant'))
+const ViewMerchant = React.lazy(() => import('./screens/Merchants/ViewMerchant'))
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
-
-
->>>>>>> 881878a45ddf0fe05a6dc047bd4181995e2439c6
 
 //data
 const routes = [
@@ -92,23 +81,10 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/users-management/users', name: 'Users', element: Users },
   { path: '/users-management/users/add-user', name: 'AddUser', element: AddUser },
-<<<<<<< HEAD
-  {
-    path: '/users-management/users/add-user/more-information',
-    name: 'User More Information',
-    element: UserMoreInformation,
-  },
-  {
-    path: '/users-management/users/add-user/more-information/bank-details',
-    name: 'Bank Details',
-    element: BankDetails,
-  },
-=======
   { path: '/users-management/profile', name: 'User Profile', element: UserProfile },
 
   { path: '/leads/add-lead', name: 'Add Lead', element: AddLead },
 
->>>>>>> 881878a45ddf0fe05a6dc047bd4181995e2439c6
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
   { path: '/outsource/teams', name: 'Teams', element: Teams },
@@ -116,8 +92,16 @@ const routes = [
   { path: '/outsource/teams/team-details', name: 'Team Details', element: TeamDetails },
   { path: '/store-management/stores', name: 'Store List', element: StoreList },
   { path: '/store-management/stores/add-store', name: 'Add Store', element: AddStore },
-  { path: '/merchant-management/merchants/add-merchant', name: 'Add Merchant', element: AddMerchant },
-  { path: '/merchant-management/merchants/view-merchant', name: 'View Merchant', element: ViewMerchant },
+  {
+    path: '/merchant-management/merchants/add-merchant',
+    name: 'Add Merchant',
+    element: AddMerchant,
+  },
+  {
+    path: '/merchant-management/merchants/view-merchant',
+    name: 'View Merchant',
+    element: ViewMerchant,
+  },
 
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

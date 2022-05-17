@@ -65,96 +65,43 @@ const _nav = [
     ],
   },
 
+  //mubarak changes
   {
-    component: CNavGroup,
-    name: 'Store Management',
-    to: '/store-management',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Store',
-        to: '/store-management/stores',
-      },
-      {
-        component: CNavItem,
-        name: 'Add Store',
-        to: '/store-management/stores/add-store',
-      },
-    ],
+    component: CNavItem,
+    name: 'Leads',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilVector} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Lead',
-    to: '/leads',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Add Lead',
-        to: '/leads/add-lead',
-      },
-    ],
+    component: CNavItem,
+    name: 'Merchant',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cibOpsgenie} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Outsource',
-    to: '/outsource',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Individuals',
-        to: '/outsource/individuals',
-      },
-      {
-        component: CNavItem,
-        name: 'Teams',
-        to: '/outsource/teams',
-      },
-      {
-        component: CNavItem,
-        name: 'Team Details',
-        to: '/outsource/teams/team-details',
-      },
-    ],
+    component: CNavItem,
+    name: 'Marketplace',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Store Management',
-    to: '/store-management',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Store',
-        to: '/store-management/stores',
-      },
-      {
-        component: CNavItem,
-        name: 'Add Store',
-        to: '/store-management/stores/add-store',
-      },
-    ],
+    component: CNavItem,
+    name: 'Sales Invoice',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cibOpsgenie} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: 'Merchant Management',
-    to: '/merchant-management',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Add Merchant',
-        to: '/merchant-management/merchants/add-merchant',
-      },
-      {
-        component: CNavItem,
-        name: 'View Merchant',
-        to: '/merchant-management/merchants/view-merchant',
-      },
-    ],
+    component: CNavItem,
+    name: 'Support',
+    //correct the links when modules are ready
+    to: '/home',
+    icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
   },
+  //mubarak cahnges ends
   /*{
     component: CNavItem,
     name: 'Leads',
