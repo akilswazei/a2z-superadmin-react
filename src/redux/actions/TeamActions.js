@@ -2,10 +2,9 @@
 import axios from 'axios';
 import { ADD_TEAM, ADD_TEAM_FAIL, DELETE_TEAM, GET_TEAM, GET_TEAM_FAIL, TEAM_DETAIL_FAIL, TEAM_DETAIL_REQUEST, TEAM_DETAIL_SECCESS, TEAM_LIST, TEAM_LIST_FAIL, TEAM_SIGNIN_FAIL, TEAM_SIGNIN_REQUEST, TEAM_SIGNIN_SUCCESS, TEAM_SIGNOUT, TEAM_UPDATE, TEAM_UPDATE_FAIL } from '../../constants/TeamConstants';
 
-
-export const addTeam = (TEAMData) => async(dispatch) => {
+export const addTeam = (teamData) => async(dispatch) => {
     try {
-        const {data} = await axios.post( process.env.REACT_APP_BASE_URL + "/admin/team/store", TEAMData);
+        const {data} = await axios.post( process.env.REACT_APP_BASE_URL + "/admin/team/store", teamData);
         dispatch({type: ADD_TEAM, payload: data});
     } catch (error) {
         dispatch({
@@ -88,7 +87,6 @@ export const signin = (email, password) => async(dispatch) => {
        })
     }
 }
-
 
 export const signout = () => (dispatch) => {
     localStorage.removeItem('TEAMInfo');

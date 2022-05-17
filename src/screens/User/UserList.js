@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { deleteUser, getUsers } from 'src/redux/actions/UserActions';
 
-const Users = () => {
+const UserList = () => {
  
   const dispatch = useDispatch();
   
@@ -70,4 +70,4 @@ const Users = () => {
     </>
   )
 }
-export default Users;
+export default UserList;
