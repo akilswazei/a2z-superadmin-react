@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { BsFillAlarmFill } from 'react-bootstrap'
 import {
   cilSpeedometer,
   cilUser,
