@@ -63,6 +63,7 @@ const AddLead = React.lazy(() => import('./screens/Lead/AddLead'))
 const TeamsList = React.lazy(() => import('./screens/Team/TeamList'))
 const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
 const TeamDetails = React.lazy(() => import('./screens/Team/TeamDetails'))
+const Individual = React.lazy(() => import('./screens/Team/Individual'))
 
 
 const RolesList = React.lazy(() => import('./screens/Roles/RolesList'))
@@ -94,9 +95,12 @@ const routes = [
   { path: '/leads/add-lead', name: 'Add Lead', element: AddLead },
   { path: '/users-management/roles', name: 'Roles', element: RolesList },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },
+  
+  { path: '/outsource/individual', name: 'Teams', element: Individual },
   { path: '/outsource/teams', name: 'Teams', element: TeamsList },
   { path: '/outsource/teams/add-team', name: 'Add Team', element: AddTeam },
   { path: '/outsource/teams/team-details', name: 'Team Details', element: TeamDetails },
+
   { path: '/store-management/stores', name: 'Store List', element: StoreList },
   { path: '/store-management/stores/add-store', name: 'Add Store', element: AddStore },
 

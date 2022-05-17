@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { getMerchants } from 'src/redux/actions/MerchantActions';
 
+
 const MerchantList = () => {
  
 const dispatch = useDispatch();
@@ -20,22 +21,46 @@ useEffect(() => {
   
   return (
     <>
-      <Link to="/merchant-management/merchants/add-merchant"><CButton color="danger">Add Merchant<CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
-      <CTable>
+      <div className="flex-column background-white-theme p-2">
+      <Link to="/merchant-management/merchants/add-merchant" className="justify-end">
+        <CButton color="danger custon-theme-btn">Add Merchant<CIcon icon={cilUserPlus}  size='lg'/></CButton>
+      </Link>
+      <hr></hr>
+      <CTable className="custom-table">
         <CTableHead>
-          <CTableRow>
-                <CTableHeaderCell>Business Name</CTableHeaderCell>
-                <CTableHeaderCell>Email</CTableHeaderCell>
-                <CTableHeaderCell>Merchant Id</CTableHeaderCell>
-                <CTableHeaderCell className="text-center">Onboard Status</CTableHeaderCell>
-                <CTableHeaderCell>Onboarding Date</CTableHeaderCell>
-                <CTableHeaderCell className="text-center">Status</CTableHeaderCell>
-                <CTableHeaderCell>Action</CTableHeaderCell>
+          <CTableRow className="custom-table-row">
+              <CTableHeaderCell scope="col">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                </div>
+              </CTableHeaderCell>
+              <CTableHeaderCell>Business Name</CTableHeaderCell>
+              <CTableHeaderCell>Email</CTableHeaderCell>
+              <CTableHeaderCell>Merchant Id</CTableHeaderCell>
+              <CTableHeaderCell className="text-center">Onboard Status</CTableHeaderCell>
+              <CTableHeaderCell>Onboarding Date</CTableHeaderCell>
+              <CTableHeaderCell className="text-center">Status</CTableHeaderCell>
+              <CTableHeaderCell>Action</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
         { merchants ?. data ?. data.map((merchant, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
+                      <CTableHeaderCell scope="col">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            />
+                          </div>
+                      </CTableHeaderCell>
                       <CTableDataCell>
                         <div>{merchant.business_contact_name }</div>
                       </CTableDataCell>
@@ -58,14 +83,14 @@ useEffect(() => {
                         <CButton color={"success"} size="sm">Active</CButton>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CIcon icon={cilLowVision} size='lg'/> 
-                        <CIcon icon={cilPencil}  size='lg'/> 
-                        <CIcon icon={cilTrash} size='lg'/>
+                        <CIcon className="icon-color-blue" icon={cilPencil}  size='lg'/> {' '} 
+                        <CIcon className="icon-color-red" icon={cilTrash} size='lg'/>
                       </CTableDataCell>
                     </CTableRow>
             ))}
         </CTableBody>
       </CTable>
+      </div>
     </>
   )
 }
