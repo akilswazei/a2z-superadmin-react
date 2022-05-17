@@ -46,6 +46,19 @@
         margin-left: 3px;
 
     }
+    &:hover{
+        color: $theme-color-blue;
+        background-color: white;
+        outline-style: none;
+        border: 1px solid $theme-color-blue;
+    }
+    &:focus{
+        color: $theme-color-blue;
+        background-color: white;
+        outline-style: none;
+        outline: none;
+        border:none;
+    }
 }
 .flex-align-left{
     
