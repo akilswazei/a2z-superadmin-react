@@ -2,30 +2,39 @@
 // eslint-disable-next-line prettier/prettier
 import { compose, applyMiddleware, createStore, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import { allMerchantsReducers } from './redux/reducers/MerchantReducers';
-import { userRoleReducers } from './redux/reducers/RoleReducers';
-import { allStoresReducers } from './redux/reducers/StoreReducers';
-import { teamReducers } from './redux/reducers/TeamReducers';
-import { updateUserReducers, userListReducers, userReducers, userSigninReducer } from './redux/reducers/UserReducers'
+import { allMerchantsReducers } from './redux/reducers/MerchantReducers'
+import { userRoleReducers } from './redux/reducers/RoleReducers'
+import { allStoresReducers } from './redux/reducers/StoreReducers'
+import { teamReducers } from './redux/reducers/TeamReducers'
+import {
+  updateUserReducers,
+  userListReducers,
+  userReducers,
+  userSigninReducer,
+} from './redux/reducers/UserReducers'
 
+const userInfo = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null
 
 const initialState = {
-  userSignin : {
-      userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
-  }
-};
+  userSignin: {
+    userInfo: userInfo,
+    isLoggedIn: !!userInfo,
+  },
+}
 
 const reducer = combineReducers({
-  allUsers : userReducers,
+  allUsers: userReducers,
   userList: userListReducers,
   // eslint-disable-next-line prettier/prettier
-  updateUser : updateUserReducers,
+  updateUser: updateUserReducers,
   userSignin: userSigninReducer,
-  userRole : userRoleReducers,
+  userRole: userRoleReducers,
   // Team all about yours
   allTeams: teamReducers,
-  allStores : allStoresReducers,
-  allMerchants: allMerchantsReducers
+  allStores: allStoresReducers,
+  allMerchants: allMerchantsReducers,
 })
 
 const componseEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

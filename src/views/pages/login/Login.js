@@ -20,38 +20,36 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signin } from 'src/redux/actions/UserActions'
 
 const Login = () => {
- 
-  const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
- 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [validated, setValidated] = useState(false)
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
 
-  const userSignin = useSelector(state => state.userSignin);
-  const { userInfo } = userSignin;
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-
+  const userSignin = useSelector((state) => state.userSignin)
+  const { userInfo } = userSignin
 
   const submitHandler = (e) => {
-       e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        e.preventDefault();
-        e.stopPropagation();
-      } else{
-        setValidated(true);
-        if(form.checkValidity() === true) {
-          dispatch(signin(email, password));
-        }
+    e.preventDefault()
+    const form = e.currentTarget
+    if (form.checkValidity() === false) {
+      e.preventDefault()
+      e.stopPropagation()
+    } else {
+      setValidated(true)
+      if (form.checkValidity() === true) {
+        dispatch(signin(email, password))
       }
+    }
   }
 
   useEffect(() => {
-    if(userInfo){
-      navigate("/#/dashboard");
+    if (userInfo) {
+      navigate('/dashboard')
     }
   }, [userInfo, navigate])
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -67,20 +65,30 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput 
-                        placeholder="Email" 
-                        type="email" 
-                        autoComplete="email" 
-                        name='email' 
-                        label='Email' 
+                      <CFormInput
+                        placeholder="Email"
+                        type="email"
+                        autoComplete="email"
+                        name="email"
+                        label="Email"
                         id="email"
-                        onChange={(e) => setEmail(e.target.value)} required/>
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
-                      <CFormInput type="password" placeholder="Password" autoComplete="current-password" name='password' id='password' onChange={(e) => setPassword(e.target.value)} required/>
+                      <CFormInput
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        name="password"
+                        id="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>

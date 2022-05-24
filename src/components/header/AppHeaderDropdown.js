@@ -35,7 +35,7 @@ const AppHeaderDropdown = () => {
   const logoutHandler = (e) => {
     e.preventDefault()
     dispatch(signout())
-    navigate('/#/login')
+    navigate('/login')
   }
   return (
     <CDropdown variant="nav-item">

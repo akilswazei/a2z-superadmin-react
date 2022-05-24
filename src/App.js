@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './protected.route'
 
 import './scss/style.scss'
 import './index.css'
@@ -22,17 +23,19 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Suspense fallback={loading}>
           <Routes>
-            <Route exact path="/login" name="Login" element={<Login />} />
-            <Route path="/register" name="Register Page" element={<Register />} />
-            <Route path="/404" name="Page 404" element={<Page404 />} />
-            <Route path="/500" name="Page 500" element={<Page500 />} />
-            <Route exact path="*" name="Home" element={<DefaultLayout />} />
+            <Route exact path="login" name="Login" element={<Login />} />
+            <Route path="register" name="Register Page" element={<Register />} />
+            <Route path="404" name="Page 404" element={<Page404 />} />
+            <Route path="500" name="Page 500" element={<Page500 />} />
+            <Route path="/" name="Home" element={<ProtectedRoute />}>
+              <Route exact path="/dashboard" element={<DefaultLayout />} />
+            </Route>
           </Routes>
         </Suspense>
-      </HashRouter>
+      </BrowserRouter>
     )
   }
 }
