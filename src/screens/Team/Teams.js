@@ -5,23 +5,23 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { getTeams } from 'src/services/TeamServices';
+import { getTeams, deleteTeam } from 'src/services/TeamServices';
 
 
 const Teams = () => {
  
   const getState = useSelector(state => state);
   const {userSignin: { userInfo }} = getState
-  const [teams, setTeams] = useState([]);
-  const [search, setSearch] = useState([]);
-  const [page, setPage] = useState([]);
- 
+
+  const [teams, setTeams] = useState({});
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   const getTeamData = async () => {
     setTeams(await getTeams(userInfo));
   }
 
-  const searchTeam = async (value) => {
+  const searchTeam =async (value) => {
     setSearch(value);
     setPage(1);
     setTeams(await getTeams(userInfo,1,value));
@@ -31,10 +31,16 @@ const Teams = () => {
     setPage(value);
     setTeams(await getTeams(userInfo,value,search));
   }
-  
+
+  const handleDelete =async (eid,e) => {
+    deleteTeam(userInfo,eid)
+    setTeams({...teams, data: {...teams.data,data:[...teams.data.data.filter((v,i) => v.eid!=eid)]}});
+  }
+
   useEffect(() => {
     getTeamData();
   }, []);
+  
   
 console.log(teams);
   let sr_no = 0;
@@ -72,7 +78,7 @@ console.log(teams);
                   <CTableDataCell>{team.company_mobile}</CTableDataCell>
                   <CTableDataCell>{team.company_address}</CTableDataCell>
                   <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
-                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg'/> </CTableDataCell>
+                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={(e) => handleDelete(team.eid, e)}/> </CTableDataCell>
                 </CTableRow>
               ) ;
             })
@@ -81,15 +87,14 @@ console.log(teams);
       </CTable>
       <CPagination align="end" aria-label="Paginationa">
         {
-          teams ?. data ?. links ?.map((user, key) => {
-            if(key==='0'){
+          teams ?. data ?. links ?.map((team, key) => {
+            if(key=='0'){
                 return (<CPaginationItem >Previous</CPaginationItem>)
             }  else if(key===teams.data.links.length-1){
                 return (<CPaginationItem >Next</CPaginationItem>)
             } else{
                 return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
             }
-
           })
         }
       </CPagination>

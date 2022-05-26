@@ -5,15 +5,16 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import {  getUsers } from 'src/services/UserServices';
+import {  getUsers,deleteUsers } from 'src/services/UserServices';
 import axios from 'axios'
 const Users = () => {
  
   const getState = useSelector(state => state);
   const {userSignin: { userInfo }} = getState
-  const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState([]);
-  const [page, setPage] = useState([]);
+
+  const [users, setUsers] = useState({});
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
  
 
   const getUserData = async () => {
@@ -30,6 +31,12 @@ const Users = () => {
     setPage(value);
     setUsers(await getUsers(userInfo,value,search));
   }
+
+  const handleDelete =async (eid,e) => {
+    deleteUsers(userInfo,eid)
+    setUsers({...users, data: {...users.data,data:[...users.data.data.filter((v,i) => v.eid!=eid)]}});
+  }
+
   
   useEffect(() => {
     getUserData();
@@ -55,31 +62,33 @@ console.log(users);
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Delete</CTableHeaderCell>
+
           </CTableRow>
         </CTableHead>
         <CTableBody>
         {
+            users ?. data ?. data ?.map((user, key) => {
+              return (
+                <CTableRow key={key}>
+                  <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
+                  <CTableDataCell>{user.name}</CTableDataCell>
+                  <CTableDataCell>{user.role}</CTableDataCell>
+                  <CTableDataCell>{user.email}</CTableDataCell>
+                  <CTableDataCell onClick={(e) => handleDelete(user.eid, e)}>Delete</CTableDataCell>
 
-              
-              users ?. data ?. data ?.map((user, key) => {
-                return (
-                  <CTableRow key={key}>
-                    <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                    <CTableDataCell>{user.name}</CTableDataCell>
-                    <CTableDataCell>{user.role}</CTableDataCell>
-                    <CTableDataCell>{user.email}</CTableDataCell>
-                  </CTableRow>
-                ) ;
-              })
+                </CTableRow>
+              ) ;
+            })
           }
         </CTableBody>
       </CTable>
       <CPagination align="end" aria-label="Paginationa">
         {
             users ?. data ?. links ?.map((user, key) => {
-            if(key==='0'){
+            if(key=='0'){
                 return (<CPaginationItem >Previous</CPaginationItem>)
-            }  else if(key===users.data.links.length-1){
+            }  else if(key==users.data.links.length-1){
                 return (<CPaginationItem >Next</CPaginationItem>)
             } else{
                 return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
