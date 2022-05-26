@@ -31,8 +31,6 @@ const Users = () => {
     setUsers(await getUsers(userInfo,value,search));
   }
   
-  
-
   useEffect(() => {
     getUserData();
   }, []);
@@ -79,9 +77,9 @@ console.log(users);
       <CPagination align="end" aria-label="Paginationa">
         {
             users ?. data ?. links ?.map((user, key) => {
-            if(key=='0'){
+            if(key==='0'){
                 return (<CPaginationItem >Previous</CPaginationItem>)
-            }  else if(key==users.data.links.length-1){
+            }  else if(key===users.data.links.length-1){
                 return (<CPaginationItem >Next</CPaginationItem>)
             } else{
                 return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
