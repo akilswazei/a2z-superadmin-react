@@ -11,9 +11,10 @@ const Users = () => {
  
   const getState = useSelector(state => state);
   const {userSignin: { userInfo }} = getState
-  const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState([]);
-  const [page, setPage] = useState([]);
+
+  const [users, setUsers] = useState({});
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
  
 
   const getUserData = async () => {
@@ -30,7 +31,11 @@ const Users = () => {
     setPage(value);
     setUsers(await getUsers(userInfo,value,search));
   }
-  
+
+  const handleDelete =async (index,e) => {
+    setUsers({...users, data: {...users.data,data:[...users.data.data.filter((v,i) => i!=index)]}});
+  }
+
   
 
   useEffect(() => {
@@ -57,6 +62,8 @@ console.log(users);
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Delete</CTableHeaderCell>
+
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -70,6 +77,8 @@ console.log(users);
                     <CTableDataCell>{user.name}</CTableDataCell>
                     <CTableDataCell>{user.role}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
+                    <CTableDataCell onClick={(e) => handleDelete(key, e)}>Delete</CTableDataCell>
+
                   </CTableRow>
                 ) ;
               })
