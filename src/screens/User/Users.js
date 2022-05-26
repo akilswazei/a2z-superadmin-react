@@ -5,29 +5,50 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { deleteUser, getUsers } from 'src/redux/actions/UserActions';
-
+import {  getUsers } from 'src/services/UserServices';
+import axios from 'axios'
 const Users = () => {
  
-  const dispatch = useDispatch();
-  
-  const allUsers = useSelector(state => state.allUsers);
-  const {loading, users, error} = allUsers;
+  const getState = useSelector(state => state);
+  const {userSignin: { userInfo }} = getState
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState([]);
+  const [page, setPage] = useState([]);
+ 
 
-  console.log(users, 'users')
+  const getUserData = async () => {
+     setUsers(await getUsers(userInfo));
+  }
 
-  let sr_no = 0;
-  const userSignin = useSelector(state => state.userSignin);
-  const { userInfo } = userSignin;
+  const searchUser =async (value) => {
+    setSearch(value);
+    setPage(1);
+    setUsers(await getUsers(userInfo,1,value));
+  }
+
+  const changePage =async (value) => {
+    setPage(value);
+    setUsers(await getUsers(userInfo,value,search));
+  }
   
-  const token = userInfo.data.token;
+  
 
   useEffect(() => {
-    dispatch(getUsers(userInfo.data.token));
-  }, [dispatch, userInfo.data.token]);
+    getUserData();
+  }, []);
   
+console.log(users);
+  let sr_no = 0;
+
   return (
     <>
+    <input
+        type="text"
+        placeholder="Search here"
+        onChange={(e) => {
+          searchUser(e.target.value)
+        }}
+      />
       <Link to="/users-management/users/add-user"><CButton color="danger">Add User <CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
       <CTable>
         <CTableHead>
@@ -36,13 +57,11 @@ const Users = () => {
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
         {
-            loading ? "Loading" : error ? "Error" : (
+
               
               users ?. data ?. data ?.map((user, key) => {
                 return (
@@ -51,21 +70,25 @@ const Users = () => {
                     <CTableDataCell>{user.name}</CTableDataCell>
                     <CTableDataCell>{user.role}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
-                    <CTableDataCell><CButton color={user.status === 1 ? "success" : "danger"} size="sm">Active</CButton></CTableDataCell>
-                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={() => dispatch(deleteUser(token, user.eid)) }/> </CTableDataCell>
                   </CTableRow>
                 ) ;
               })
-            )
           }
         </CTableBody>
       </CTable>
       <CPagination align="end" aria-label="Paginationa">
-        <CPaginationItem disabled>Previous</CPaginationItem>
-        <CPaginationItem>1</CPaginationItem>
-        <CPaginationItem>2</CPaginationItem>
-        <CPaginationItem>3</CPaginationItem>
-        <CPaginationItem>Next</CPaginationItem>
+        {
+            users ?. data ?. links ?.map((user, key) => {
+            if(key=='0'){
+                return (<CPaginationItem >Previous</CPaginationItem>)
+            }  else if(key==users.data.links.length-1){
+                return (<CPaginationItem >Next</CPaginationItem>)
+            } else{
+                return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
+            }
+
+          })
+        }
       </CPagination>
     </>
   )

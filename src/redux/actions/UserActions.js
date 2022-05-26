@@ -43,7 +43,7 @@ export const addUser = (userData) => async (dispatch, getState) => {
   }
 }
 
-export const getUsers = () => async (dispatch, getState) => {
+export const getUsers = () =>{ return async (dispatch, getState) => {
   try {
     const {
       userSignin: { userInfo },
@@ -61,6 +61,7 @@ export const getUsers = () => async (dispatch, getState) => {
         error.message && error.response.data.message ? error.response.data.message : error.message,
     })
   }
+}
 }
 
 export const getUsersbyId = (id) => async (dispatch) => {
