@@ -4,6 +4,7 @@ import ProtectedRoute from './protected.route'
 
 import './scss/style.scss'
 import './index.css'
+import Individual from './screens/Team/Individual'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -36,6 +37,7 @@ class App extends Component {
               <Route exact path="/dashboard" element={<DefaultLayout />} />
               <Route exact path="/users" element={<Users />} />
               <Route exact path="/teams" element={<Teams />} />
+              <Route exact path="/individual" element={<Individual />} />
             </Route>
           </Routes>
         </Suspense>
