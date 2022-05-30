@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './protected.route'
@@ -5,6 +6,8 @@ import ProtectedRoute from './protected.route'
 import './scss/style.scss'
 import './index.css'
 
+import { withThemeCreator } from '@material-ui/styles'
+import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -20,6 +23,24 @@ const Users = React.lazy(() => import('./screens/User/Users'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+
+//app theme component
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#3F78E0',
+//     },
+//     secondary: {
+//       main: 'white',
+//     },
+//     error: {
+//       main: '#E2626B',
+//     },
+//     success: {
+//       main: '#6BBEA3',
+//     },
+//   },
+// })
 
 class App extends Component {
   render() {
