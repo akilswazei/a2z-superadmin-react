@@ -5,7 +5,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import {  getUsers } from 'src/services/UserServices';
+import {  getUsers,deleteUsers } from 'src/services/UserServices';
 import axios from 'axios'
 const Users = () => {
  
@@ -32,8 +32,9 @@ const Users = () => {
     setUsers(await getUsers(userInfo,value,search));
   }
 
-  const handleDelete =async (index,e) => {
-    setUsers({...users, data: {...users.data,data:[...users.data.data.filter((v,i) => i!=index)]}});
+  const handleDelete =async (eid,e) => {
+    deleteUsers(userInfo,eid)
+    setUsers({...users, data: {...users.data,data:[...users.data.data.filter((v,i) => v.eid!=eid)]}});
   }
 
   
@@ -77,7 +78,7 @@ console.log(users);
                     <CTableDataCell>{user.name}</CTableDataCell>
                     <CTableDataCell>{user.role}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>
-                    <CTableDataCell onClick={(e) => handleDelete(key, e)}>Delete</CTableDataCell>
+                    <CTableDataCell onClick={(e) => handleDelete(user.eid, e)}>Delete</CTableDataCell>
 
                   </CTableRow>
                 ) ;

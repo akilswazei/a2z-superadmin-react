@@ -17,6 +17,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Users = React.lazy(() => import('./screens/User/Users'))
+const AddUser = React.lazy(() => import('./screens/User/AddUser'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
@@ -34,6 +35,7 @@ class App extends Component {
             <Route path="/" name="Home" element={<ProtectedRoute />}>
               <Route exact path="/dashboard" element={<DefaultLayout />} />
               <Route exact path="/users" element={<Users />} />
+              <Route exact path="/user/add" element={<AddUser />} />
             </Route>
           </Routes>
         </Suspense>

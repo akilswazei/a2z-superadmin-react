@@ -10,11 +10,28 @@ export const getUsers = async (userInfo,page=1,search_keyword="") => {
     const {data}= await axios.get(process.env.REACT_APP_BASE_URL + '/admin/user/list?'+para, {
         headers: {
           Authorization: 'Bearer ' + userInfo.data.token,
-        },
-        data: {
-          page: page
         }
       })
       return data
     
+}
+
+export const deleteUsers= async (userInfo, eid) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/user/delete',{
+    eid: eid
+  }, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return true
+}
+
+export const addUser= async (userInfo, userdata) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/user/store',userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return true
 }
