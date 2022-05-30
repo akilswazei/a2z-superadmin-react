@@ -5,6 +5,8 @@ import ProtectedRoute from './protected.route'
 import './scss/style.scss'
 import './index.css'
 import Individual from './screens/Team/Individual'
+import Stores from './screens/Store/Stores'
+import Merchants from './screens/Merchants/Merchants'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -38,6 +40,8 @@ class App extends Component {
               <Route exact path="/users" element={<Users />} />
               <Route exact path="/teams" element={<Teams />} />
               <Route exact path="/individual" element={<Individual />} />
+              <Route exact path="/stores" element={<Stores />} />
+              <Route exact path="/merchants" element={<Merchants />} />
             </Route>
           </Routes>
         </Suspense>
