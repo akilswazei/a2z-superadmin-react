@@ -2,7 +2,6 @@
 import React, { Component, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './protected.route'
-
 import './scss/style.scss'
 import './index.css'
 import Individual from './screens/Team/Individual'
@@ -28,47 +27,49 @@ const Teams = React.lazy(() => import('./screens/Team/Teams'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
-
+const User = React.lazy(() => import('./screens/newUser/User'))
 //app theme component
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#3F78E0',
-//     },
-//     secondary: {
-//       main: 'white',
-//     },
-//     error: {
-//       main: '#E2626B',
-//     },
-//     success: {
-//       main: '#6BBEA3',
-//     },
-//   },
-// })
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3F78E0',
+    },
+    secondary: {
+      main: '#ffffff',
+    },
+    error: {
+      main: '#E2626B',
+    },
+    success: {
+      main: '#6BBEA3',
+    },
+  },
+})
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Suspense fallback={loading}>
-          <Routes>
-            <Route exact path="login" name="Login" element={<Login />} />
-            <Route path="register" name="Register Page" element={<Register />} />
-            <Route path="404" name="Page 404" element={<Page404 />} />
-            <Route path="500" name="Page 500" element={<Page500 />} />
-            <Route path="/" name="Home" element={<ProtectedRoute />}>
-              <Route exact path="/dashboard" element={<DefaultLayout />} />
-              <Route exact path="/users" element={<Users />} />
-              <Route exact path="/user/add" element={<AddUser />} />
-              <Route exact path="/teams" element={<Teams />} />
-              <Route exact path="/individual" element={<Individual />} />
-              <Route exact path="/stores" element={<Stores />} />
-              <Route exact path="/merchants" element={<Merchants />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Suspense fallback={loading}>
+            <Routes>
+              <Route exact path="login" name="Login" element={<Login />} />
+              <Route path="register" name="Register Page" element={<Register />} />
+              <Route path="404" name="Page 404" element={<Page404 />} />
+              <Route path="500" name="Page 500" element={<Page500 />} />
+              <Route path="/" name="Home" element={<ProtectedRoute />}>
+                <Route exact path="/dashboard" element={<DefaultLayout />} />
+                <Route exact path="/users" element={<User />} />
+                <Route exact path="/user/add" element={<AddUser />} />
+                <Route exact path="/teams" element={<Teams />} />
+                <Route exact path="/individual" element={<Individual />} />
+                <Route exact path="/stores" element={<Stores />} />
+                <Route exact path="/merchants" element={<Merchants />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </ThemeProvider>
     )
   }
 }

@@ -6,12 +6,23 @@ import img1 from '../../assets/images/avatars/2.jpg'
 import MailIcon from '@mui/icons-material/Mail'
 import { makeStyles } from '@material-ui/core'
 
+//logout
+import { useDispatch } from 'react-redux'
+import { signout } from 'src/redux/actions/UserActions'
+import { useNavigate } from 'react-router-dom'
+import { StayPrimaryLandscape } from '@material-ui/icons'
+
 const useStyles = makeStyles({
   div: {
     marginLeft: 'auto',
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
+  },
+  customBtn: {
+    color: 'black',
+    border: '1px solid white',
+    backgroundColor: 'trasparent',
   },
 })
 const Header = () => {
@@ -45,6 +56,17 @@ const Header = () => {
     },
   }))
 
+  //logout handler
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const logoutHandler = (e) => {
+    e.preventDefault()
+    dispatch(signout())
+    navigate('/login')
+  }
+
   return (
     <>
       <div className={classes.div}>
@@ -57,6 +79,11 @@ const Header = () => {
           <StyledBadge overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
             <Avatar alt="Remy Sharp" src={img1} />
           </StyledBadge>
+        </div>
+        <div>
+          <button className={classes.customBtn} onClick={logoutHandler}>
+            Logout
+          </button>
         </div>
       </div>
     </>
