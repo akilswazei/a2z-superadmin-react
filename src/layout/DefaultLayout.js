@@ -1,15 +1,18 @@
+/* eslint-disable prettier/prettier */
+
 import React from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
-
+import Sidebar from 'src/components/sidebar/Sidebar'
+import { Grid } from '@material-ui/core'
 const DefaultLayout = () => {
   return (
     <div>
-      <AppSidebar />
-      <div className="wrapper d-flex flex-column min-vh-100 bg-light">
-        <AppHeader />
-        <div className="body flex-grow-1 px-3">{/* <AppContent /> */}</div>
-        {/* <AppFooter /> */}
-      </div>
+      {/* <AppSidebar /> */}
+      <Grid container>
+        <Grid item md={12}>
+          <Sidebar />
+        </Grid>
+      </Grid>
     </div>
   )
 }

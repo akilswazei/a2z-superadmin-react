@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 module.exports = {
   // parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   parserOptions: {
@@ -22,11 +23,12 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    'prettier/prettier': [
-      'error',
-      {
-        endOfLine: 'auto',
-      },
-    ],
+    'prettier/prettier': 0,
+    // [
+    //   'error',
+    //   {
+    //     endOfLine: 'auto',
+    //   },
+    // ],
   },
 }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export const getUsers = async (userInfo,page=1,search_keyword="") => {
   console.log(search_keyword);
