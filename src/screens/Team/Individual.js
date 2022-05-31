@@ -5,44 +5,45 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { getTeams, deleteTeam } from 'src/services/TeamServices';
+import { deleteIndividual, getIndividual } from 'src/services/IndividualService';
 
 
-const Teams = () => {
+
+const Individual = () => {
  
   const getState = useSelector(state => state);
   const {userSignin: { userInfo }} = getState
 
-  const [teams, setTeams] = useState({});
+  const [individual, setIndividual] = useState({});
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
-  const getTeamData = async () => {
-    setTeams(await getTeams(userInfo));
+  const getIndividualData = async () => {
+    setIndividual(await getIndividual(userInfo));
   }
 
-  const searchTeam =async (value) => {
+  const searchIndividual =async (value) => {
     setSearch(value);
     setPage(1);
-    setTeams(await getTeams(userInfo,1,value));
+    setIndividual(await getIndividual(userInfo,1,value));
   }
 
   const changePage =async (value) => {
     setPage(value);
-    setTeams(await getTeams(userInfo,value,search));
+    setIndividual(await getIndividual(userInfo,value,search));
   }
 
   const handleDelete =async (eid,e) => {
-    deleteTeam(userInfo,eid)
-    setTeams({...teams, data: {...teams.data,data:[...teams.data.data.filter((v,i) => v.eid!=eid)]}});
+    deleteIndividual(userInfo,eid)
+    setIndividual({...individual, data: {...individual.data,data:[...individual.data.data.filter((v,i) => v.eid!=eid)]}});
   }
 
   useEffect(() => {
-    getTeamData();
+    getIndividualData();
   }, []);
   
   
-console.log(teams);
+console.log(individual);
   let sr_no = 0;
   
   return (
@@ -51,34 +52,32 @@ console.log(teams);
         type="text"
         placeholder="Search here"
         onChange={(e) => {
-          searchTeam(e.target.value)
+            searchIndividual(e.target.value)
         }}
       />
-      <Link to="/outsource/teams/add-team"><CButton color="danger">Add Team <CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
+      <Link to="/outsource/teams/add-team"><CButton color="danger">Add Individual<CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
       <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Company Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Adresss</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Service Type</CTableHeaderCell>
             <CTableHeaderCell scope="col">Status</CTableHeaderCell>
             <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
         {
-            teams ?. data ?. data ?.map((team, key) => {
+            individual ?. data ?. data ?.map((ind, key) => {
               return (
                 <CTableRow key={key}>
                   <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                  <CTableDataCell>{team.company_name}</CTableDataCell>
-                  <CTableDataCell>{team.company_email}</CTableDataCell>
-                  <CTableDataCell>{team.company_mobile}</CTableDataCell>
-                  <CTableDataCell>{team.company_address}</CTableDataCell>
+                  <CTableDataCell>{ind.name}</CTableDataCell>
+                  <CTableDataCell>{ind.email}</CTableDataCell>
+                  <CTableDataCell>{ind.hire_for}</CTableDataCell>
                   <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
-                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={(e) => handleDelete(team.eid, e)}/> </CTableDataCell>
+                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={(e) => handleDelete(ind.eid, e)}/> </CTableDataCell>
                 </CTableRow>
               ) ;
             })
@@ -87,10 +86,10 @@ console.log(teams);
       </CTable>
       <CPagination align="end" aria-label="Paginationa">
         {
-          teams ?. data ?. links ?.map((team, key) => {
+            individual ?. data ?. links ?.map((team, key) => {
             if(key=='0'){
                 return (<CPaginationItem >Previous</CPaginationItem>)
-            }  else if(key===teams.data.links.length-1){
+            }  else if(key===individual.data.links.length-1){
                 return (<CPaginationItem >Next</CPaginationItem>)
             } else{
                 return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
@@ -101,4 +100,4 @@ console.log(teams);
     </>
   )
 }
-export default Teams;
+export default Individual;

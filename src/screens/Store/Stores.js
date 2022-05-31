@@ -5,80 +5,79 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { getTeams, deleteTeam } from 'src/services/TeamServices';
+import { deleteStore, getStores } from 'src/services/StoreService';
 
-
-const Teams = () => {
+const Stores = () => {
  
   const getState = useSelector(state => state);
   const {userSignin: { userInfo }} = getState
 
-  const [teams, setTeams] = useState({});
+  const [stores, setStores] = useState({});
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+ 
 
-  const getTeamData = async () => {
-    setTeams(await getTeams(userInfo));
+  const getStoreData = async () => {
+    setStores(await getStores(userInfo));
   }
 
-  const searchTeam =async (value) => {
+  const searchUser =async (value) => {
     setSearch(value);
     setPage(1);
-    setTeams(await getTeams(userInfo,1,value));
+    setStores(await getStores(userInfo,1,value));
   }
 
   const changePage =async (value) => {
     setPage(value);
-    setTeams(await getTeams(userInfo,value,search));
+    setStores(await getStores(userInfo,value,search));
   }
 
   const handleDelete =async (eid,e) => {
-    deleteTeam(userInfo,eid)
-    setTeams({...teams, data: {...teams.data,data:[...teams.data.data.filter((v,i) => v.eid!=eid)]}});
+    deleteStore(userInfo,eid)
+    setStores({...stores, data: {...stores.data,data:[...stores.data.data.filter((v,i) => v.eid!=eid)]}});
   }
 
+  
   useEffect(() => {
-    getTeamData();
+    getStoreData();
   }, []);
   
-  
-console.log(teams);
+console.log(stores);
   let sr_no = 0;
-  
+
   return (
     <>
-      <input
+    <input
         type="text"
         placeholder="Search here"
         onChange={(e) => {
-          searchTeam(e.target.value)
+          searchUser(e.target.value)
         }}
       />
-      <Link to="/outsource/teams/add-team"><CButton color="danger">Add Team <CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
+      <Link to="/users-management/users/add-user"><CButton color="danger">Add Merchant <CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
       <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Company Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Store Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Location</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
             <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Adresss</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+
           </CTableRow>
         </CTableHead>
         <CTableBody>
         {
-            teams ?. data ?. data ?.map((team, key) => {
+             stores ?. data ?. data ?.map((store, key) => {
               return (
                 <CTableRow key={key}>
                   <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                  <CTableDataCell>{team.company_name}</CTableDataCell>
-                  <CTableDataCell>{team.company_email}</CTableDataCell>
-                  <CTableDataCell>{team.company_mobile}</CTableDataCell>
-                  <CTableDataCell>{team.company_address}</CTableDataCell>
-                  <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
-                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={(e) => handleDelete(team.eid, e)}/> </CTableDataCell>
+                  <CTableDataCell>{store.store_name}</CTableDataCell>
+                  <CTableDataCell>{store.store_address_1}</CTableDataCell>
+                  <CTableDataCell>{store.store_email}</CTableDataCell>
+                  <CTableDataCell>{store.store_contact}</CTableDataCell>
+                  <CTableDataCell onClick={(e) => handleDelete(store.eid, e)}>Delete</CTableDataCell>
                 </CTableRow>
               ) ;
             })
@@ -87,18 +86,19 @@ console.log(teams);
       </CTable>
       <CPagination align="end" aria-label="Paginationa">
         {
-          teams ?. data ?. links ?.map((team, key) => {
+           stores ?. data ?. links ?.map((user, key) => {
             if(key=='0'){
                 return (<CPaginationItem >Previous</CPaginationItem>)
-            }  else if(key===teams.data.links.length-1){
+            }  else if(key===stores.data.links.length-1){
                 return (<CPaginationItem >Next</CPaginationItem>)
             } else{
                 return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
             }
+
           })
         }
       </CPagination>
     </>
   )
 }
-export default Teams;
+export default Stores;

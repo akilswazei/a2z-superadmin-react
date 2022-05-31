@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export const getUsers = async (userInfo,page=1,search_keyword="") => {
   console.log(search_keyword);
- 
     let getpara=[]
     getpara[0]=page==1?'':"page="+page;
     getpara[1]=search_keyword==""?'':"s="+search_keyword;
@@ -13,7 +12,6 @@ export const getUsers = async (userInfo,page=1,search_keyword="") => {
         }
       })
       return data
-    
 }
 
 export const deleteUsers= async (userInfo, eid) => {

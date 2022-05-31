@@ -5,6 +5,9 @@ import ProtectedRoute from './protected.route'
 
 import './scss/style.scss'
 import './index.css'
+import Individual from './screens/Team/Individual'
+import Stores from './screens/Store/Stores'
+import Merchants from './screens/Merchants/Merchants'
 
 import { withThemeCreator } from '@material-ui/styles'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
@@ -21,6 +24,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Users = React.lazy(() => import('./screens/User/Users'))
 const AddUser = React.lazy(() => import('./screens/User/AddUser'))
+const Teams = React.lazy(() => import('./screens/Team/Teams'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
@@ -57,6 +61,10 @@ class App extends Component {
               <Route exact path="/dashboard" element={<DefaultLayout />} />
               <Route exact path="/users" element={<Users />} />
               <Route exact path="/user/add" element={<AddUser />} />
+              <Route exact path="/teams" element={<Teams />} />
+              <Route exact path="/individual" element={<Individual />} />
+              <Route exact path="/stores" element={<Stores />} />
+              <Route exact path="/merchants" element={<Merchants />} />
             </Route>
           </Routes>
         </Suspense>
