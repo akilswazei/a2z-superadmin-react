@@ -85,7 +85,7 @@ export default function User() {
             </button>
           </div>
           <div style={{ height: 400, width: '100%' }}>
-            {users.data && (
+            {users?.data?.data && (
               <DataGrid
                 rows={users.data.data}
                 columns={columns}
