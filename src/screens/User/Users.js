@@ -1,23 +1,23 @@
-/* eslint-disable prettier/prettier */
-import { cilPencil, cilTrash, cilUserPlus } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import {
-  CTable,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
-  CTableBody,
-  CTableDataCell,
-  CButton,
-  CPagination,
-  CPaginationItem,
-} from '@coreui/react'
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUsers, deleteUsers } from 'src/services/UserServices'
-import axios from 'axios'
-const Users = () => {
+import MainBoard from 'src/components/include/MainBoard'
+import { Container } from '@material-ui/core'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import { makeStyles,Pagination } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+const columns = [
+  { field: 'eid', headerName: 'id' },
+  { field: 'name', headerName: 'Name'},
+  { field: 'role', headerName: 'Role' },
+  { field: 'email', headerName: 'Email' },
+  { field: 'status', headerName: 'Status'  },
+]
+
+export default function User() {
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
@@ -26,6 +26,7 @@ const Users = () => {
   const [users, setUsers] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [success, setSuccess] = useState(0)
 
   const getUserData = async () => {
     setUsers(await getUsers(userInfo))
@@ -51,81 +52,64 @@ const Users = () => {
     getUserData()
   }, [])
 
-  console.log(users)
+  //   const rows = [
+  //     { id: 1, name: 'lannister', role: 'sales', status: 1, email: 'some@gmail.com' },
+  //     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+  //     { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+  //     { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+  //     { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+  //     { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+  //     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+  //     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+  //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  //   ]
+
+  console.log(users?.data?.data)
   let sr_no = 0
-
   return (
-    <>
-      <input
-        type="text"
-        placeholder="Search here"
-        onChange={(e) => {
-          searchUser(e.target.value)
-        }}
-      />
-      <Link to="/users-management/users/add-user">
-        <CButton color="danger">
-          Add User <CIcon icon={cilUserPlus} size="lg" />
-        </CButton>
-      </Link>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Role</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Delete</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {users?.data?.data?.map((user, key) => {
-            return (
-              <CTableRow key={key}>
-                <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                <CTableDataCell>{user.name}</CTableDataCell>
-                <CTableDataCell>{user.role}</CTableDataCell>
-                <CTableDataCell>{user.email}</CTableDataCell>
-                <CTableDataCell onClick={(e) => handleDelete(user.eid, e)}>Delete</CTableDataCell>
-                {/* {
-                      users ?. data ?. data ?.map((user, key) => {
-                        return (
-                          <CTableRow key={key}>
-                            <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                            <CTableDataCell>{user.name}</CTableDataCell>
-                            <CTableDataCell>{user.role}</CTableDataCell>
-                            <CTableDataCell>{user.email}</CTableDataCell>
-                            <CTableDataCell onClick={(e) => handleDelete(user.eid, e)}>Delete</CTableDataCell>
-
-                          </CTableRow>
-                        ) ;
-                      })
-                    } */}
-              </CTableRow>
-            )
-          })}
-        </CTableBody>
-      </CTable>
-      <CPagination align="end" aria-label="Paginationa">
-        {users?.data?.links?.map((user, key) => {
-          if (key == '0') {
-            return <CPaginationItem>Previous</CPaginationItem>
-          } else if (key == users.data.links.length - 1) {
-            return <CPaginationItem>Next</CPaginationItem>
-          } else {
-            return (
-              <CPaginationItem
-                onClick={(e) => {
-                  changePage(key)
-                }}
-              >
-                {key}
-              </CPaginationItem>
-            )
-          }
-        })}
-      </CPagination>
-    </>
+    <MainBoard>
+      <Container fluid className="background-theme-purple">
+        <Container className="pt-3">
+          <h6>Users</h6>
+        </Container>
+        <Container className="background-white-theme">
+          <div className="justify-flex-end">
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => {
+                searchUser(e.target.value)
+              }}
+            />
+            <button className="custom-blue-btn m-2">
+              Add User<span>{<PersonAddAltIcon />}</span>
+            </button>
+          </div>
+          <div style={{ height: 400, width: '100%' }}>
+            {users?.data?.data && (
+              <DataGrid
+                getRowId={(row) => Math.random()}
+                rows={users.data.data}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+              />
+            )}
+            <Pagination count={11} defaultPage={6}  />
+          </div>
+          
+        </Container>
+      </Container>
+    </MainBoard>
+    // <div style={{ height: 400, width: '100%' }}>
+    //   <DataGrid
+    //     rows={rows}
+    //     columns={columns}
+    //     pageSize={5}
+    //     rowsPerPageOptions={[5]}
+    //     checkboxSelection
+    //   />
+    // </div>
   )
 }
-export default Users

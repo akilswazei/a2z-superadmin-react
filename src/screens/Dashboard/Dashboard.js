@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import React from 'react'
-import Sidebar from 'src/components/sidebar/Sidebar'
+import MainBoard from 'src/components/include/MainBoard'
 import { Grid } from '@material-ui/core'
 const DefaultLayout = () => {
   return (
@@ -9,7 +9,7 @@ const DefaultLayout = () => {
       {/* <AppSidebar /> */}
       <Grid container>
         <Grid item md={12}>
-          <Sidebar />
+          <MainBoard><>Test</></MainBoard>
         </Grid>
       </Grid>
     </div>

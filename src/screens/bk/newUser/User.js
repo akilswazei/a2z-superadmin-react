@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom'
 import { getUsers, deleteUsers } from 'src/services/UserServices'
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles } from '@mui/material'
+import { makeStyles,Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 const columns = [
-  { field: 'id', headerName: 'id', width: 70 },
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'role', headerName: 'Role', width: 130 },
-  { field: 'email', headerName: 'Email', width: 130 },
-  { field: 'status', headerName: 'Status', width: 40 },
+  { field: 'eid', headerName: 'id' },
+  { field: 'name', headerName: 'Name'},
+  { field: 'role', headerName: 'Role' },
+  { field: 'email', headerName: 'Email' },
+  { field: 'status', headerName: 'Status'  },
 ]
 
 export default function User() {
@@ -63,7 +63,7 @@ export default function User() {
   //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
   //   ]
 
-  console.log(users.data)
+  console.log(users?.data?.data)
   let sr_no = 0
   return (
     <>
@@ -85,16 +85,19 @@ export default function User() {
             </button>
           </div>
           <div style={{ height: 400, width: '100%' }}>
-            {users.data && (
+            {users?.data?.data && (
               <DataGrid
+                getRowId={(row) => Math.random()}
                 rows={users.data.data}
                 columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
                 checkboxSelection
               />
             )}
+            <Pagination count={11} defaultPage={6}  />
           </div>
+          
         </Container>
       </Container>
     </>

@@ -1,12 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { cilPencil, cilTrash, cilUserPlus } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CPagination, CPaginationItem } from '@coreui/react';
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
+
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import MainBoard from 'src/components/include/MainBoard'
+import { Container } from '@material-ui/core'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import { makeStyles,Pagination } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 import { deleteIndividual, getIndividual } from 'src/services/IndividualService';
 
+const columns = [
+  { field: 'eid', headerName: 'id' }
+]
 
 
 const Individual = () => {
@@ -47,57 +54,43 @@ console.log(individual);
   let sr_no = 0;
   
   return (
-    <>
-      <input
-        type="text"
-        placeholder="Search here"
-        onChange={(e) => {
-            searchIndividual(e.target.value)
-        }}
-      />
-      <Link to="/outsource/teams/add-team"><CButton color="danger">Add Individual<CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Service Type</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-        {
-            individual ?. data ?. data ?.map((ind, key) => {
-              return (
-                <CTableRow key={key}>
-                  <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                  <CTableDataCell>{ind.name}</CTableDataCell>
-                  <CTableDataCell>{ind.email}</CTableDataCell>
-                  <CTableDataCell>{ind.hire_for}</CTableDataCell>
-                  <CTableDataCell><CButton color="success" size="sm">Active</CButton></CTableDataCell>
-                  <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg' onClick={(e) => handleDelete(ind.eid, e)}/> </CTableDataCell>
-                </CTableRow>
-              ) ;
-            })
-          }
-        </CTableBody>
-      </CTable>
-      <CPagination align="end" aria-label="Paginationa">
-        {
-            individual ?. data ?. links ?.map((team, key) => {
-            if(key=='0'){
-                return (<CPaginationItem >Previous</CPaginationItem>)
-            }  else if(key===individual.data.links.length-1){
-                return (<CPaginationItem >Next</CPaginationItem>)
-            } else{
-                return (<CPaginationItem onClick={(e)=>{ changePage(key) }}>{key}</CPaginationItem>)
-            }
-          })
-        }
-      </CPagination>
-    </>
-  )
+    <MainBoard>
+    <Container fluid className="background-theme-purple">
+      <Container className="pt-3">
+        <h6>Individuals</h6>
+      </Container>
+      <Container className="background-white-theme">
+        <div className="justify-flex-end">
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={(e) => {
+              searchIndividual(e.target.value)
+            }}
+          />
+          <button className="custom-blue-btn m-2">
+            Add Individual<span>{<PersonAddAltIcon />}</span>
+          </button>
+        </div>
+        <div style={{ height: 400, width: '100%' }}>
+          {individual?.data?.data && (
+            <DataGrid
+              getRowId={(row) => Math.random()}
+              rows={individual.data.data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[10]}
+              checkboxSelection
+            />
+          )}
+          <Pagination count={11} defaultPage={6}  />
+        </div>
+        
+      </Container>
+    </Container>
+  </MainBoard>
+
+
+    )
 }
 export default Individual;
