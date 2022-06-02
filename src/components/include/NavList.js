@@ -57,29 +57,27 @@ function getItems() {
               {
                 id: 1,
                 name: 'A2Z Users',
-                link: '/dashboard',
+                link: '/users',
               },
               {
                 id: 2,
                 name: 'Outsource',
                 link: '/dashboard',
-                subitems2: [
-                  {
-                    id: 1,
-                    name: 'Individual',
-                    link: '/dashboard',
-                  },
-                  {
-                    id: 2,
-                    name: 'Team',
-                    link: '/dashboard',
-                  },
-                  {
-                    id: 3,
-                    name: 'Role',
-                    link: '/dashboard',
-                  },
-                ],
+              },
+              {
+                id: 3,
+                name: 'Individual',
+                link: '/individual',
+              },
+              {
+                id: 4,
+                name: 'Team',
+                link: '/teams',
+              },
+              {
+                id: 5,
+                name: 'Role',
+                link: '/roles',
               },
             ],
           },
@@ -105,12 +103,12 @@ function getItems() {
               {
                 id: 1,
                 name: 'All Merchant',
-                link: '/dashboard',
+                link: '/merchants',
               },
               {
                 id: 2,
                 name: 'Store',
-                link: '/dashboard',
+                link: '/stores',
               },
               {
                 id: 3,
@@ -207,7 +205,7 @@ class Navlist extends React.Component {
                                     exact
                                     activeClassName="navbar__link--active"
                                     className="navbar__link"
-                                    to={item.link}
+                                    to={sitem.link}
                                   >
                                     <ListItemIcon>{sitem.icon}</ListItemIcon>
                                     <ListItemText key={sitem.id} primary={sitem.name} />

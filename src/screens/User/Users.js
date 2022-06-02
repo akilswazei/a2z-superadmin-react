@@ -5,18 +5,45 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUsers, deleteUsers } from 'src/services/UserServices'
 import MainBoard from 'src/components/include/MainBoard'
-import { Container } from '@material-ui/core'
+import { Container, createStyles } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles,Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import { useNavigate } from 'react-router-dom'
 const columns = [
-  { field: 'eid', headerName: 'id' },
-  { field: 'name', headerName: 'Name'},
-  { field: 'role', headerName: 'Role' },
-  { field: 'email', headerName: 'Email' },
-  { field: 'status', headerName: 'Status'  },
+  { field: 'eid', headerName: 'id', width: 70 },
+  { field: 'name', headerName: 'Name', width: 130 },
+  { field: 'role', headerName: 'Role', width: 100 },
+  { field: 'email', headerName: 'Email', width: 200 },
+  {
+    field: 'status',
+    renderCell: (cellValues) => {
+      return (
+        <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+          {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
+        </button>
+      )
+    },
+  },
+  { field: 'action', headerName: 'Action', width: 70 },
 ]
 
+const datagridSx = {
+  '& .MuiDataGrid-virtualScrollerRenderZone': {
+    '& .MuiDataGrid-row': {
+      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+    },
+  },
+  '& .MuiDataGrid-columnHeaders': {
+    backgroundColor: 'rgba(255,255,255)',
+    color: 'rgba(0,0,0)',
+    fontSize: '1.1em',
+  },
+  '& .MuiDataGrid-row': {
+    fontSize: '0.9em',
+    fontWeight: '600',
+  },
+}
 export default function User() {
   const getState = useSelector((state) => state)
   const {
@@ -47,7 +74,12 @@ export default function User() {
     deleteUsers(userInfo, eid)
     setUsers({ ...users, data: { ...users.data, data: [...users.data.data.filter((v, i) => v.eid != eid)] } })
   }
-
+  //navigating to add page of user
+  const navigate = useNavigate()
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/user/add')
+  }
   useEffect(() => {
     getUserData()
   }, [])
@@ -68,12 +100,12 @@ export default function User() {
   let sr_no = 0
   return (
     <MainBoard>
-      <Container fluid className="background-theme-purple">
-        <Container className="pt-3">
-          <h6>Users</h6>
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6 className="p-0">A2Z Users</h6>
         </Container>
         <Container className="background-white-theme">
-          <div className="justify-flex-end">
+          <div className="justify-flex-end input-div">
             <input
               type="text"
               placeholder="Search here"
@@ -81,24 +113,25 @@ export default function User() {
                 searchUser(e.target.value)
               }}
             />
-            <button className="custom-blue-btn m-2">
+            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
               Add User<span>{<PersonAddAltIcon />}</span>
             </button>
           </div>
-          <div style={{ height: 400, width: '100%' }}>
+          <hr></hr>
+          <div style={{ height: '75vh', width: '100%' }} className="py-2">
             {users?.data?.data && (
               <DataGrid
-                getRowId={(row) => Math.random()}
+                getRowId={(row) => Math.random() * 100}
                 rows={users.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
                 checkboxSelection
+                sx={datagridSx}
               />
             )}
-            <Pagination count={11} defaultPage={6}  />
+            {/* <Pagination count={11} defaultPage={6} /> */}
           </div>
-          
         </Container>
       </Container>
     </MainBoard>

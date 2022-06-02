@@ -10,21 +10,46 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { deleteMerchant, getMerchants } from 'src/services/MerchantService'
+import { useNavigate } from 'react-router-dom'
 
+const datagridSx = {
+  '& .MuiDataGrid-virtualScrollerRenderZone': {
+    '& .MuiDataGrid-row': {
+      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+    },
+  },
+  '& .MuiDataGrid-columnHeaders': {
+    backgroundColor: 'rgba(255,255,255)',
+    color: 'rgba(0,0,0)',
+    fontSize: '1.1em',
+  },
+  '& .MuiDataGrid-row': {
+    fontSize: '0.9em',
+    fontWeight: '600',
+  },
+}
 const Merchant = () => {
   const columns = [
     { field: 'eid', headerName: 'Id' },
-    { field: 'business_contact_name', headerName: 'name'},
-    { field: 'Delete', headerName: 'Action', renderCell: (cellValues) => {
-      console.log(cellValues)
-      return (
-        <button eid={cellValues.row.eid}
-          onClick={(event) => {
-            handleDelete(cellValues.row.eid,event);
-          }}
-        >
-          Delete
-        </button> )}},
+    { field: 'business_contact_name', headerName: 'name', width: 130 },
+    {
+      field: 'Delete',
+      headerName: 'Action',
+      width: 150,
+      renderCell: (cellValues) => {
+        console.log(cellValues)
+        return (
+          <button
+            eid={cellValues.row.eid}
+            onClick={(event) => {
+              handleDelete(cellValues.row.eid, event)
+            }}
+          >
+            Delete
+          </button>
+        )
+      },
+    },
   ]
   const getrows = () => {
     let rows = []
@@ -73,6 +98,12 @@ const Merchant = () => {
     getMerchantData()
   }, [])
 
+  //navigating to add page of merchant
+  const navigate = useNavigate()
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/merchant/add')
+  }
   console.log(Merchant)
   let sr_no = 0
 
@@ -83,7 +114,7 @@ const Merchant = () => {
           <h6>Merchants</h6>
         </Container>
         <Container className="background-white-theme">
-          <div className="justify-flex-end">
+          <div className="justify-flex-end input-div">
             <input
               type="text"
               placeholder="Search here"
@@ -91,11 +122,11 @@ const Merchant = () => {
                 searchMerchant(e.target.value)
               }}
             />
-            <button className="custom-blue-btn m-2">
+            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
               Add Merchant<span>{<PersonAddAltIcon />}</span>
             </button>
           </div>
-          <div style={{ height: 400, width: '100%' }}>
+          <div style={{ height: '75vh', width: '100%' }} className="py-2">
             {merchants?.data?.data && (
               <DataGrid
                 getRowId={(row) => Math.random()}
@@ -104,9 +135,10 @@ const Merchant = () => {
                 pageSize={10}
                 rowsPerPageOptions={[10]}
                 checkboxSelection
+                sx={datagridSx}
               />
             )}
-            <Pagination count={11} defaultPage={6} />
+            {/* <Pagination count={11} defaultPage={6} /> */}
           </div>
         </Container>
       </Container>
