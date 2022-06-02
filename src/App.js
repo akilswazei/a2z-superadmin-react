@@ -25,7 +25,7 @@ const DefaultLayout = React.lazy(() => import('./screens/Dashboard/Dashboard'))
 // Pages
 const Login = React.lazy(() => import('./screens/Login/Login'))
 const Users = React.lazy(() => import('./screens/User/Users'))
-const AddUser = React.lazy(() => import('./screens/User/AddUserbk'))
+const AddUser = React.lazy(() => import('./screens/User/AddUser'))
 const Teams = React.lazy(() => import('./screens/Team/Teams'))
 const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
