@@ -67,7 +67,7 @@ function getItems() {
               {
                 id: 3,
                 name: 'Individual',
-                link: '/individual',
+                link: '/individuals',
               },
               {
                 id: 4,

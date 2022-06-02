@@ -142,6 +142,7 @@
         background-color: $theme-color-blue;
         ul{
             background-color: $theme-color-blue;
+           
         }
     }
 }
@@ -172,4 +173,6 @@
     border-radius: 3px;
     color: white;
 }
-
+.custom-container-white{
+    border-radius: 0.3em;
+}

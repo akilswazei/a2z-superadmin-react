@@ -20,8 +20,9 @@ const datagridSx = {
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    color: 'rgba(0,0,0)',
     fontSize: '1.1em',
+    textTransform: 'capitalize',
+    color: 'gray',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
@@ -80,7 +81,7 @@ const Store = () => {
         <Container className="p-0 mt-4">
           <h6>Stores</h6>
         </Container>
-        <Container className="background-white-theme">
+        <Container className="background-white-theme custom-container-white">
           <div className="justify-flex-end input-div">
             <input
               type="text"
@@ -93,6 +94,7 @@ const Store = () => {
               Add Store<span>{<PersonAddAltIcon />}</span>
             </button>
           </div>
+          <hr></hr>
           <div style={{ height: 400, width: '100%' }}>
             {stores?.data?.data && (
               <DataGrid

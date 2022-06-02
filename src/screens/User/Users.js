@@ -10,11 +10,12 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
+import { MicNoneTwoTone } from '@mui/icons-material'
 const columns = [
-  { field: 'eid', headerName: 'id', width: 70 },
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'role', headerName: 'Role', width: 100 },
-  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'eid', headerName: 'ID', width: 80 },
+  { field: 'name', headerName: 'Name', width: 140 },
+  { field: 'role', headerName: 'Role', width: 120 },
+  { field: 'email', headerName: 'Email', width: 230 },
   {
     field: 'status',
     renderCell: (cellValues) => {
@@ -36,8 +37,9 @@ const datagridSx = {
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    color: 'rgba(0,0,0)',
     fontSize: '1.1em',
+    textTransform: 'capitalize',
+    color: 'gray',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
@@ -104,7 +106,7 @@ export default function User() {
         <Container className="p-0 mt-4">
           <h6 className="p-0">A2Z Users</h6>
         </Container>
-        <Container className="background-white-theme">
+        <Container className="background-white-theme custom-container-white">
           <div className="justify-flex-end input-div">
             <input
               type="text"
