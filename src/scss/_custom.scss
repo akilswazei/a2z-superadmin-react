@@ -117,3 +117,24 @@
   justify-content: flex-end;
   align-items: center;
 }
+.navbar__link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    div svg{
+        color: white;
+        
+    }
+    
+}
+.sidebar-nav{
+    background-color: $theme-color-blue;
+    div{
+        background-color: $theme-color-blue;
+        ul{
+            background-color: $theme-color-blue;
+        }
+    }
+}
