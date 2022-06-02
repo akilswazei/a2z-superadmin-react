@@ -182,7 +182,7 @@ export default function MainBoard(props) {
           <NavList />
         </div>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} className="background-theme-purple p-0">
         <DrawerHeader />
         {props.children}
       </Main>

@@ -12,7 +12,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Container, Button, Icon, TextField, Paper, Typography,Grid } from "@material-ui/core";
 
-function AddTeam() {
+function AddStore() {
 
     const getState = useSelector(state => state);
     const navigate = useNavigate();
@@ -164,4 +164,4 @@ function AddTeam() {
     </MainBoard>      
   )
 }
-export default AddTeam
+export default AddStore

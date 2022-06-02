@@ -88,8 +88,14 @@
     background-color:$theme-color-blue;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 0.4em;
     min-height:40px;
+    font-size: 0.9em;
+    padding: 0.6em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     &:hover{
         background-color: #F9F9FC;
         color: $theme-color-blue;
@@ -101,7 +107,7 @@
         outline: none;
     }
     span{
-        margin: 0 3px 0 0;
+        margin: 0 2px 0 4px;
     }
 }
 
@@ -123,6 +129,7 @@
     align-items: center;
     color: white;
     text-decoration: none;
+    white-space: nowrap;
     div svg{
         color: white;
         
@@ -138,3 +145,31 @@
         }
     }
 }
+
+.input-div{
+
+    input{
+        min-height: 40px;
+        border-radius: 0.3em;
+        border:1px solid lightgray;
+
+        &::placeholder{
+            font-size: 0.9em;
+            color:lightgray;
+            text-align: center;
+        }
+    }
+}
+.red-btn{
+    background-color: #E2626B;
+    border:none;
+    border-radius: 3px;
+    color: white;
+}
+.green-btn{
+    background-color: #6BBEA3;
+    border:none;
+    border-radius: 3px;
+    color: white;
+}
+
