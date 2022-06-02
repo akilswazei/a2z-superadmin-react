@@ -55,7 +55,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 //screens
 const Users = React.lazy(() => import('./screens/User/Users'))
-const AddUser = React.lazy(() => import('./screens/User/AddUser'))
+const AddUser = React.lazy(() => import('./screens/User/AddUserbk'))
 const UserProfile = React.lazy(() => import('./screens/User/UserProfile'))
 
 const AddLead = React.lazy(() => import('./screens/Lead/AddLead'))
