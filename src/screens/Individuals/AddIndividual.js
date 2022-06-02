@@ -5,15 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRoles } from "src/services/RolesServices";
 import { addIndividual } from "src/services/IndividualService";
 import MainBoard from 'src/components/include/MainBoard'
-import { Container, Button, Icon, TextField, Paper, Typography,Grid } from "@material-ui/core";
+import { Container, Button, Icon,InputLabel, TextField,MenuItem,Select, Paper, Typography,Grid } from "@material-ui/core";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-function AddTeam() {
+function AddIndividual() {
 
     const getState = useSelector(state => state);
+    let navigate = useNavigate();
     const {userSignin: { userInfo }} = getState
 
     const [inputs, setInputs] = useState({status:1});
     const [roles, setRoles] = useState({});
+    const [open, setOpen] = React.useState(false);
+    const [errors, setErros] = React.useState({});
 
     const handleChange = (event) => {
       const name = event.target.name;
@@ -25,12 +33,23 @@ function AddTeam() {
     const submitHandler = async (e) => {
         e.preventDefault();
         console.log(inputs)
-       await addIndividual(userInfo,inputs);
+        if(inputs.password==inputs.confirm_password){
+            setErros({...errors, confirm_password: ""})
+            await addIndividual(userInfo,inputs);
+
+            setOpen(true);     
+        } else{
+            setErros({...errors, confirm_password: "password not matched"})
+        }
     }
 
     const getRolesData = async () => {
         setRoles(await getRoles(userInfo));
      }
+     const handleClose = () => {
+        setOpen(false);
+        navigate("../individuals", { replace: true });
+      };
 
      useEffect(() => {
         getRolesData();
@@ -38,74 +57,34 @@ function AddTeam() {
 
   return (
     <MainBoard>
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Alert"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Successfully Submitted
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
+
         <Container fluid className="background-theme-purple">
             <Container className="background-white-theme p-4">
-                <h1>Teams</h1>
+                <h1>Individuals</h1>
                 <form onSubmit={submitHandler} >
                     <h3>Company Details</h3>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                id="outlined-error"
-                                label="Company Name"
-                                name="company_name"
-                                fullWidth={true}
-                                onChange={(e) => handleChange(e)}
-                                
-                                />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                id="outlined-error"
-                                label="Company Type"
-                                name="hire_for"
-                                fullWidth={true}
-                                onChange={(e) => handleChange(e)}
-                                
-                                />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                id="outlined-error"
-                                label="Email"
-                                name="company_email"
-                                fullWidth={true}
-                                onChange={(e) => handleChange(e)}
-                                
-                                />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                id="outlined-error"
-                                label="Phone"
-                                name="company_mobile"
-                                fullWidth={true}
-                                onChange={(e) => handleChange(e)}
-                                
-                                />
-                        </Grid>
                         
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                id="outlined-error"
-                                label="Address"
-                                name="company_address"
-                                fullWidth={true}
-                                onChange={(e) => handleChange(e)}
-                                
-                                />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <h3>Team Admin User</h3>
-
-                        </Grid>
-
-                        <Grid item xs={6}>
+                        
+                    <Grid item xs={6}>
                             <TextField
                                 required
                                 id="outlined-error"
@@ -130,12 +109,57 @@ function AddTeam() {
                         </Grid>
 
                         <Grid item xs={6}>
+                            <InputLabel id="demo-simple-select-helper-label">Hire Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                value={inputs.hire_for}
+                                label="Hire For"
+                                name="hire_for"
+                                fullWidth={true}
+                                onChange={(e) => handleChange(e)}
+                                >
+                                <MenuItem value="">
+                                    <em>Select</em>
+                                </MenuItem>
+                                <MenuItem value={'sale'}>Sale</MenuItem>
+                                <MenuItem value={'support'}>Support</MenuItem>
+                            </Select>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                required
+                                id="outlined-error"
+                                label="Phone"
+                                name="company_mobile"
+                                fullWidth={true}
+                                onChange={(e) => handleChange(e)}
+                                
+                                />
+                        </Grid>
+                        
+                        <Grid item xs={6}>
+                            <TextField
+                                required
+                                id="outlined-error"
+                                label="Address"
+                                name="company_address"
+                                fullWidth={true}
+                                onChange={(e) => handleChange(e)}
+                                
+                                />
+                        </Grid>
+
+
+
+                        <Grid item xs={6}>
                             <TextField
                                 required
                                 id="outlined-error"
                                 label="Password"
                                 name="password"
                                 fullWidth={true}
+                                type="password"
                                 onChange={(e) => handleChange(e)}
                                 
                                 />
@@ -143,11 +167,14 @@ function AddTeam() {
 
                         <Grid item xs={6}>
                             <TextField
+                                error= {errors.confirm_password?true:false}
                                 id="outlined-error"
                                 label="Confirm Password"
-                                name=""
+                                name="confirm_password"
+                                type="password"
                                 fullWidth={true}
                                 onChange={(e) => handleChange(e)}
+                                helperText={errors.confirm_password && errors.confirm_password}
                                 
                                 />
                         </Grid>
@@ -169,4 +196,4 @@ function AddTeam() {
     </MainBoard>      
   )
 }
-export default AddTeam
+export default AddIndividual

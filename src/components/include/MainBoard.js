@@ -123,6 +123,7 @@ export default function MainBoard(props) {
 
   const handleDrawerClose = () => {
     setOpen(false)
+
   }
 
   return (

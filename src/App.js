@@ -5,6 +5,8 @@ import ProtectedRoute from './protected.route'
 import './scss/style.scss'
 import './index.css'
 import Individuals from './screens/Individuals/Individuals'
+import AddIndividual from './screens/Individuals/AddIndividual'
+
 import Stores from './screens/Store/Stores'
 import AddStore from './screens/Store/AddStore'
 import Merchants from './screens/Merchants/Merchants'
@@ -60,6 +62,7 @@ class App extends Component {
               <Route path="500" name="Page 500" element={<Page500 />} />
               <Route path="/" name="Home" element={<ProtectedRoute />}>
                 <Route exact path="/dashboard" element={<DefaultLayout />} />
+              
                 <Route exact path="/users" element={<Users />} />
                 <Route exact path="/user/add" element={<AddUser />} />
                
@@ -67,7 +70,7 @@ class App extends Component {
                 <Route exact path="/team/add" element={<AddTeam />} />
                
                 <Route exact path="/individuals" element={<Individuals />} />
-                <Route exact path="/individual/add" element={<AddTeam />} />
+                <Route exact path="/individual/add" element={<AddIndividual />} />
 
 
                 <Route exact path="/stores" element={<Stores />} />
