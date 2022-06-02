@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/react-in-jsx-scope */
 import Header from './Header'
@@ -10,7 +11,6 @@ import MuiAppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -20,11 +20,13 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
 import { makeStyles } from '@material-ui/core'
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 //logo inport
 import logo from '../../assets/brand/a2z-logo.png'
+//icon imports
+import DashboardIcon from '@material-ui/icons/Dashboard'
+import NavList from './NavList'
 const drawerWidth = 240
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -78,35 +80,38 @@ const useStyles = makeStyles({
   },
 })
 
-
-const menulinks=[
-  {
-    icon: (<InboxIcon />),
-    link: "/user",
-    text: "User Management"
-  },
-  {
-    icon: (<InboxIcon />),
-    link: "/teams",
-    text: "Teams"
-  },
-  {
-    icon: (<InboxIcon />),
-    link: "/individual",
-    text: "Individual"
-  },
-  {
-    icon: (<InboxIcon />),
-    link: "/stores",
-    text: "Stores"
-  },
-  {
-    icon: (<InboxIcon />),
-    link: "/merchants",
-    text: "Merchants"
-  }
-
-]
+// const menulinks = [
+//   {
+//     icon: <DashboardIcon />,
+//     link: '/dashboard',
+//     text: 'Dashboard',
+//   },
+//   {
+//     icon: <InboxIcon />,
+//     link: '/user',
+//     text: 'User Management',
+//   },
+//   {
+//     icon: <InboxIcon />,
+//     link: '/teams',
+//     text: 'Teams',
+//   },
+//   {
+//     icon: <InboxIcon />,
+//     link: '/individual',
+//     text: 'Individual',
+//   },
+//   {
+//     icon: <InboxIcon />,
+//     link: '/stores',
+//     text: 'Stores',
+//   },
+//   {
+//     icon: <InboxIcon />,
+//     link: '/merchants',
+//     text: 'Merchants',
+//   },
+// ]
 export default function MainBoard(props) {
   const theme = useTheme()
   const classes = useStyles()
@@ -159,15 +164,11 @@ export default function MainBoard(props) {
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        
-        <List>
+
+        {/* <List>
           {menulinks.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <NavLink
-                exact
-                activeClassName="navbar__link--active"
-                className="navbar__link"
-                to={item.link}>
+              <NavLink exact activeClassName="navbar__link--active" className="navbar__link" to={item.link}>
                 <ListItemButton>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
@@ -175,7 +176,10 @@ export default function MainBoard(props) {
               </NavLink>
             </ListItem>
           ))}
-        </List>
+        </List> */}
+        <div className="sidebar-nav">
+          <NavList />
+        </div>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
