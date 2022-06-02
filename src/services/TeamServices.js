@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export const getTeams = async (userInfo,page=1,search_keyword="") => {
   console.log(search_keyword);
+
  
     let getpara=[]
     getpara[0]=page==1?'':"page="+page;
@@ -26,6 +27,12 @@ export const deleteTeam= async (userInfo, eid) => {
     },
   })
   return true
-  
-   
+}
+export const addTeam= async (userInfo, userdata) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/team/store',userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
 }

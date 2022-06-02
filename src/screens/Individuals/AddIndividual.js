@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getRoles } from "src/services/RolesServices";
-import { addTeam } from "src/services/TeamServices";
+import { addIndividual } from "src/services/IndividualService";
 import MainBoard from 'src/components/include/MainBoard'
 import { Container, Button, Icon, TextField, Paper, Typography,Grid } from "@material-ui/core";
 
@@ -25,7 +25,7 @@ function AddTeam() {
     const submitHandler = async (e) => {
         e.preventDefault();
         console.log(inputs)
-       await addTeam(userInfo,inputs);
+       await addIndividual(userInfo,inputs);
     }
 
     const getRolesData = async () => {

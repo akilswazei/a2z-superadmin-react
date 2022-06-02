@@ -23,6 +23,13 @@ export const deleteStore= async (userInfo, eid) => {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
   })
-  return true
-  
+  return true 
+}
+export const addStore= async (userInfo, userdata) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/store/store',userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
 }

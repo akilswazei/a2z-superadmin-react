@@ -9,7 +9,7 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles,Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { deleteIndividual, getIndividual } from 'src/services/IndividualService';
+import { deleteIndividual, getIndividuals } from 'src/services/IndividualService';
 
 const columns = [
   { field: 'eid', headerName: 'id' }
@@ -26,18 +26,18 @@ const Individual = () => {
   const [page, setPage] = useState(1);
 
   const getIndividualData = async () => {
-    setIndividual(await getIndividual(userInfo));
+    setIndividual(await getIndividuals(userInfo));
   }
 
   const searchIndividual =async (value) => {
     setSearch(value);
     setPage(1);
-    setIndividual(await getIndividual(userInfo,1,value));
+    setIndividual(await getIndividuals(userInfo,1,value));
   }
 
   const changePage =async (value) => {
     setPage(value);
-    setIndividual(await getIndividual(userInfo,value,search));
+    setIndividual(await getIndividuals(userInfo,value,search));
   }
 
   const handleDelete =async (eid,e) => {

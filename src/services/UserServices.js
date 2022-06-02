@@ -31,5 +31,5 @@ export const addUser= async (userInfo, userdata) => {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
   })
-  return true
+  return data
 }

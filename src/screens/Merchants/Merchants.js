@@ -23,7 +23,7 @@ const Merchant = () => {
       return (
         <button eid={cellValues.row.eid}
           onClick={(event) => {
-            handleClick(cellValues,event);
+            handleDelete(cellValues.row.eid,event);
           }}
         >
           Delete
