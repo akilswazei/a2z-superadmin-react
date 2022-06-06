@@ -173,3 +173,18 @@
     color: white;
 }
 
+.customTable{
+    border: none !important;
+}
+.pencil-icon{
+   
+    svg{
+        color: $theme-color-blue;
+
+    }
+}
+.delete-icon{
+    svg{
+        color:#E2626B !important;
+    }
+}

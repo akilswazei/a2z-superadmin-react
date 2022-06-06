@@ -66,12 +66,12 @@ function getItems() {
               },
               {
                 id: 3,
-                name: 'Individual',
-                link: '/individual',
+                name: 'Freelancer',
+                link: '/individuals',
               },
               {
                 id: 4,
-                name: 'Team',
+                name: 'Agency',
                 link: '/teams',
               },
               {

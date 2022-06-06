@@ -10,11 +10,13 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 const columns = [
-  { field: 'eid', headerName: 'id', width: 70 },
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'role', headerName: 'Role', width: 100 },
-  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'eid', headerName: 'ID', width: 100 },
+  { field: 'name', headerName: 'Name', width: 250 },
+  { field: 'role', headerName: 'Role', width: 200 },
+  { field: 'email', headerName: 'Email', width: 300 },
   {
     field: 'status',
     renderCell: (cellValues) => {
@@ -25,23 +27,53 @@ const columns = [
       )
     },
   },
-  { field: 'action', headerName: 'Action', width: 70 },
+  {
+    field: 'action',
+    renderCell: (cellValue) => {
+      return (
+        <div className="edit-delete-div">
+          <span className="pencil-icon">
+            <EditIcon />
+          </span>
+          <span className="delete-icon">
+            <DeleteIcon />
+          </span>
+        </div>
+      )
+    },
+  },
 ]
 
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+      '&:nth-of-type(2n)': {
+        backgroundColor: '#F9F9FC',
+        border: 'none',
+      },
     },
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    color: 'rgba(0,0,0)',
-    fontSize: '1.1em',
+    border: 'none',
+    color: 'rgba(180,182,193)',
+    fontSize: '1.2em',
+    fontWeight: '700',
+    textTransform: 'capitalize',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
     fontWeight: '600',
+    border: 'none',
+  },
+  '& .css-i4bv87-MuiSvgIcon-root': {
+    color: '#1976D2',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
+    border: '0px solid gray !important',
   },
 }
 export default function User() {
@@ -99,42 +131,45 @@ export default function User() {
   console.log(users?.data?.data)
   let sr_no = 0
   return (
-    <MainBoard>
-      <Container fluid>
-        <Container className="p-0 mt-4">
-          <h6 className="p-0">A2Z Users</h6>
-        </Container>
-        <Container className="background-white-theme">
-          <div className="justify-flex-end input-div">
-            <input
-              type="text"
-              placeholder="Search here"
-              onChange={(e) => {
-                searchUser(e.target.value)
-              }}
-            />
-            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
-              Add User<span>{<PersonAddAltIcon />}</span>
-            </button>
-          </div>
-          <hr></hr>
-          <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {users?.data?.data && (
-              <DataGrid
-                getRowId={(row) => Math.random() * 100}
-                rows={users.data.data}
-                columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
-                checkboxSelection
-                sx={datagridSx}
-              />
-            )}
-            {/* <Pagination count={11} defaultPage={6} /> */}
-          </div>
-        </Container>
+    // <MainBoard>
+    //   <Container fluid>
+    <>
+      <Container className="p-0 mt-4">
+        <h6 className="p-0">A2Z Users</h6>
       </Container>
-    </MainBoard>
+      <Container className="background-white-theme">
+        <div className="justify-flex-end input-div">
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={(e) => {
+              searchUser(e.target.value)
+            }}
+          />
+          <button className="custom-blue-btn m-2" onClick={navigateFunction}>
+            Add User<span>{<PersonAddAltIcon />}</span>
+          </button>
+        </div>
+        <hr></hr>
+        <div style={{ height: '75vh', width: '100%' }} className="py-2">
+          {users?.data?.data && (
+            <DataGrid
+              className="customTable"
+              getRowId={(row) => Math.random() * 100}
+              rows={users.data.data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[10]}
+              checkboxSelection
+              sx={datagridSx}
+            />
+          )}
+          {/* <Pagination count={11} defaultPage={6} /> */}
+        </div>
+      </Container>
+    </>
+    //   </Container>
+    // </MainBoard>
     // <div style={{ height: 400, width: '100%' }}>
     //   <DataGrid
     //     rows={rows}

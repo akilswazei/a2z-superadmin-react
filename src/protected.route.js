@@ -1,10 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'
+import { Container } from '@mui/material'
+import MainBoard from './components/include/MainBoard'
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ loggedIn }) => {
-  return !!loggedIn ? <Outlet /> : <Navigate to="/login" />
+  return !!loggedIn ? (
+    <MainBoard>
+      <Container fluid>
+        <Outlet />{' '}
+      </Container>
+    </MainBoard>
+  ) : (
+    <Navigate to="/login" />
+  )
 }
 
 // // eslint-disable-next-line react/prop-types

@@ -10,29 +10,73 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 const columns = [
-  { field: 'eid', headerName: 'id' },
-  { field: 'company_name', headerName: 'company_name', width: 150 },
+  { field: 'eid', headerName: 'ID' },
+  { field: 'company_name', headerName: 'company name', width: 200 },
   // { field: 'compnay_email', headerName: 'company_email', width: 180 },
-  { field: 'company_address', headerName: 'company_address', width: 200 },
-  { field: 'company_mobile', headerName: 'company_mobile', width: 150 },
-  { field: 'hire_for', headerName: 'hire_for', width: 100 },
+  { field: 'company_address', headerName: 'address', width: 300 },
+  { field: 'company_mobile', headerName: 'mobile', width: 250 },
+  { field: 'hire_for', headerName: 'for', width: 150 },
+  {
+    field: 'status',
+    renderCell: (cellValues) => {
+      return (
+        <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+          {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
+        </button>
+      )
+    },
+  },
+  {
+    field: 'action',
+    width: 250,
+    renderCell: (cellValue) => {
+      return (
+        <div className="edit-delete-div">
+          <span className="pencil-icon">
+            <EditIcon />
+          </span>
+          <span className="delete-icon">
+            <DeleteIcon />
+          </span>
+        </div>
+      )
+    },
+  },
 ]
 
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+      '&:nth-of-type(2n)': {
+        backgroundColor: '#F9F9FC',
+        border: 'none',
+      },
     },
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    color: 'rgba(0,0,0)',
-    fontSize: '1.1em',
+    border: 'none',
+    color: 'rgba(180,182,193)',
+    fontSize: '1.2em',
+    fontWeight: '700',
+    textTransform: 'capitalize',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
     fontWeight: '600',
+    border: 'none',
+  },
+  '& .css-i4bv87-MuiSvgIcon-root': {
+    color: '#1976D2',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
+    border: '0px solid gray !important',
   },
 }
 
@@ -79,41 +123,39 @@ const Teams = () => {
     navigate('/team/add')
   }
   return (
-    <MainBoard>
-      <Container fluid>
-        <Container className="p-0 mt-4">
-          <h6>Teams</h6>
-        </Container>
-        <Container className="background-white-theme">
-          <div className="justify-flex-end input-div">
-            <input
-              type="text"
-              placeholder="Search here"
-              onChange={(e) => {
-                searchTeam(e.target.value)
-              }}
-            />
-            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
-              Add Teams<span>{<PersonAddAltIcon />}</span>
-            </button>
-          </div>
-          <div style={{ height: '75vh', width: '100%' }}>
-            {teams?.data?.data && (
-              <DataGrid
-                getRowId={(row) => Math.random()}
-                rows={teams.data.data}
-                columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
-                checkboxSelection
-                sx={datagridSx}
-              />
-            )}
-            {/* <Pagination count={11} defaultPage={6}  /> */}
-          </div>
-        </Container>
+    <>
+      <Container className="p-0 mt-4">
+        <h6>Agency</h6>
       </Container>
-    </MainBoard>
+      <Container className="background-white-theme">
+        <div className="justify-flex-end input-div">
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={(e) => {
+              searchTeam(e.target.value)
+            }}
+          />
+          <button className="custom-blue-btn m-2" onClick={navigateFunction}>
+            Add Teams<span>{<PersonAddAltIcon />}</span>
+          </button>
+        </div>
+        <div style={{ height: '75vh', width: '100%' }}>
+          {teams?.data?.data && (
+            <DataGrid
+              getRowId={(row) => Math.random()}
+              rows={teams.data.data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[10]}
+              checkboxSelection
+              sx={datagridSx}
+            />
+          )}
+          {/* <Pagination count={11} defaultPage={6}  /> */}
+        </div>
+      </Container>
+    </>
   )
 }
 export default Teams

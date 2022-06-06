@@ -3,64 +3,128 @@ import * as React from 'react'
 
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+
 import MainBoard from 'src/components/include/MainBoard'
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles,Pagination } from '@mui/material'
+import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { deleteIndividual, getIndividuals } from 'src/services/IndividualService';
-
+import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+const datagridSx = {
+  '& .MuiDataGrid-virtualScrollerRenderZone': {
+    '& .MuiDataGrid-row': {
+      '&:nth-of-type(2n)': {
+        backgroundColor: '#F9F9FC',
+        border: 'none',
+      },
+    },
+  },
+  '& .MuiDataGrid-columnHeaders': {
+    backgroundColor: 'rgba(255,255,255)',
+    border: 'none',
+    color: 'rgba(180,182,193)',
+    fontSize: '1.2em',
+    fontWeight: '700',
+    textTransform: 'capitalize',
+  },
+  '& .MuiDataGrid-row': {
+    fontSize: '0.9em',
+    fontWeight: '600',
+    border: 'none',
+  },
+  '& .css-i4bv87-MuiSvgIcon-root': {
+    color: '#1976D2',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
+    border: '0px solid gray !important',
+  },
+}
 const columns = [
-  { field: 'eid', headerName: 'id' }
+  { field: 'username', headerName: 'username', width: 150 },
+  { field: 'company_name', headerName: 'Name', width: 200 },
+  { field: 'company_email', headerName: 'Email', width: 300 },
+  { field: 'service_type', headerName: 'service type', width: 150 },
+  {
+    field: 'status',
+    width: 150,
+    renderCell: (cellValues) => {
+      return (
+        <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+          {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
+        </button>
+      )
+    },
+  },
+  {
+    field: 'actions',
+    width: 100,
+    renderCell: (cellValue) => {
+      return (
+        <div className="edit-delete-div">
+          <span className="pencil-icon">
+            <EditIcon />
+          </span>
+          <span className="delete-icon">
+            <DeleteIcon />
+          </span>
+        </div>
+      )
+    },
+  },
 ]
 
-
 const Individual = () => {
- 
-  const getState = useSelector(state => state);
-  const {userSignin: { userInfo }} = getState
+  const getState = useSelector((state) => state)
+  const {
+    userSignin: { userInfo },
+  } = getState
 
-  const [individual, setIndividual] = useState({});
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
+  const [individual, setIndividual] = useState({})
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
 
   const getIndividualData = async () => {
-    setIndividual(await getIndividuals(userInfo));
+    setIndividual(await getIndividuals(userInfo))
   }
 
-  const searchIndividual =async (value) => {
-    setSearch(value);
-    setPage(1);
-    setIndividual(await getIndividuals(userInfo,1,value));
+  const searchIndividual = async (value) => {
+    setSearch(value)
+    setPage(1)
+    setIndividual(await getIndividuals(userInfo, 1, value))
   }
 
-  const changePage =async (value) => {
-    setPage(value);
-    setIndividual(await getIndividuals(userInfo,value,search));
+  const changePage = async (value) => {
+    setPage(value)
+    setIndividual(await getIndividuals(userInfo, value, search))
   }
 
-  const handleDelete =async (eid,e) => {
-    deleteIndividual(userInfo,eid)
-    setIndividual({...individual, data: {...individual.data,data:[...individual.data.data.filter((v,i) => v.eid!=eid)]}});
+  const handleDelete = async (eid, e) => {
+    deleteIndividual(userInfo, eid)
+    setIndividual({
+      ...individual,
+      data: { ...individual.data, data: [...individual.data.data.filter((v, i) => v.eid != eid)] },
+    })
   }
 
   useEffect(() => {
-    getIndividualData();
-  }, []);
-  
-  
-console.log(individual);
-  let sr_no = 0;
-  
+    getIndividualData()
+  }, [])
+
+  console.log(individual)
+  let sr_no = 0
+
   return (
-    <MainBoard>
-    <Container fluid className="background-theme-purple">
-      <Container className="pt-3">
+    <>
+      <Container className="p-0 mt-4">
         <h6>Individuals</h6>
       </Container>
       <Container className="background-white-theme">
-        <div className="justify-flex-end">
+        <div className="justify-flex-end input-div">
           <input
             type="text"
             placeholder="Search here"
@@ -72,7 +136,7 @@ console.log(individual);
             Add Individual<span>{<PersonAddAltIcon />}</span>
           </button>
         </div>
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: '75vh', width: '100%' }} className="py-2">
           {individual?.data?.data && (
             <DataGrid
               getRowId={(row) => Math.random()}
@@ -81,16 +145,13 @@ console.log(individual);
               pageSize={10}
               rowsPerPageOptions={[10]}
               checkboxSelection
+              sx={datagridSx}
             />
           )}
-          <Pagination count={11} defaultPage={6}  />
+          {/* <Pagination count={11} defaultPage={6} /> */}
         </div>
-        
       </Container>
-    </Container>
-  </MainBoard>
-
-
-    )
+    </>
+  )
 }
-export default Individual;
+export default Individual

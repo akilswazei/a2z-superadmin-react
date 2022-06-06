@@ -11,26 +11,62 @@ import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { deleteStore, getStores } from 'src/services/StoreService'
 import { useNavigate } from 'react-router-dom'
-
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+      '&:nth-of-type(2n)': {
+        backgroundColor: '#F9F9FC',
+        border: 'none',
+      },
     },
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    color: 'rgba(0,0,0)',
-    fontSize: '1.1em',
+    border: 'none',
+    color: 'rgba(180,182,193)',
+    fontSize: '1.2em',
+    fontWeight: '700',
+    textTransform: 'capitalize',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
     fontWeight: '600',
+    border: 'none',
+  },
+  '& .css-i4bv87-MuiSvgIcon-root': {
+    color: '#1976D2',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
+    border: '0px solid gray !important',
   },
 }
 const columns = [
-  { field: 'eid', headerName: 'id' },
-  { field: 'store_name', headerName: 'Name' },
+  { field: 'eid', headerName: 'Store ID', width: 150 },
+  { field: 'store_name', headerName: 'Name', width: 300 },
+  { field: 'store_address_1', headerName: 'Address', width: 300 },
+  { field: 'store_email', headerName: 'E-mail', width: 200 },
+  { field: 'store_contact', headerName: 'Phone', width: 200 },
+  {
+    field: 'action',
+    width: 100,
+    renderCell: (cellValue) => {
+      return (
+        <div className="edit-delete-div">
+          <span className="pencil-icon">
+            <EditIcon />
+          </span>
+          <span className="delete-icon">
+            <DeleteIcon />
+          </span>
+        </div>
+      )
+    },
+  },
 ]
 
 const Store = () => {
@@ -73,43 +109,41 @@ const Store = () => {
     e.preventDefault()
     navigate('/store/add')
   }
-  console.log(Store)
+  console.log(stores)
   return (
-    <MainBoard>
-      <Container fluid>
-        <Container className="p-0 mt-4">
-          <h6>Stores</h6>
-        </Container>
-        <Container className="background-white-theme">
-          <div className="justify-flex-end input-div">
-            <input
-              type="text"
-              placeholder="Search here"
-              onChange={(e) => {
-                searchStore(e.target.value)
-              }}
-            />
-            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
-              Add Store<span>{<PersonAddAltIcon />}</span>
-            </button>
-          </div>
-          <div style={{ height: 400, width: '100%' }}>
-            {stores?.data?.data && (
-              <DataGrid
-                getRowId={(row) => Math.random()}
-                rows={stores.data.data}
-                columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
-                checkboxSelection
-                sx={datagridSx}
-              />
-            )}
-            {/* <Pagination count={11} defaultPage={6}  /> */}
-          </div>
-        </Container>
+    <>
+      <Container className="p-0 mt-4">
+        <h6>Stores</h6>
       </Container>
-    </MainBoard>
+      <Container className="background-white-theme">
+        <div className="justify-flex-end input-div">
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={(e) => {
+              searchStore(e.target.value)
+            }}
+          />
+          <button className="custom-blue-btn m-2" onClick={navigateFunction}>
+            Add Store<span>{<PersonAddAltIcon />}</span>
+          </button>
+        </div>
+        <div style={{ height: '75vh', width: '100%' }}>
+          {stores?.data?.data && (
+            <DataGrid
+              getRowId={(row) => Math.random()}
+              rows={stores.data.data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[10]}
+              checkboxSelection
+              sx={datagridSx}
+            />
+          )}
+          {/* <Pagination count={11} defaultPage={6}  /> */}
+        </div>
+      </Container>
+    </>
   )
 }
 export default Store
