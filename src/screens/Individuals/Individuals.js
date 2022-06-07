@@ -11,6 +11,7 @@ import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
 import EditIcon from '@mui/icons-material/Edit'
+import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
@@ -117,41 +118,47 @@ const Individual = () => {
 
   console.log(individual)
   let sr_no = 0
-
+  const navigate = useNavigate()
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/individual/add')
+  }
   return (
-    <>
-      <Container className="p-0 mt-4">
-        <h6>Individuals</h6>
-      </Container>
-      <Container className="background-white-theme">
-        <div className="justify-flex-end input-div">
-          <input
-            type="text"
-            placeholder="Search here"
-            onChange={(e) => {
-              searchIndividual(e.target.value)
-            }}
-          />
-          <button className="custom-blue-btn m-2">
-            Add Individual<span>{<PersonAddAltIcon />}</span>
-          </button>
-        </div>
-        <div style={{ height: '75vh', width: '100%' }} className="py-2">
-          {individual?.data?.data && (
-            <DataGrid
-              getRowId={(row) => Math.random()}
-              rows={individual.data.data}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10]}
-              checkboxSelection
-              sx={datagridSx}
+    <MainBoard>
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6>Individuals</h6>
+        </Container>
+        <Container className="background-white-theme">
+          <div className="justify-flex-end input-div">
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => {
+                searchIndividual(e.target.value)
+              }}
             />
-          )}
-          {/* <Pagination count={11} defaultPage={6} /> */}
-        </div>
+            <button onClick={navigateFunction} className="custom-blue-btn m-2">
+              Add Individual<span>{<PersonAddAltIcon />}</span>
+            </button>
+          </div>
+          <div style={{ height: '75vh', width: '100%' }} className="py-2">
+            {individual?.data?.data && (
+              <DataGrid
+                getRowId={(row) => Math.random()}
+                rows={individual.data.data}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+                sx={datagridSx}
+              />
+            )}
+            {/* <Pagination count={11} defaultPage={6} /> */}
+          </div>
+        </Container>
       </Container>
-    </>
+    </MainBoard>
   )
 }
 export default Individual

@@ -123,39 +123,41 @@ const Teams = () => {
     navigate('/team/add')
   }
   return (
-    <>
-      <Container className="p-0 mt-4">
-        <h6>Agency</h6>
-      </Container>
-      <Container className="background-white-theme">
-        <div className="justify-flex-end input-div">
-          <input
-            type="text"
-            placeholder="Search here"
-            onChange={(e) => {
-              searchTeam(e.target.value)
-            }}
-          />
-          <button className="custom-blue-btn m-2" onClick={navigateFunction}>
-            Add Teams<span>{<PersonAddAltIcon />}</span>
-          </button>
-        </div>
-        <div style={{ height: '75vh', width: '100%' }}>
-          {teams?.data?.data && (
-            <DataGrid
-              getRowId={(row) => Math.random()}
-              rows={teams.data.data}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10]}
-              checkboxSelection
-              sx={datagridSx}
+    <MainBoard>
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6>Agency</h6>
+        </Container>
+        <Container className="background-white-theme">
+          <div className="justify-flex-end input-div">
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => {
+                searchTeam(e.target.value)
+              }}
             />
-          )}
-          {/* <Pagination count={11} defaultPage={6}  /> */}
-        </div>
+            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
+              Add Teams<span>{<PersonAddAltIcon />}</span>
+            </button>
+          </div>
+          <div style={{ height: '75vh', width: '100%' }}>
+            {teams?.data?.data && (
+              <DataGrid
+                getRowId={(row) => Math.random()}
+                rows={teams.data.data}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+                sx={datagridSx}
+              />
+            )}
+            {/* <Pagination count={11} defaultPage={6}  /> */}
+          </div>
+        </Container>
       </Container>
-    </>
+    </MainBoard>
   )
 }
 export default Teams

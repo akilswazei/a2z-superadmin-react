@@ -133,41 +133,44 @@ export default function User() {
   return (
     // <MainBoard>
     //   <Container fluid>
-    <>
-      <Container className="p-0 mt-4">
-        <h6 className="p-0">A2Z Users</h6>
-      </Container>
-      <Container className="background-white-theme">
-        <div className="justify-flex-end input-div">
-          <input
-            type="text"
-            placeholder="Search here"
-            onChange={(e) => {
-              searchUser(e.target.value)
-            }}
-          />
-          <button className="custom-blue-btn m-2" onClick={navigateFunction}>
-            Add User<span>{<PersonAddAltIcon />}</span>
-          </button>
-        </div>
-        <hr></hr>
-        <div style={{ height: '75vh', width: '100%' }} className="py-2">
-          {users?.data?.data && (
-            <DataGrid
-              className="customTable"
-              getRowId={(row) => Math.random() * 100}
-              rows={users.data.data}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10]}
-              checkboxSelection
-              sx={datagridSx}
+    <MainBoard>
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6 className="p-0">A2Z Users</h6>
+        </Container>
+        <Container className="background-white-theme">
+          <div className="justify-flex-end input-div">
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => {
+                searchUser(e.target.value)
+              }}
             />
-          )}
-          {/* <Pagination count={11} defaultPage={6} /> */}
-        </div>
+            <button className="custom-blue-btn m-2" onClick={navigateFunction}>
+              Add User<span>{<PersonAddAltIcon />}</span>
+            </button>
+          </div>
+          <hr></hr>
+          <div style={{ height: '75vh', width: '100%' }} className="py-2">
+            {users?.data?.data && (
+              <DataGrid
+                className="customTable"
+                getRowId={(row) => Math.random() * 100}
+                rows={users.data.data}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+                sx={datagridSx}
+              />
+            )}
+            {/* <Pagination count={11} defaultPage={6} /> */}
+          </div>
+        </Container>
       </Container>
-    </>
+    </MainBoard>
+
     //   </Container>
     // </MainBoard>
     // <div style={{ height: 400, width: '100%' }}>
