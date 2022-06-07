@@ -71,6 +71,8 @@ class App extends Component {
                
                 <Route exact path="/individuals" element={<Individuals />} />
                 <Route exact path="/individual/add" element={<AddIndividual />} />
+                <Route exact path="/individual/edit/:eid" element={<AddIndividual />} />
+                
 
 
                 <Route exact path="/stores" element={<Stores />} />

@@ -13,6 +13,9 @@ import { deleteIndividual, getIndividuals } from 'src/services/IndividualService
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
+
+
+
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     '& .MuiDataGrid-row': {

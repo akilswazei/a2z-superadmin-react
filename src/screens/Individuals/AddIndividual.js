@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
 import { addIndividual } from 'src/services/IndividualService'
 import MainBoard from 'src/components/include/MainBoard'
+import { useParams } from "react-router-dom";
 import {
   Container,
   Button,
@@ -25,17 +26,25 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
 function AddIndividual() {
+  
   const getState = useSelector((state) => state)
   let navigate = useNavigate()
-  const {
-    userSignin: { userInfo },
-  } = getState
+  const { userSignin: { userInfo }} = getState
+  const { eid } = useParams();
+  let initialInputState={ status: 1 }
+  if(eid){
+    // get live data via api
+    initialInputState={name: "jone",status: 1, eid: eid}
+  }
 
-  const [inputs, setInputs] = useState({ status: 1 })
+  
+  const [inputs, setInputs] = useState(initialInputState)
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState({})
 
+    console.log(inputs.name)
+  
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -48,8 +57,11 @@ function AddIndividual() {
     console.log(inputs)
     if (inputs.password == inputs.confirm_password) {
       setErros({ ...errors, confirm_password: '' })
-      await addIndividual(userInfo, inputs)
-
+      if(eid){
+         console.log("update request"); 
+      } else{
+        await addIndividual(userInfo, inputs)
+      }
       setOpen(true)
     } else {
       setErros({ ...errors, confirm_password: 'password not matched' })
@@ -121,11 +133,12 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Name*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   required
                   id="outlined-error"
                   label="Name"
                   name="name"
+                  value={inputs.name?inputs.name:""}
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
                   placeholder="Please enter name"
@@ -136,7 +149,7 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Email*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   required
                   id="outlined-error"
                   label="Email"
@@ -159,7 +172,7 @@ function AddIndividual() {
                 <InputLabel id="demo-simple-select-helper-label">Hire Type</InputLabel>
                 <Select
                   labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
+                  id="demo-simple-select-helper-2"
                   value={inputs.hire_for}
                   label="Hire For"
                   name="hire_for"
@@ -177,7 +190,7 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Phone*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   required
                   id="outlined-error"
                   label="Phone"
@@ -200,14 +213,17 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Address*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   required
-                  id="outlined-error"
+                  id="outlined-error" //dynamic id
                   label="Address"
                   name="company_address"
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
                   placeholder="Please enter address"
+                  // set default value
+                  // set error
+
                 />
                 {/* <TextField
                   required
@@ -223,7 +239,7 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Password*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   required
                   id="outlined-error"
                   label="Password"
@@ -248,7 +264,7 @@ function AddIndividual() {
                 <InputLabel shrink htmlFor="bootstrap-input">
                   Password*
                 </InputLabel>
-                <BootstrapInput
+                <TextField
                   error={errors.confirm_password ? true : false}
                   id="outlined-error"
                   label="Confirm Password"
