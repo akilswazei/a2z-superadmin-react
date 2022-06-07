@@ -130,9 +130,38 @@
     color: white;
     text-decoration: none;
     white-space: nowrap;
+    min-width: 220px;
+    font-size: 0.9em;
     div svg{
         color: white;
         
+    }
+    &:active{
+        border: 1px solid white;
+        background-color: white;
+        border-radius: 3px;
+        color: black;
+        div{
+            background-color: white;
+            
+        }
+        div svg{
+            color: black;
+            
+        }
+    }
+    &:focus{
+        border: 1px solid white;
+        background-color: white;
+        border-radius: 3px;
+        color: black;
+        div{
+            background-color: white;
+        }
+        div svg{
+            color: black;
+            
+        }
     }
     
 }
@@ -173,6 +202,28 @@
     border-radius: 3px;
     color: white;
 }
+
+.customTable{
+    border: none !important;
+}
+.pencil-icon{
+   
+    svg{
+        color: $theme-color-blue;
+
+    }
+}
+.delete-icon{
+    svg{
+        color:#E2626B !important;
+    }
+}
+
 .custom-container-white{
-    border-radius: 0.3em;
+    background-color: white;
+     border-radius: 0.3em;
+}
+
+.subheading-form-grid{
+    margin: 1em 0 0.5em 0;
 }

@@ -63,15 +63,32 @@ function getItems() {
                 id: 2,
                 name: 'Outsource',
                 link: '/dashboard',
+                subitems2: [
+                  {
+                    id: 1,
+                    name: 'Freelancer',
+                    link: '/individuals',
+                  },
+                  {
+                    id: 2,
+                    name: 'Agency',
+                    link: '/teams',
+                  },
+                  {
+                    id: 3,
+                    name: 'Role',
+                    link: '/roles',
+                  },
+                ],
               },
               {
                 id: 3,
-                name: 'Individual',
+                name: 'Freelancer',
                 link: '/individuals',
               },
               {
                 id: 4,
-                name: 'Team',
+                name: 'Agency',
                 link: '/teams',
               },
               {

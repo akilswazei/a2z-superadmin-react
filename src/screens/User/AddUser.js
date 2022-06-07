@@ -22,6 +22,8 @@ import {
   Typography,
   Grid,
 } from '@material-ui/core'
+import { styled } from '@material-ui/styles'
+import { InputBase } from '@mui/material'
 
 function AddTeam() {
   const getState = useSelector((state) => state)
@@ -65,7 +67,20 @@ function AddTeam() {
   useEffect(() => {
     getRolesData()
   }, [])
-
+  const BootstrapInput = styled(InputBase)(({ theme }) => ({
+    'label + &': {
+      marginTop: theme.spacing(1),
+    },
+    '& .MuiInputBase-input': {
+      borderRadius: 4,
+      position: 'relative',
+      backgroundColor: (theme.palette.mode = 'light'),
+      border: '1px solid #ced4da',
+      fontSize: 16,
+      Width: 'auto',
+      padding: '10px 12px',
+    },
+  }))
   return (
     <MainBoard>
       <Dialog
@@ -85,24 +100,53 @@ function AddTeam() {
 
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6 className="p-0 ">Add User</h6>
+          <h6>Add Users</h6>
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
           <form onSubmit={submitHandler}>
             <Grid container spacing={2}>
+              <Grid item xs={12} className="my-3 p-0">
+                <h6 className="m-0 p-0">Basic Infomation</h6>
+              </Grid>
               <Grid item xs={6}>
-                <TextField
+                {/* <TextField
                   required
                   id="outlined-error"
                   label="Name"
                   name="name"
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
+                /> */}
+
+                <InputLabel shrink htmlFor="bootstrap-input">
+                  Name*
+                </InputLabel>
+                <BootstrapInput
+                  required
+                  id="outlined-error"
+                  label="Name"
+                  name="name"
+                  fullWidth={true}
+                  placeholder="Please enter your name"
+                  onChange={(e) => handleChange(e)}
                 />
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
+                <InputLabel shrink htmlFor="bootstrap-input">
+                  Email*
+                </InputLabel>
+                <BootstrapInput
+                  required
+                  id="outlined-error"
+                  label="Email"
+                  name="email"
+                  type="email"
+                  fullWidth={true}
+                  placeholder="Please enter your email"
+                  onChange={(e) => handleChange(e)}
+                />
+                {/* <TextField
                   required
                   id="outlined-error"
                   label="Email"
@@ -110,11 +154,24 @@ function AddTeam() {
                   type="email"
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
-                />
+                /> */}
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
+                <InputLabel shrink htmlFor="bootstrap-input">
+                  Password*
+                </InputLabel>
+                <BootstrapInput
+                  required
+                  id="outlined-error"
+                  label="Password"
+                  name="password"
+                  type="password"
+                  fullWidth={true}
+                  placeholder="Please enter your password"
+                  onChange={(e) => handleChange(e)}
+                />
+                {/* <TextField
                   required
                   id="outlined-error"
                   label="Password"
@@ -122,11 +179,14 @@ function AddTeam() {
                   type="password"
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
-                />
+                /> */}
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
+                <InputLabel shrink htmlFor="bootstrap-input">
+                  Confirm Password*
+                </InputLabel>
+                <BootstrapInput
                   error={errors.confirm_password ? true : false}
                   required
                   id="outlined-error"
@@ -135,7 +195,18 @@ function AddTeam() {
                   type="password"
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
+                  placeholder="Please re-enter your password"
                 />
+                {/* <TextField
+                  error={errors.confirm_password ? true : false}
+                  required
+                  id="outlined-error"
+                  label="Confirm password"
+                  name="confirm_password"
+                  type="password"
+                  fullWidth={true}
+                  onChange={(e) => handleChange(e)}
+                /> */}
               </Grid>
               <Grid item xs={6}>
                 <InputLabel id="demo-simple-select-helper-label">Role</InputLabel>

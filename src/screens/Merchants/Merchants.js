@@ -15,24 +15,42 @@ import { useNavigate } from 'react-router-dom'
 const datagridSx = {
   '& .MuiDataGrid-virtualScrollerRenderZone': {
     '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': { backgroundColor: 'rgba(235, 235, 235, .7)' },
+      '&:nth-of-type(2n)': {
+        backgroundColor: '#F9F9FC',
+        border: 'none',
+      },
     },
   },
   '& .MuiDataGrid-columnHeaders': {
     backgroundColor: 'rgba(255,255,255)',
-    fontSize: '1.1em',
+    border: 'none',
+    color: 'rgba(180,182,193)',
+    fontSize: '1.2em',
+    fontWeight: '700',
     textTransform: 'capitalize',
-    color: 'gray',
   },
   '& .MuiDataGrid-row': {
     fontSize: '0.9em',
     fontWeight: '600',
+    border: 'none',
+  },
+  '& .css-i4bv87-MuiSvgIcon-root': {
+    color: '#1976D2',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
+    border: '0px solid gray !important',
   },
 }
 const Merchant = () => {
   const columns = [
-    { field: 'eid', headerName: 'Id' },
-    { field: 'business_contact_name', headerName: 'name', width: 130 },
+    { field: 'business_contact_name', headerName: 'Business Name', width: 150 },
+    { field: 'business_contact_email', headerName: 'email', width: 200 },
+    { field: 'merchant_id', headerName: 'merchant ID', width: 200 },
+    { field: 'eid', headerName: 'ID' },
+    { field: 'onbording_date', headerName: 'Onboarding Date', width: 200 },
     {
       field: 'Delete',
       headerName: 'Action',
@@ -47,6 +65,16 @@ const Merchant = () => {
             }}
           >
             Delete
+          </button>
+        )
+      },
+    },
+    {
+      field: 'status',
+      renderCell: (cellValues) => {
+        return (
+          <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+            {cellValues?.row?.status == 1 ? 'Declined' : 'Approved'}
           </button>
         )
       },
@@ -105,13 +133,13 @@ const Merchant = () => {
     e.preventDefault()
     navigate('/merchant/add')
   }
-  console.log(Merchant)
+  console.log(merchants)
   let sr_no = 0
 
   return (
     <MainBoard>
-      <Container fluid className="background-theme-purple">
-        <Container className="pt-3">
+      <Container>
+        <Container className="p-0 mt-4">
           <h6>Merchants</h6>
         </Container>
         <Container className="background-white-theme custom-container-white">
