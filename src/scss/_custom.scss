@@ -227,3 +227,30 @@
 .subheading-form-grid{
     margin: 1em 0 0.5em 0;
 }
+// .MuiFormControl-root {
+   
+
+//     &.custom-form-field{
+//         border: 1px solid black;
+//         label{
+//             top:2;
+//         }
+//         div{
+//             input{
+//                 border: 1px solid lightgray;
+//             }
+//         }
+//     }
+// }
+
+.custom-form-field{
+    input{
+    max-height: 1em;
+    width: 100%;
+    padding: 10px 12px;
+    margin:0.3em;
+    }
+}
+.color-gray{
+    color:#b2b1b1;
+}

@@ -13,6 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { Container, Button, Icon, TextField, Paper, Typography, Grid, InputLabel } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/Helper'
 function AddStore() {
   const getState = useSelector((state) => state)
   const navigate = useNavigate()
@@ -64,6 +65,13 @@ function AddStore() {
       padding: '10px 12px',
     },
   }))
+  const namePlaceholder = 'Please enter your name'
+  const emailPlaceholder = 'Please enter your e-mail'
+  const locationPlaceholder = 'Please enter location'
+
+  const phonePlaceholder = 'Please enter phone number'
+  const categoryPlaceholder = 'Please enter store category'
+  const devicePlacerholder = 'Please enter no. of devices'
   return (
     <MainBoard>
       <Dialog
@@ -92,83 +100,47 @@ function AddStore() {
                 <h6 className="m-0 p-0">Store Detail</h6>
               </Grid>
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Store Name*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
+                <CustomText
+                  handleChange={(e) => handleChange(e)}
+                  name="name"
+                  placeholder={namePlaceholder}
+                  value=""
                   label="Store Name"
-                  name="store_name"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store name"
+                  error={false}
+                  required={true}
                 />
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="Store Name"
-                  name="store_name"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Store location*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
-                  label="Location"
-                  name="store_address_1"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store location"
+                <CustomText
+                  handleChange={(e) => handleChange(e)}
+                  name="location"
+                  placeholder={locationPlaceholder}
+                  value=""
+                  label="Store Location"
+                  error={false}
+                  required={true}
                 />
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="Location"
-                  name="store_address_1"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  No. of device*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
-                  label="No. of Device"
-                  name="no_of_device"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store devices"
+                <CustomPhone
+                  label="No. of devices"
+                  name="device number"
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={devicePlacerholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="No. of Device"
-                  name="no_of_device"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Store Category*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
+                <CustomText
+                  handleChange={(e) => handleChange(e)}
+                  name="storeCategory"
+                  placeholder={categoryPlaceholder}
+                  value=""
                   label="Store Category"
-                  name="store_category"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store category"
+                  error={false}
+                  required={true}
                 />
                 {/* <TextField
                   required
@@ -181,49 +153,27 @@ function AddStore() {
               </Grid>
 
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Store Contact*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
-                  label="Phone"
-                  name="store_contact"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store contact"
+                <CustomPhone
+                  label="Store Contact"
+                  name="phone"
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={phonePlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="Phone"
-                  name="store_contact"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={4}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Store email*
-                </InputLabel>
-                <BootstrapInput
-                  required
-                  id="outlined-error"
+                <CustomEmail
                   label="Email"
-                  name="store_email"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter store email"
+                  name="email"
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={emailPlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="Email"
-                  name="store_email"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>

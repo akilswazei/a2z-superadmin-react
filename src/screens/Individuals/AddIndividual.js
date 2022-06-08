@@ -26,7 +26,8 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import Individual from './Individuals'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/Helper'
+
 function AddIndividual() {
   
   const getState = useSelector((state) => state)
@@ -93,20 +94,12 @@ function AddIndividual() {
     }
     getRolesData()
   }, [])
-  const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-      marginTop: theme.spacing(1),
-    },
-    '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: (theme.palette.mode = 'light'),
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      Width: 'auto',
-      padding: '10px 12px',
-    },
-  }))
+  const namePlaceholder = 'Please enter your name'
+  const emailPlaceholder = 'Please enter your e-mail'
+  const passwordPlaceholder = 'Please enter password'
+  const confirmPasswordPlaceholder = 'Please re-enter password'
+  const phonePlaceholder = 'Please enter phone number'
+  const addressPlaceholder = 'Please enter address'
   return (
     <MainBoard>
       <Dialog
@@ -136,53 +129,27 @@ function AddIndividual() {
               </Grid>
 
               <Grid item xs={6}>
-                {/* <TextField
-                  
-                  id="outlined-error"
-                  label="Name"
+                <CustomText
+                  handleChange={(e) => handleChange(e)}
                   name="name"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Name*
-                </InputLabel>
-                <TextField
-                  
-                  id="outlined-error"
+                  placeholder={namePlaceholder}
+                  value=""
                   label="Name"
-                  name="name"
-                  value={inputs.name?inputs.name:""}
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter name"
+                  error={false}
+                  required={true}
                 />
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Email*
-                </InputLabel>
-                <TextField
-                  
-                  id="outlined-error"
+                <CustomEmail
                   label="Email"
                   name="email"
-                  value={inputs.email?inputs.email:""}
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter e-mail"
-                  
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={emailPlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {errors.email?errors.email:""}
-                {/* <TextField
-                  
-                  id="outlined-error"
-                  label="Email"
-                  name="email"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={6}>
@@ -204,104 +171,51 @@ function AddIndividual() {
                 </Select>
               </Grid>
               <Grid item xs={6}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Phone*
-                </InputLabel>
-                <TextField
-                  
-                  id="outlined-error"
+                <CustomPhone
                   label="Phone"
-                  name="company_mobile"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter phone"
+                  name="phone"
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={phonePlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  
-                  id="outlined-error"
-                  label="Phone"
-                  name="company_mobile"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Address*
-                </InputLabel>
-                <TextField
-                  
-                  id="outlined-error" //dynamic id
+                <CustomText
+                  handleChange={(e) => handleChange(e)}
+                  name="Address"
+                  placeholder={addressPlaceholder}
+                  value=""
                   label="Address"
-                  name="company_address"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter address"
-                  // set default value
-                  // set error
-
+                  error={false}
+                  required={true}
                 />
-                {/* <TextField
-                  
-                  id="outlined-error"
-                  label="Address"
-                  name="company_address"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Password*
-                </InputLabel>
-                <TextField
-                  
-                  id="outlined-error"
+                <CustomPasssword
                   label="Password"
                   name="password"
-                  fullWidth={true}
-                  type="password"
-                  onChange={(e) => handleChange(e)}
-                  placeholder="Please enter password"
+                  required={true}
+                  value=""
+                  error={false}
+                  placeholder={passwordPlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  
-                  id="outlined-error"
-                  label="Password"
-                  name="password"
-                  fullWidth={true}
-                  type="password"
-                  onChange={(e) => handleChange(e)}
-                /> */}
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Password*
-                </InputLabel>
-                <TextField
-                  error={errors.confirm_password ? true : false}
-                  id="outlined-error"
-                  label="Confirm Password"
-                  name="confirm_password"
-                  type="password"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  helperText={errors.confirm_password && errors.confirm_password}
-                  placeholder="Please re-enter password"
+                <CustomPasssword
+                  label="Confirm password"
+                  name="email"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder={confirmPasswordPlaceholder}
+                  handleChange={(e) => handleChange(e)}
                 />
-                {/* <TextField
-                  error={errors.confirm_password ? true : false}
-                  id="outlined-error"
-                  label="Confirm Password"
-                  name="confirm_password"
-                  type="password"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  helperText={errors.confirm_password && errors.confirm_password}
-                /> */}
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
