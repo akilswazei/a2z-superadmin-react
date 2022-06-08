@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
-import { addIndividual } from 'src/services/IndividualService'
+import { addIndividual,getIndividual,updateIndividual } from 'src/services/IndividualService'
 import MainBoard from 'src/components/include/MainBoard'
 import { useParams } from "react-router-dom";
+import { validate } from "src/helper/validation";
 import {
   Container,
   Button,
@@ -25,6 +26,7 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
+import Individual from './Individuals'
 function AddIndividual() {
   
   const getState = useSelector((state) => state)
@@ -32,10 +34,7 @@ function AddIndividual() {
   const { userSignin: { userInfo }} = getState
   const { eid } = useParams();
   let initialInputState={ status: 1 }
-  if(eid){
-    // get live data via api
-    initialInputState={name: "jone",status: 1, eid: eid}
-  }
+  
 
   
   const [inputs, setInputs] = useState(initialInputState)
@@ -48,28 +47,40 @@ function AddIndividual() {
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
-
     setInputs((values) => ({ ...values, [name]: value }))
   }
-  //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
-    console.log(inputs)
-    if (inputs.password == inputs.confirm_password) {
-      setErros({ ...errors, confirm_password: '' })
-      if(eid){
-         console.log("update request"); 
-      } else{
-        await addIndividual(userInfo, inputs)
-      }
-      setOpen(true)
-    } else {
-      setErros({ ...errors, confirm_password: 'password not matched' })
+    let allerrors=validate(inputs,{name: "required", password: "required|confirm_password"});
+    if(Object.keys(allerrors).length === 0){
+        let response;
+        if(eid){
+          console.log("update will done")
+          response=await updateIndividual(userInfo, inputs)
+        } else{
+          response=await addIndividual(userInfo, inputs)
+        }
+        if(response.data && Object.keys(response.data).length != 0){
+          allerrors=response.data
+          console.log(allerrors.email);
+          Object.keys(allerrors).forEach(function(ckey) {
+            allerrors[ckey]=allerrors[ckey].join();
+            console.log(allerrors[ckey]);
+          })
+        } else{
+          setOpen(true)
+        }
+        
     }
+    setErros(allerrors);
+    
   }
-
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
+  }
+  const getIndividualData = async (eid) => {
+    const beforeUpdateData=await getIndividual(userInfo, eid);
+    setInputs(beforeUpdateData.data.user);
   }
   const handleClose = () => {
     setOpen(false)
@@ -77,6 +88,9 @@ function AddIndividual() {
   }
 
   useEffect(() => {
+    if(eid){
+      getIndividualData(eid)      
+    }
     getRolesData()
   }, [])
   const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -115,7 +129,7 @@ function AddIndividual() {
           <h6>Add Freelancer</h6>
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Details</h6>
@@ -123,7 +137,7 @@ function AddIndividual() {
 
               <Grid item xs={6}>
                 {/* <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Name"
                   name="name"
@@ -134,7 +148,7 @@ function AddIndividual() {
                   Name*
                 </InputLabel>
                 <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Name"
                   name="name"
@@ -150,16 +164,19 @@ function AddIndividual() {
                   Email*
                 </InputLabel>
                 <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Email"
                   name="email"
+                  value={inputs.email?inputs.email:""}
                   fullWidth={true}
                   onChange={(e) => handleChange(e)}
                   placeholder="Please enter e-mail"
+                  
                 />
+                {errors.email?errors.email:""}
                 {/* <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Email"
                   name="email"
@@ -191,7 +208,7 @@ function AddIndividual() {
                   Phone*
                 </InputLabel>
                 <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Phone"
                   name="company_mobile"
@@ -200,7 +217,7 @@ function AddIndividual() {
                   placeholder="Please enter phone"
                 />
                 {/* <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Phone"
                   name="company_mobile"
@@ -214,7 +231,7 @@ function AddIndividual() {
                   Address*
                 </InputLabel>
                 <TextField
-                  required
+                  
                   id="outlined-error" //dynamic id
                   label="Address"
                   name="company_address"
@@ -226,7 +243,7 @@ function AddIndividual() {
 
                 />
                 {/* <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Address"
                   name="company_address"
@@ -240,7 +257,7 @@ function AddIndividual() {
                   Password*
                 </InputLabel>
                 <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Password"
                   name="password"
@@ -250,7 +267,7 @@ function AddIndividual() {
                   placeholder="Please enter password"
                 />
                 {/* <TextField
-                  required
+                  
                   id="outlined-error"
                   label="Password"
                   name="password"

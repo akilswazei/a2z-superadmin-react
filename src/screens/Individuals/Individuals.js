@@ -48,41 +48,10 @@ const datagridSx = {
     border: '0px solid gray !important',
   },
 }
-const columns = [
-  { field: 'username', headerName: 'username', width: 150 },
-  { field: 'company_name', headerName: 'Name', width: 200 },
-  { field: 'company_email', headerName: 'Email', width: 300 },
-  { field: 'service_type', headerName: 'service type', width: 150 },
-  {
-    field: 'status',
-    width: 150,
-    renderCell: (cellValues) => {
-      return (
-        <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
-          {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
-        </button>
-      )
-    },
-  },
-  {
-    field: 'actions',
-    width: 100,
-    renderCell: (cellValue) => {
-      return (
-        <div className="edit-delete-div">
-          <span className="pencil-icon">
-            <EditIcon />
-          </span>
-          <span className="delete-icon">
-            <DeleteIcon />
-          </span>
-        </div>
-      )
-    },
-  },
-]
+
 
 const Individual = () => {
+  const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
@@ -120,7 +89,40 @@ const Individual = () => {
 
   console.log(individual)
   let sr_no = 0
-  const navigate = useNavigate()
+  const columns = [
+    { field: 'eid', headerName: 'username', width: 150 },
+    { field: 'company_name', headerName: 'Name', width: 200 },
+    { field: 'company_email', headerName: 'Email', width: 300 },
+    { field: 'service_type', headerName: 'service type', width: 150 },
+    {
+      field: 'status',
+      width: 150,
+      renderCell: (cellValues) => {
+        return (
+          <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+            {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
+          </button>
+        )
+      },
+    },
+    {
+      field: 'actions',
+      width: 100,
+      renderCell: (cellValue) => {
+        return (
+          <div className="edit-delete-div">
+            <span className="pencil-icon" onClick={(e) =>navigate('/individual/edit/'+cellValue?.row?.eid)}>
+              <EditIcon />
+            </span>
+            <span className="delete-icon" onClick={(e) =>handleDelete(cellValue?.row?.eid,e)}>
+              <DeleteIcon />
+            </span>
+          </div>
+        )
+      },
+    },
+  ]
+
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/individual/add')

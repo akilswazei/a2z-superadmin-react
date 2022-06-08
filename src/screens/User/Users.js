@@ -77,6 +77,7 @@ const datagridSx = {
   },
 }
 export default function User() {
+  const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
@@ -107,7 +108,6 @@ export default function User() {
     setUsers({ ...users, data: { ...users.data, data: [...users.data.data.filter((v, i) => v.eid != eid)] } })
   }
   //navigating to add page of user
-  const navigate = useNavigate()
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/user/add')
