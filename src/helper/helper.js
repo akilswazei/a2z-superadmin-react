@@ -15,9 +15,9 @@ export function CustomText({ name, value, handleChange, placeholder, error, requ
         required={required}
         id={name}
         name={name}
-        value={value}
+        
         variant="outlined"
-        defaultValue=""
+        value={value}
         error={false}
         type="text"
         placeholder={placeholder}
@@ -27,7 +27,7 @@ export function CustomText({ name, value, handleChange, placeholder, error, requ
     </>
   )
 }
-export function CustomEmail({ handleChange, name, placeholder, label, required }) {
+export function CustomEmail({ handleChange,value, name, placeholder, label, required }) {
   return (
     <>
       <h6 className="color-gray">
@@ -40,8 +40,8 @@ export function CustomEmail({ handleChange, name, placeholder, label, required }
         id={name}
         name={name}
         type="email"
+        value={value}
         variant="outlined"
-        defaultValue=""
         error={false}
         placeholder={placeholder}
         fullWidth={true}
@@ -64,7 +64,6 @@ export function CustomPasssword({ handleChange, name, placeholder, label, requir
         name={name}
         type="password"
         variant="outlined"
-        value=""
         error={false}
         placeholder={placeholder}
         fullWidth={true}
@@ -74,7 +73,7 @@ export function CustomPasssword({ handleChange, name, placeholder, label, requir
   )
 }
 
-export function CustomPhone({ handleChange, name, placeholder, label, required }) {
+export function CustomPhone({ handleChange, value, name, placeholder, label, required }) {
   return (
     <>
       <h6 className="color-gray">
@@ -88,7 +87,7 @@ export function CustomPhone({ handleChange, name, placeholder, label, required }
         name={name}
         type="number"
         variant="outlined"
-        value=""
+        value={value}
         error={false}
         placeholder={placeholder}
         fullWidth={true}

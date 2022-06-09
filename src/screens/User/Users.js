@@ -98,7 +98,8 @@ export default function User() {
     setUsers(await getUsers(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
+    console.log(value);
     setPage(value)
     setUsers(await getUsers(userInfo, value, search))
   }
@@ -153,19 +154,20 @@ export default function User() {
           </div>
           <hr></hr>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {users?.data?.data && (
+            {
+            users?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random() * 100}
                 rows={users.data.data}
                 columns={columns}
                 pageSize={10}
-                rowsPerPageOptions={[10]}
+                rowsPerPageOptions={[0]}
                 checkboxSelection
                 sx={datagridSx}
               />
             )}
-            {/* <Pagination count={11} defaultPage={6} /> */}
+            <Pagination count={users?.data?.links?users.data.links.length-2:1 } page={page} defaultPage={page} onChange={(e,number) => changePage(e, number)} />
           </div>
         </Container>
       </Container>

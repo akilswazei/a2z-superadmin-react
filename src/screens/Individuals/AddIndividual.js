@@ -133,7 +133,7 @@ function AddIndividual() {
                   handleChange={(e) => handleChange(e)}
                   name="name"
                   placeholder={namePlaceholder}
-                  value=""
+                  value={inputs.name?inputs.name:""}
                   label="Name"
                   error={false}
                   required={true}
@@ -145,7 +145,7 @@ function AddIndividual() {
                   label="Email"
                   name="email"
                   required={true}
-                  value=""
+                  value={inputs.email?inputs.email:""}
                   error={false}
                   placeholder={emailPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -175,7 +175,7 @@ function AddIndividual() {
                   label="Phone"
                   name="phone"
                   required={true}
-                  value=""
+                  value={inputs.phone?inputs.phone:""}
                   error={false}
                   placeholder={phonePlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -185,9 +185,9 @@ function AddIndividual() {
               <Grid item xs={6}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="Address"
+                  name="address"
                   placeholder={addressPlaceholder}
-                  value=""
+                  value={inputs.address?inputs.address:""}
                   label="Address"
                   error={false}
                   required={true}
