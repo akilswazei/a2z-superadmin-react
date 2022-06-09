@@ -150,7 +150,7 @@ function getItems() {
               {
                 id: 1,
                 name: 'Order',
-                link: '/dashboard',
+                link: '/order',
               },
               {
                 id: 2,

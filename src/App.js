@@ -10,7 +10,7 @@ import AddIndividual from './screens/Individuals/AddIndividual'
 import Stores from './screens/Store/Stores'
 import AddStore from './screens/Store/AddStore'
 import Merchants from './screens/Merchants/Merchants'
-
+import Order from './screens/Order/Order'
 import { withThemeCreator } from '@material-ui/styles'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 const loading = (
@@ -62,24 +62,22 @@ class App extends Component {
               <Route path="500" name="Page 500" element={<Page500 />} />
               <Route path="/" name="Home" element={<ProtectedRoute />}>
                 <Route exact path="/dashboard" element={<DefaultLayout />} />
-              
+
                 <Route exact path="/users" element={<Users />} />
                 <Route exact path="/user/add" element={<AddUser />} />
-               
+
                 <Route exact path="/teams" element={<Teams />} />
                 <Route exact path="/team/add" element={<AddTeam />} />
-               
+
                 <Route exact path="/individuals" element={<Individuals />} />
                 <Route exact path="/individual/add" element={<AddIndividual />} />
                 <Route exact path="/individual/edit/:eid" element={<AddIndividual />} />
-                
-
 
                 <Route exact path="/stores" element={<Stores />} />
                 <Route exact path="/store/add" element={<AddStore />} />
 
-                
                 <Route exact path="/merchants" element={<Merchants />} />
+                <Route exact path="/order" element={<Order />} />
               </Route>
             </Routes>
           </Suspense>
