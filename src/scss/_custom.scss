@@ -254,3 +254,103 @@
 .color-gray{
     color:#b2b1b1;
 }
+.pagination{
+    background: transparent !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    padding: 1em;
+}
+
+.order-id{
+    h6{
+        text-decoration: underline;
+        font-weight: 600;
+
+    }
+}
+.order-time-detail{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    p{
+        font-size: 0.8em;
+        white-space: no-wrap;
+        margin: 0.6em 0.1em;
+        color: $theme-font-gray;
+    }
+}
+.order-address-details{
+    .address-p{
+        font-size: 1em;
+        font-weight: 700;
+        margin: 0.3em;
+    }
+    ul{
+        text-decoration: none;
+        list-style: none;
+        li{
+            svg{
+                max-width: 20px;
+            }
+            color: $theme-font-gray;
+            font-size: 0.8em;
+        }
+    }
+    p{
+        font-size: 0.8em;
+        font-weight: 700;
+        margin: 0.3em;
+        color: $theme-font-gray;
+        white-space: wrap;
+    }
+}
+.btn-div{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button{
+        min-height: 35px;
+        background: $theme-color-green;
+        border:none;
+        border-radius: 0.3em;
+        text-decoration: none;
+        color:white;
+        padding:0.7em 0.4em;
+        font-size: 0.8em;
+        min-width: 10em;
+        font-weight: 600;
+    }
+}
+.order-subtotal{
+    ul{
+        padding:0;
+        list-style: none;
+        li{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1em;
+            color: $theme-font-gray;
+            p{
+                padding:0;
+                margin:0.3em 0.1em;
+            }
+        }
+    }
+    .bold-li{
+        font-weight: 700;
+        color:black;
+    }
+}
+.border-top-bottom{
+    border-top: 1px solid $theme-font-gray;
+    border-bottom: 1px solid $theme-font-gray;
+}
+.product-grid{
+    margin:0.5em;
+    p{
+        margin:0;
+        padding:0.5em 0.1em;
+    }
+    
+}

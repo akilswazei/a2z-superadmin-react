@@ -75,6 +75,11 @@ const datagridSx = {
   '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
     border: '0px solid gray !important',
   },
+  '& .MuiDataGrid-footerContainer': {
+    '& .MuiTablePagination-root': {
+      display: 'none',
+    },
+  },
 }
 export default function User() {
   const navigate = useNavigate()
@@ -99,7 +104,7 @@ export default function User() {
   }
 
   const changePage = async (e, value) => {
-    console.log(value);
+    console.log(value)
     setPage(value)
     setUsers(await getUsers(userInfo, value, search))
   }
@@ -154,8 +159,7 @@ export default function User() {
           </div>
           <hr></hr>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {
-            users?.data?.data && (
+            {users?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random() * 100}
@@ -167,8 +171,16 @@ export default function User() {
                 sx={datagridSx}
               />
             )}
-            <Pagination count={users?.data?.links?users.data.links.length-2:1 } page={page} defaultPage={page} onChange={(e,number) => changePage(e, number)} />
           </div>
+          <Container>
+            <Pagination
+              className="pagination"
+              count={users?.data?.links ? users.data.links.length - 2 : 1}
+              page={page}
+              defaultPage={page}
+              onChange={(e, number) => changePage(e, number)}
+            />
+          </Container>
         </Container>
       </Container>
     </MainBoard>
