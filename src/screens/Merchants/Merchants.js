@@ -43,6 +43,11 @@ const datagridSx = {
   '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
     border: '0px solid gray !important',
   },
+  '& .MuiDataGrid-footerContainer': {
+    '& .MuiTablePagination-root': {
+      display: 'none',
+    },
+  },
 }
 const Merchant = () => {
   const columns = [
@@ -168,7 +173,15 @@ const Merchant = () => {
                 sx={datagridSx}
               />
             )}
-            {/* <Pagination count={11} defaultPage={6} /> */}
+            <Container>
+              <Pagination
+                className="pagination"
+                count={merchants?.data?.links ? merchants.data.links.length - 2 : 1}
+                page={page}
+                defaultPage={page}
+                onChange={(e, number) => changePage(e, number)}
+              />
+            </Container>
           </div>
         </Container>
       </Container>

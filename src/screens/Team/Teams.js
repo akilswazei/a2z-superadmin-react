@@ -78,6 +78,11 @@ const datagridSx = {
   '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
     border: '0px solid gray !important',
   },
+  '& .MuiDataGrid-footerContainer': {
+    '& .MuiTablePagination-root': {
+      display: 'none',
+    },
+  },
 }
 
 const Teams = () => {
@@ -154,12 +159,15 @@ const Teams = () => {
                 sx={datagridSx}
               />
             )}
-            <Pagination
-              count={teams?.data?.links ? teams.data.links.length - 2 : 1}
-              page={page}
-              defaultPage={page}
-              onChange={(e, number) => changePage(e, number)}
-            />
+            <Container>
+              <Pagination
+                className="pagination"
+                count={teams?.data?.links ? teams.data.links.length - 2 : 1}
+                page={page}
+                defaultPage={page}
+                onChange={(e, number) => changePage(e, number)}
+              />
+            </Container>
           </div>
         </Container>
       </Container>
