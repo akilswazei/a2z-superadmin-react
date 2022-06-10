@@ -154,7 +154,12 @@ const Teams = () => {
                 sx={datagridSx}
               />
             )}
-            {/* <Pagination count={11} defaultPage={6}  /> */}
+            <Pagination
+              count={teams?.data?.links ? teams.data.links.length - 2 : 1}
+              page={page}
+              defaultPage={page}
+              onChange={(e, number) => changePage(e, number)}
+            />
           </div>
         </Container>
       </Container>

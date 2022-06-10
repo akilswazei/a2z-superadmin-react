@@ -24,7 +24,7 @@ import {
 } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/Helper'
+import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
 
 function AddTeam() {
   const getState = useSelector((state) => state)
