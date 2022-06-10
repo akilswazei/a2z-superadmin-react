@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
-import { addIndividual,getIndividual,updateIndividual } from 'src/services/IndividualService'
+import { addIndividual, getIndividual, updateIndividual } from 'src/services/IndividualService'
 import MainBoard from 'src/components/include/MainBoard'
-import { useParams } from "react-router-dom";
-import { validate } from "src/helper/validation";
+import { useParams } from 'react-router-dom'
+import { validate } from 'src/helper/validation'
 import {
   Container,
   Button,
@@ -26,25 +26,24 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/Helper'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
 
 function AddIndividual() {
-  
   const getState = useSelector((state) => state)
   let navigate = useNavigate()
-  const { userSignin: { userInfo }} = getState
-  const { eid } = useParams();
-  let initialInputState={ status: 1 }
-  
+  const {
+    userSignin: { userInfo },
+  } = getState
+  const { eid } = useParams()
+  let initialInputState = { status: 1 }
 
-  
   const [inputs, setInputs] = useState(initialInputState)
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState({})
 
-    console.log(inputs.name)
-  
+  console.log(inputs.name)
+
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -52,36 +51,34 @@ function AddIndividual() {
   }
   const submitHandler = async (e) => {
     e.preventDefault()
-    let allerrors=validate(inputs,{name: "required", password: "required|confirm_password"});
-    if(Object.keys(allerrors).length === 0){
-        let response;
-        if(eid){
-          console.log("update will done")
-          response=await updateIndividual(userInfo, inputs)
-        } else{
-          response=await addIndividual(userInfo, inputs)
-        }
-        if(response.data && Object.keys(response.data).length != 0){
-          allerrors=response.data
-          console.log(allerrors.email);
-          Object.keys(allerrors).forEach(function(ckey) {
-            allerrors[ckey]=allerrors[ckey].join();
-            console.log(allerrors[ckey]);
-          })
-        } else{
-          setOpen(true)
-        }
-        
+    let allerrors = validate(inputs, { name: 'required', password: 'required|confirm_password' })
+    if (Object.keys(allerrors).length === 0) {
+      let response
+      if (eid) {
+        console.log('update will done')
+        response = await updateIndividual(userInfo, inputs)
+      } else {
+        response = await addIndividual(userInfo, inputs)
+      }
+      if (response.data && Object.keys(response.data).length != 0) {
+        allerrors = response.data
+        console.log(allerrors.email)
+        Object.keys(allerrors).forEach(function (ckey) {
+          allerrors[ckey] = allerrors[ckey].join()
+          console.log(allerrors[ckey])
+        })
+      } else {
+        setOpen(true)
+      }
     }
-    setErros(allerrors);
-    
+    setErros(allerrors)
   }
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
   const getIndividualData = async (eid) => {
-    const beforeUpdateData=await getIndividual(userInfo, eid);
-    setInputs(beforeUpdateData.data.user);
+    const beforeUpdateData = await getIndividual(userInfo, eid)
+    setInputs(beforeUpdateData.data.user)
   }
   const handleClose = () => {
     setOpen(false)
@@ -89,8 +86,8 @@ function AddIndividual() {
   }
 
   useEffect(() => {
-    if(eid){
-      getIndividualData(eid)      
+    if (eid) {
+      getIndividualData(eid)
     }
     getRolesData()
   }, [])

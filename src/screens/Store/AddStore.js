@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { Container, Button, Icon, TextField, Paper, Typography, Grid, InputLabel } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/Helper'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
 function AddStore() {
   const getState = useSelector((state) => state)
   const navigate = useNavigate()

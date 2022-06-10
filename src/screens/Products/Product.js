@@ -47,46 +47,52 @@ const datagridSx = {
   },
 }
 
-const Individual = () => {
+const Product = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
-  const [individual, setIndividual] = useState({})
+  const [product, setProduct] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const getIndividualData = async () => {
-    setIndividual(await getIndividuals(userInfo))
+  const getProductData = async () => {
+    setProduct(await getIndividuals(userInfo))
   }
 
   const searchIndividual = async (value) => {
     setSearch(value)
     setPage(1)
-    setIndividual(await getIndividuals(userInfo, 1, value))
+    setProduct(await getIndividuals(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setIndividual(await getIndividuals(userInfo, value, search))
+    setProduct(await getIndividuals(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
     deleteIndividual(userInfo, eid)
-    setIndividual({
-      ...individual,
-      data: { ...individual.data, data: [...individual.data.data.filter((v, i) => v.eid != eid)] },
+    setProduct({
+      ...product,
+      data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
   useEffect(() => {
-    getIndividualData()
+    getProductData()
   }, [])
 
-  console.log(individual)
+  console.log(product)
   let sr_no = 0
   const columns = [
+    { field: 'product', headerName: 'Product', width: 150 },
+    { field: 'category', headerName: 'Category', width: 150 },
+    { field: 'brand', headerName: 'Brand', width: 150 },
+    { field: 'supplier', headerName: 'Supplier', width: 150 },
+    { field: 'supplier_price', headerName: 'Supplier Price', width: 150 },
+    { field: 'store_sell_price', headerName: 'Store Sell Price', width: 150 },
     { field: 'eid', headerName: 'username', width: 150 },
     { field: 'company_name', headerName: 'Name', width: 200 },
     { field: 'company_email', headerName: 'Email', width: 300 },
@@ -128,7 +134,7 @@ const Individual = () => {
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Individuals</h6>
+          <h6>Products</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
@@ -140,14 +146,14 @@ const Individual = () => {
               }}
             />
             <button onClick={navigateFunction} className="custom-blue-btn m-2">
-              Add Individual<span>{<PersonAddAltIcon />}</span>
+              Add Products<span>{<PersonAddAltIcon />}</span>
             </button>
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {individual?.data?.data && (
+            {product?.data?.data && (
               <DataGrid
                 getRowId={(row) => Math.random()}
-                rows={individual.data.data}
+                rows={product.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -155,16 +161,11 @@ const Individual = () => {
                 sx={datagridSx}
               />
             )}
-            <Pagination
-              count={individual?.data?.links ? individual.data.links.length - 2 : 1}
-              page={page}
-              defaultPage={page}
-              onChange={(e, number) => changePage(e, number)}
-            />
+            {/* <Pagination count={11} defaultPage={6} /> */}
           </div>
         </Container>
       </Container>
     </MainBoard>
   )
 }
-export default Individual
+export default Product

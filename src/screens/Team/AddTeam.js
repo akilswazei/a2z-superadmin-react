@@ -24,7 +24,7 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/Helper'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
 function AddTeam() {
   const getState = useSelector((state) => state)
   let navigate = useNavigate()

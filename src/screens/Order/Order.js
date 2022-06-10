@@ -9,7 +9,7 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
+import { getOrders } from 'src/services/OrderService'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -47,47 +47,52 @@ const datagridSx = {
   },
 }
 
-const Individual = () => {
+const Order = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
-  const [individual, setIndividual] = useState({})
+  const [order, setOrder] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const getIndividualData = async () => {
-    setIndividual(await getIndividuals(userInfo))
+  const getOrderData = async () => {
+    setOrder(await getOrders(userInfo))
   }
 
-  const searchIndividual = async (value) => {
+  const searchOrder = async (value) => {
     setSearch(value)
     setPage(1)
-    setIndividual(await getIndividuals(userInfo, 1, value))
+    setOrder(await getOrders(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setIndividual(await getIndividuals(userInfo, value, search))
+    setOrder(await getOrders(userInfo, value, search))
   }
 
-  const handleDelete = async (eid, e) => {
-    deleteIndividual(userInfo, eid)
-    setIndividual({
-      ...individual,
-      data: { ...individual.data, data: [...individual.data.data.filter((v, i) => v.eid != eid)] },
-    })
-  }
+  // const handleDelete = async (eid, e) => {
+  //   deleteIndividual(userInfo, eid)
+  //   setOrder({
+  //     ...order,
+  //     data: { ...order.data, data: [...order.data.data.filter((v, i) => v.eid != eid)] },
+  //   })
+  // }
   useEffect(() => {
-    getIndividualData()
+    getOrderData()
   }, [])
 
-  console.log(individual)
+  console.log(order)
   let sr_no = 0
   const columns = [
-    { field: 'eid', headerName: 'username', width: 150 },
+    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'eid', headerName: 'Order ID', width: 150 },
+    { field: 'merchant', headerName: 'Merchant', width: 200 },
+    { field: 'store', headerName: 'Stores', width: 200 },
+    { field: 'contact', headerName: 'Contact', width: 200 },
+    { field: 'amount', headerName: 'Amount', width: 200 },
     { field: 'company_name', headerName: 'Name', width: 200 },
     { field: 'company_email', headerName: 'Email', width: 300 },
     { field: 'service_type', headerName: 'service type', width: 150 },
@@ -97,7 +102,7 @@ const Individual = () => {
       renderCell: (cellValues) => {
         return (
           <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
-            {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
+            {cellValues?.row?.status == 1 ? 'Processing' : 'completed'}
           </button>
         )
       },
@@ -111,7 +116,7 @@ const Individual = () => {
             <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
-            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
+            <span className="delete-icon">
               <DeleteIcon />
             </span>
           </div>
@@ -120,34 +125,43 @@ const Individual = () => {
     },
   ]
 
-  const navigateFunction = (e) => {
-    e.preventDefault()
-    navigate('/individual/add')
-  }
+  //   const navigateFunction = (e) => {
+  //     e.preventDefault()
+  //     navigate('/individual/add')
+  //   }
   return (
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Individuals</h6>
+          <h6>Orders</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
             <input
               type="text"
-              placeholder="Search here"
+              className="m-1"
+              placeholder="Sort By"
               onChange={(e) => {
-                searchIndividual(e.target.value)
+                searchOrder(e.target.value)
               }}
             />
-            <button onClick={navigateFunction} className="custom-blue-btn m-2">
+            {/* <button className="custom-blue-btn m-2">
               Add Individual<span>{<PersonAddAltIcon />}</span>
-            </button>
+            </button> */}
+            <input
+              type="text"
+              placeholder="Search here"
+              className="m-1"
+              onChange={(e) => {
+                searchOrder(e.target.value)
+              }}
+            />
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {individual?.data?.data && (
+            {order?.data?.data && (
               <DataGrid
                 getRowId={(row) => Math.random()}
-                rows={individual.data.data}
+                rows={order.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -156,7 +170,7 @@ const Individual = () => {
               />
             )}
             <Pagination
-              count={individual?.data?.links ? individual.data.links.length - 2 : 1}
+              count={order?.data?.links ? order.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}
@@ -167,4 +181,4 @@ const Individual = () => {
     </MainBoard>
   )
 }
-export default Individual
+export default Order
