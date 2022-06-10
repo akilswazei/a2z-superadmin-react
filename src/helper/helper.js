@@ -9,7 +9,7 @@ export function CustomText({ name, value, handleChange, placeholder, error, requ
       <h6 className="color-gray">
         {label}
         <sup>{required === true ? '*' : ''}</sup>
-      </h6>
+      </h6> 
       <TextField
         className="custom-form-field"
         required={required}
