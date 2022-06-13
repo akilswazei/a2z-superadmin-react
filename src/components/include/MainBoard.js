@@ -27,6 +27,7 @@ import logo from '../../assets/brand/a2z-logo.png'
 //icon imports
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import NavList from './NavList'
+import MenuNav from './MenuNav'
 const drawerWidth = 240
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -178,7 +179,7 @@ export default function MainBoard(props) {
           ))}
         </List> */}
         <div className="sidebar-nav">
-          <NavList />
+          <MenuNav />
         </div>
       </Drawer>
       <Main open={open} className="background-theme-purple p-0">
