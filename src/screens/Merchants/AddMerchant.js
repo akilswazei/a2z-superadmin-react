@@ -1,213 +1,341 @@
 /* eslint-disable prettier/prettier */
-import { CButton, CCol, CForm, CFormCheck, CFormInput, CFormLabel, CFormSelect, CRow } from '@coreui/react'
+import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getRoles } from 'src/services/RolesServices'
+import { addUser } from 'src/services/UserServices'
+import MainBoard from 'src/components/include/MainBoard'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import {
+  Container,
+  Button,
+  Icon,
+  InputLabel,
+  TextField,
+  MenuItem,
+  Select,
+  Paper,
+  Typography,
+  Grid,
+} from '@material-ui/core'
+import { styled } from '@material-ui/styles'
+import { InputBase } from '@mui/material'
+import { CustomDate, CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
 function AddMerchant() {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [title, setTitle] = useState();
-  const [phone, setPhone] = useState();
-  const [faxNumber, setFaxNumber] = useState();
-  const [address, setAddress] = useState();
-  const [onboardingStatus, setOnboardingStatus] = useState();
-  const [onboardingDate, setOnboardingDate] = useState();
-  const [merchantId, setMerchantId] = useState();
-  const [legalBusinessName, setLegalBusinessName] = useState();
-  const [DBA, setDBA] = useState();
-  const [businessAddress, setBusinessAddress] = useState();
-  const [city, setCity] = useState();
-  const [state, setState] = useState();
-  const [zipCode, setZipCode] = useState();
-  const [businessPhone, setBusinessPhone] = useState();
-  const [cellPhone, setCellPhone] = useState();
-  const [websiteUrl, setWebsiteUrl] = useState();
-  const [federalTaxID, setFederalTaxID] = useState();
-  const [stateTaxId, setStateTaxId] = useState();
-  const [storeType, setStoreType] = useState();
-  const [soleProprietor, setSoleProprietor] = useState();
-  const [partnership, setPartnership] = useState();
-  const [corporation, setCorporation] = useState();
-  const [other, setOther] = useState();
-  const [stateName, setStateName] = useState();
-  const [customerName, setCustomerName] = useState();
+  const getState = useSelector((state) => state)
+  const navigate = useNavigate()
 
-  
-  
-  const dispatch = useDispatch();
+  const {
+    userSignin: { userInfo },
+  } = getState
 
+  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
+  const [roles, setRoles] = useState({})
+  const [open, setOpen] = React.useState(false)
+  const [errors, setErros] = React.useState(false)
 
-const submitHandler = (e) => {
-    e.preventDefault();
-  
-    //dispatch(addUser(userData));
-}
+  const handleChange = (event) => {
+    const name = event.target.name
+    const value = event.target.value
+    console.log(event.target.value)
+    setInputs((values) => ({ ...values, [name]: value }))
+  }
+  //const [validated, setValidated] = useState(false);
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    if (inputs.password == inputs.confirm_password) {
+      setErros({ ...errors, confirm_password: '' })
+      await addUser(userInfo, inputs)
+      setOpen(true)
+    } else {
+      setErros({ ...errors, confirm_password: 'password not matched' })
+    }
+  }
+
+  const getRolesData = async () => {
+    setRoles(await getRoles(userInfo))
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    navigate('../users', { replace: true })
+  }
+
+  useEffect(() => {
+    getRolesData()
+  }, [])
+  const namePlaceholder = 'Please enter your name'
+  const emailPlaceholder = 'Please enter your e-mail'
+  const passwordPlaceholder = 'Please enter password'
+  const confirmPasswordPlaceholder = 'Please re-enter password'
 
   return (
-    <> 
-        <CForm onSubmit={submitHandler} >
-        <h3 className='mb-4'>Basic Details</h3>
-        <CRow>
-            <CCol md={3}>
-                <CFormLabel htmlFor="name" className="col-form-label">Name</CFormLabel>
-                <CFormInput placeholder="Please enter name" aria-label="name" name="name" id="name" onChange={(e) => setName(e.target.value)} required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="email" className="col-form-label">Email</CFormLabel>
-                <CFormInput type="email" placeholder="Please enter email" aria-label="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="title" className="col-form-label">Title</CFormLabel>
-                <CFormInput placeholder="Please enter title" aria-label="title" name="title" id="title" onChange={(e) => setTitle(e.target.value)} required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="Phone" className="col-sm-2 col-form-label">Location</CFormLabel>
-                <CFormInput placeholder="Please enter phone" aria-label="Phone"  name="phone" id="phone" onChange={(e) => setPhone(e.target.value)} valid required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="Fax" className="col-sm-2 col-form-label">Fax</CFormLabel>
-                <CFormInput placeholder="Please enter Fax number" aria-label="Fax"  name="fax" id="fax" onChange={(e) => setFaxNumber(e.target.value)} valid required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="Address" className="col-sm-2 col-form-label">Fax</CFormLabel>
-                <CFormInput placeholder="Please enter address" aria-label="Address"  name="address" id="address" onChange={(e) => setAddress(e.target.value)} valid required/>
-            </CCol>
-        </CRow>
-        <h4 className='mb-5 mt-5'>Merchant Details</h4>
-        <CRow>
-            <CCol md={3}>
-                <CFormLabel htmlFor="OnboardingDate" className="col-form-label">Onboarding Date</CFormLabel>
-                <CFormInput locale="en-US" placeholder="YYYY-MM-DD" aria-label="OnboardingDate" name="OnboardingDate" id="OnboardingDate" onChange={(e) => setOnboardingDate(e.target.value)}/>
-            </CCol>
-            <CCol md={3}>
-                    <CFormLabel htmlFor="OnboardingStatus" className="col-form-label">Onboarding Status</CFormLabel>
-                    <CFormSelect
-                      aria-label="OnboardingStatus"
-                      options={[
-                          { label: 'Approved', value: '1' },
-                          { label: 'Declined', value: '0' },
+    <MainBoard>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Alert'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
 
-                      ]}
-                      onChange={(e) => setOnboardingStatus(e.target.value)}
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6>Add Merchant</h6>
+        </Container>
+        <Container className="background-white-theme my-3 custom-container-white">
+          <form onSubmit={submitHandler}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} className="my-3 p-0">
+                <h6 className="m-0 p-0">Merchant Details</h6>
+              </Grid>
+              <Grid container spacing={2}>
+                <Grid item sx={8} md={8}>
+                  <CustomText
+                    label="Legal Business Name of Entity"
+                    name="business-name"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder="A AND B MARKET PLUS, INC"
+                    handleChange={(e) => handleChange(e)}
                   />
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="MerchantId" className="col-form-label">Merchant ID</CFormLabel>
-                <CFormInput placeholder="Please enter merchant id" aria-label="MerchantId" name="merchantId" id="merchantId" onChange={(e) => setMerchantId(e.target.value)} required/>
-            </CCol>
-        </CRow>
+                </Grid>
+                <Grid item sx={4} md={4}>
+                  <CustomText
+                    label="Fedral Tax ID"
+                    name="status"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder=""
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={8} md={8}>
+                  <CustomText
+                    label="Doing Business as (DBA)"
+                    name="dba"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder="CAMPUS AND LIQUOR"
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={4} md={4}>
+                  <CustomText
+                    label="State Tax ID"
+                    name="status"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder=""
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={12} md={12}>
+                  <CustomText
+                    label="Address"
+                    name="address"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder=""
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={6} md={4}>
+                  <CustomText
+                    label="City"
+                    name="city"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder="SAN DIEGO"
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={6} md={4}>
+                  <CustomText
+                    label="State"
+                    name="state"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder="CA"
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={6} md={4}>
+                  <CustomText
+                    label="Zip Code"
+                    name="zip-code"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder="A2DE10"
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={4} md={4}>
+                  <CustomText
+                    label="Business Phone Number"
+                    name="business_name"
+                    required={false}
+                    error={false}
+                    value=""
+                    placeholder="709-999-9999"
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={4} md={4}>
+                  <CustomText
+                    label="Cell Phone"
+                    name="business_name"
+                    required={true}
+                    error={false}
+                    value=""
+                    placeholder=""
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+                <Grid item sx={4} md={4}>
+                  <CustomText
+                    label="Website/URL"
+                    name="website"
+                    required={false}
+                    error={false}
+                    value=""
+                    placeholder=""
+                    handleChange={(e) => handleChange(e)}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} className="mt-5">
+              <Grid item xs={12} className="my-3 p-0">
+                <h6 className="m-0 p-0">Authorize Person to contact</h6>
+              </Grid>
 
-        <h4 className='mb-5 mt-5'>Merchant Details</h4>
-        <CRow>
-            <CCol md={3}>
-                <CFormLabel htmlFor="LegalBusinessName" className="col-form-label">Legal business name of entity</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter legal business name" aria-label="LegalBusinessName" name="OnboardingDate" id="OnboardingDate" onChange={(e) => setLegalBusinessName(e.target.value)} required/>
-            </CCol>
-        
-            <CCol md={9}>
-                <CFormLabel htmlFor="DBA" className="col-form-label">Doing business as name (DBA)</CFormLabel>
-                <CFormInput placeholder="Please enter DBA name" aria-label="DBA" name="DBA" id="DBA" onChange = {(e) => setDBA(e.target.value)} required/>
-            </CCol>
-
-            <CCol md={3}>
-                <CFormLabel htmlFor="BusinessAddress" className="col-form-label">Business address</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter address" aria-label="BusinessAddress" name="businessAddress" id="businessAddress" onChange = {(e) => setBusinessAddress(e.target.value)} />
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="City" className="col-form-label">City</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter city" aria-label="City" name="City" id="City" onChange = {(e) => setCity(e.target.value)}/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="State" className="col-form-label">State</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter state" aria-label="State" name="state" id="state" onChange = {(e) => setState(e.target.value)}/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="ZipCode" className="col-form-label">Zip Code</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter Zipcode" aria-label="ZipCode" name="zipCode" id="zipCode" onChange = {(e) => setZipCode(e.target.value)}/>
-            </CCol>
-        </CRow>
-        <h4 className='mb-5 mt-5'>Business Contact</h4>
-        <CRow>
-            <CCol md={3}>
-                <CFormLabel htmlFor="BusinessPhone" className="col-form-label">Business phone number</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter business phone" aria-label="BusinessPhone" name="BusinessPhone" id="BusinessPhone" onChange = {(e) => setBusinessPhone(e.target.value)}/>
-            </CCol>
-        
-            <CCol md={3}>
-                <CFormLabel htmlFor="CellPhone" className="col-form-label">Cell phone</CFormLabel>
-                <CFormInput placeholder="Please enter cell phone" aria-label="CellPhone" name="CellPhone" id="CellPhone" onChange={(e) => setCellPhone(e.target.value)} required/>
-            </CCol>
-
-            <CCol md={3}>
-                <CFormLabel htmlFor="WebsiteUrl" className="col-form-label">Website / URL</CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter website" aria-label="WebsiteUrl" name="websiteUrl" id="websiteUrl" onChange = {(e) => setWebsiteUrl(e.target.value)} />
-            </CCol>
-            
-        </CRow>
-
-        <h4 className='mb-5 mt-5'>Tax Detail</h4>
-        <CRow>
-            <CCol md={3}>
-                <CFormLabel htmlFor="FederalTaxID " className="col-form-label">Federal Tax ID </CFormLabel>
-                <CFormInput locale="en-US" placeholder="Please enter federal tax id" aria-label="FederalTaxID " name="federalTaxID" id="federalTaxID" onChange = {(e) => setFederalTaxID(e.target.value)}/>
-            </CCol>
-        
-            <CCol md={3}>
-                <CFormLabel htmlFor="StateTaxId" className="col-form-label">State Tax Id</CFormLabel>
-                <CFormInput placeholder="Please enter state tax id" aria-label="StateTaxId" name="stateTaxId" id="stateTaxId" onChange={(e) => setStateTaxId(e.target.value)} required/>
-            </CCol>
-        </CRow>
-
-        <h4 className='mb-5 mt-5'>Store Type</h4>
-        <p>Does The Store Sell Snacks, Sodas/Beverages or Grocery Items?</p>
-        <CRow>
-            <CCol md={3}>
-                <CFormCheck id="storeType" name="storeType" label="Yes" onChange = {(e) => setStoreType(e.target.value)}/> 
-                <CFormCheck id="storeType" name="storeType" label="No" onChange = {(e) => setStoreType(e.target.value)}/>
-            </CCol>
-        
-        </CRow>
-
-        <h4 className='mb-5 mt-5'>Onwership Type</h4>
-        <CRow>
-            <CCol md={3}>
-                <CFormCheck id="OnwershipType" name="onwershipType" label="Sole Proprietor" onChange = {(e) => setSoleProprietor(e.target.value)}/>
-            </CCol>
-            <CCol md={3}>
-                <CFormCheck id="OnwershipType" name="onwershipType" label="Partnership" onChange = {(e) => setPartnership(e.target.value)}/>
-            </CCol>
-            <CCol md={3}>
-                <CFormCheck id="OnwershipType" name="onwershipType" label="Corporation" onChange = {(e) => setZipCode(e.target.value)}/> 
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="Other" className="col-form-label">Other</CFormLabel>
-                <CFormInput placeholder="Please specify others" aria-label="Other" name="other" id="other" onChange={(e) => setOther(e.target.value)} required/>
-            </CCol>
-        </CRow>
-
-        <h4 className='mb-5 mt-5'>State of incorporation</h4>
-        <CRow>
-        <CCol md={3}>
-                <CFormLabel htmlFor="StateName" className="col-form-label">State Name</CFormLabel>
-                <CFormInput placeholder="Please specify others" aria-label="StateName" name="stateName" id="stateName" onChange={(e) => setMerchantId(e.target.value)} required/>
-            </CCol>
-            <CCol md={3}>
-                <CFormLabel htmlFor="CustomerName" className="col-form-label">Customer name</CFormLabel>
-                <CFormInput placeholder="Please enter customer name" aria-label="CustomerName" name="customerName" id="customerName" onChange={(e) => setCustomerName(e.target.value)} required/>
-            </CCol>
-        </CRow>
-
-        <CRow className='mt-4'>
-            <CCol md={6} >
-                <CButton type="reset" color="danger" variant="outline" placement="right">Cancel</CButton>
-            </CCol>
-            <CCol md={6} className='text-left'>
-                <CButton type="submit" color="danger" >Submit</CButton>
-            </CCol>
-        </CRow>
-        </CForm>
-    </>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="First Name"
+                  name="first-name"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder="Luis"
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="Last Name"
+                  name="last-name"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder="Brown"
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="Email"
+                  name="email"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder=""
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="Title"
+                  name="title"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder="Manager"
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="Phone"
+                  name="phone-2"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder=""
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={6} md={4}>
+                <CustomText
+                  label="Fax No."
+                  name="fax"
+                  required={true}
+                  error={false}
+                  value=""
+                  placeholder=""
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item md={4} className="align-center">
+                <div>
+                  <h6 className="p-0 m-0">
+                    Type of Ownership :<sup>*</sup>
+                  </h6>
+                </div>
+              </Grid>
+              <Grid item md={8}>
+                <FormControl className="custom-radio">
+                  <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+                    <FormControlLabel value="sole-proprietor" control={<Radio />} label="Sole Proprietor" />
+                    <FormControlLabel value="partnership" control={<Radio />} label="Partnership" />
+                    <FormControlLabel value="corporation" control={<Radio />} label="Corpration" />
+                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+              <Button type="submit" variant="outlined" color="primary" className="name" style={{ margin: '15px 5px' }}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className="name"
+                style={{ margin: '15px 5px', boxShadow: 'none' }}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </form>
+        </Container>
+      </Container>
+    </MainBoard>
   )
 }
-export default AddMerchant;
+export default AddMerchant

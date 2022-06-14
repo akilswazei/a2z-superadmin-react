@@ -12,6 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import FormStyles from 'src/helper/FormStyles'
 const columns = [
   { field: 'eid', headerName: 'ID' },
   { field: 'company_name', headerName: 'company name', width: 200 },
@@ -47,38 +48,7 @@ const columns = [
   },
 ]
 
-const datagridSx = {
-  '& .MuiDataGrid-virtualScrollerRenderZone': {
-    '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': {
-        backgroundColor: '#F9F9FC',
-        border: 'none',
-      },
-    },
-  },
-  '& .MuiDataGrid-columnHeaders': {
-    backgroundColor: 'rgba(255,255,255)',
-    border: 'none',
-    color: 'rgba(180,182,193)',
-    fontSize: '1.2em',
-    fontWeight: '700',
-    textTransform: 'capitalize',
-  },
-  '& .MuiDataGrid-row': {
-    fontSize: '0.9em',
-    fontWeight: '600',
-    border: 'none',
-  },
-  '& .css-i4bv87-MuiSvgIcon-root': {
-    color: '#1976D2',
-  },
-  '& .MuiDataGrid-iconSeparator': {
-    display: 'none',
-  },
-  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
-    border: '0px solid gray !important',
-  },
-}
+const datagridSx = FormStyles
 
 const Teams = () => {
   const getState = useSelector((state) => state)
@@ -145,6 +115,7 @@ const Teams = () => {
           <div style={{ height: '75vh', width: '100%' }}>
             {teams?.data?.data && (
               <DataGrid
+                className="customTable"
                 getRowId={(row) => Math.random()}
                 rows={teams.data.data}
                 columns={columns}
@@ -154,13 +125,16 @@ const Teams = () => {
                 sx={datagridSx}
               />
             )}
+          </div>
+          <Container>
             <Pagination
+              className="pagination"
               count={teams?.data?.links ? teams.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}
             />
-          </div>
+          </Container>
         </Container>
       </Container>
     </MainBoard>
