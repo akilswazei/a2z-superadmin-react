@@ -366,3 +366,63 @@
 .custom-border{
     border: 1px solid $font-color-gray;
 }
+
+//dashboard
+.dashboard-card-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0.7em;
+    background: $dashboard-red;
+    border-radius: 0.3em;
+    min-height: 13vh;
+    max-height: 17vh;
+    max-width: 100%;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .dashboard-card-icon{
+        background: #E67A81;
+      
+        min-width:50px;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color:white;
+        border-radius: 0.3em;
+        margin: 0 6px;
+    }
+    .dashboard-card-content{
+        margin: 0 6px;
+       
+        p{
+            margin: 0;
+            color:white;
+            font-size: 1em;
+        }
+        .p2{
+            font-size: 0.7em;
+            white-space: no-wrap;
+        }
+    }
+}
+.dashboard-blue{
+    background-color: $dashboard-blue;
+    .dashboard-card-icon{
+        background-color: #5C8CE5;
+    }
+}
+.dashboard-yellow{
+    background-color: $dashboard-yellow;
+    .dashboard-card-icon{
+        background-color: #FBC271;
+    }
+}
+.dashboard-orange{
+    background-color: $dashboard-orange;
+    .dashboard-card-icon{
+        background-color: #F89E8B;
+    }
+}

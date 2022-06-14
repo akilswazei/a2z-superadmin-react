@@ -56,15 +56,9 @@ const Order = () => {
   console.log(order)
   let sr_no = 0
   const columns = [
-    { field: 'date', headerName: 'Date', width: 150 },
     { field: 'eid', headerName: 'Order ID', width: 150 },
     { field: 'merchant_id', headerName: 'Merchant', width: 200 },
-    { field: 'store.store_name', headerName: 'Stores', width: 200 },
-    { field: 'contact', headerName: 'Contact', width: 200 },
-    { field: 'amount', headerName: 'Amount', width: 200 },
-    { field: 'company_name', headerName: 'Name', width: 200 },
-    { field: 'company_email', headerName: 'Email', width: 300 },
-    { field: 'service_type', headerName: 'service type', width: 150 },
+
     {
       field: 'status',
       width: 150,
