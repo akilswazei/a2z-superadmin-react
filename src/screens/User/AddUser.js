@@ -209,7 +209,13 @@ function AddTeam() {
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Button type="submit" variant="outlined" color="primary" className="name" style={{ margin: '5px' }}>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                  className="name"
+                  style={{ margin: '15px 5px' }}
+                >
                   Cancel
                 </Button>
                 <Button
@@ -217,7 +223,7 @@ function AddTeam() {
                   variant="contained"
                   color="primary"
                   className="name"
-                  style={{ margin: '5px', boxShadow: 'none' }}
+                  style={{ margin: '15px 5px', boxShadow: 'none' }}
                 >
                   Submit
                 </Button>

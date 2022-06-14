@@ -12,6 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import FormStyles from 'src/helper/FormStyles'
 const columns = [
   { field: 'eid', headerName: 'ID', width: 100 },
   { field: 'name', headerName: 'Name', width: 250 },
@@ -44,43 +45,8 @@ const columns = [
   },
 ]
 
-const datagridSx = {
-  '& .MuiDataGrid-virtualScrollerRenderZone': {
-    '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': {
-        backgroundColor: '#F9F9FC',
-        border: 'none',
-      },
-    },
-  },
-  '& .MuiDataGrid-columnHeaders': {
-    backgroundColor: 'rgba(255,255,255)',
-    border: 'none',
-    color: 'rgba(180,182,193)',
-    fontSize: '1.2em',
-    fontWeight: '700',
-    textTransform: 'capitalize',
-  },
-  '& .MuiDataGrid-row': {
-    fontSize: '0.9em',
-    fontWeight: '600',
-    border: 'none',
-  },
-  '& .css-i4bv87-MuiSvgIcon-root': {
-    color: '#1976D2',
-  },
-  '& .MuiDataGrid-iconSeparator': {
-    display: 'none',
-  },
-  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
-    border: '0px solid gray !important',
-  },
-  '& .MuiDataGrid-footerContainer': {
-    '& .MuiTablePagination-root': {
-      display: 'none',
-    },
-  },
-}
+const datagridSx = FormStyles
+
 export default function User() {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -134,7 +100,7 @@ export default function User() {
   //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
   //   ]
 
-  console.log(users?.data?.data)
+  console.log(datagridSx)
   let sr_no = 0
   return (
     // <MainBoard>

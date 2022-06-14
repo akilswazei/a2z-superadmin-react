@@ -14,6 +14,8 @@ import Order from './screens/Order/Order'
 import { withThemeCreator } from '@material-ui/styles'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 import OrderDetail from './screens/Order/OrderDetail'
+import AddMerchant from './screens/Merchants/AddMerchant'
+import AddProduct from './screens/Products/AddProduct'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -78,8 +80,10 @@ class App extends Component {
                 <Route exact path="/store/add" element={<AddStore />} />
 
                 <Route exact path="/merchants" element={<Merchants />} />
+                <Route exact path="/merchant/add" element={<AddMerchant />} />
                 <Route exact path="/orders" element={<Order />} />
                 <Route exact path="/products" element={<Product />} />
+                <Route exact path="/product/add" element={<AddProduct />} />
                 <Route exact path="/orderdetail" element={<OrderDetail />} />
               </Route>
             </Routes>

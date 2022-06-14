@@ -13,39 +13,10 @@ import { deleteIndividual, getIndividuals } from 'src/services/IndividualService
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { getProduct, getProducts } from 'src/services/ProductService'
+import FormStyles from 'src/helper/FormStyles'
 
-const datagridSx = {
-  '& .MuiDataGrid-virtualScrollerRenderZone': {
-    '& .MuiDataGrid-row': {
-      '&:nth-of-type(2n)': {
-        backgroundColor: '#F9F9FC',
-        border: 'none',
-      },
-    },
-  },
-  '& .MuiDataGrid-columnHeaders': {
-    backgroundColor: 'rgba(255,255,255)',
-    border: 'none',
-    color: 'rgba(180,182,193)',
-    fontSize: '1.2em',
-    fontWeight: '700',
-    textTransform: 'capitalize',
-  },
-  '& .MuiDataGrid-row': {
-    fontSize: '0.9em',
-    fontWeight: '600',
-    border: 'none',
-  },
-  '& .css-i4bv87-MuiSvgIcon-root': {
-    color: '#1976D2',
-  },
-  '& .MuiDataGrid-iconSeparator': {
-    display: 'none',
-  },
-  '& .customTable .MuiDataGrid-root .MuiDataGrid-root--densityStandard': {
-    border: '0px solid gray !important',
-  },
-}
+const datagridSx = FormStyles
 
 const Product = () => {
   const navigate = useNavigate()
@@ -59,18 +30,18 @@ const Product = () => {
   const [page, setPage] = useState(1)
 
   const getProductData = async () => {
-    setProduct(await getIndividuals(userInfo))
+    setProduct(await getProducts(userInfo))
   }
 
   const searchIndividual = async (value) => {
     setSearch(value)
     setPage(1)
-    setProduct(await getIndividuals(userInfo, 1, value))
+    setProduct(await getProducts(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setProduct(await getIndividuals(userInfo, value, search))
+    setProduct(await getProducts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
@@ -87,16 +58,16 @@ const Product = () => {
   console.log(product)
   let sr_no = 0
   const columns = [
-    { field: 'product', headerName: 'Product', width: 150 },
-    { field: 'category', headerName: 'Category', width: 150 },
-    { field: 'brand', headerName: 'Brand', width: 150 },
-    { field: 'supplier', headerName: 'Supplier', width: 150 },
+    { field: 'product_name', headerName: 'Product', width: 350 },
+    // { field: 'category', headerName: 'Category', width: 150 },
+    // { field: 'brand', headerName: 'Brand', width: 150 },
+    // { field: 'supplier', headerName: 'Supplier', width: 150 },
     { field: 'supplier_price', headerName: 'Supplier Price', width: 150 },
-    { field: 'store_sell_price', headerName: 'Store Sell Price', width: 150 },
+    { field: 'selling_price', headerName: 'Store Sell Price', width: 150 },
     { field: 'eid', headerName: 'username', width: 150 },
-    { field: 'company_name', headerName: 'Name', width: 200 },
-    { field: 'company_email', headerName: 'Email', width: 300 },
-    { field: 'service_type', headerName: 'service type', width: 150 },
+    // { field: 'company_name', headerName: 'Name', width: 200 },
+    // { field: 'company_email', headerName: 'Email', width: 300 },
+    // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
       width: 150,
@@ -138,9 +109,11 @@ const Product = () => {
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
+            <input type="text" placeholder="Sort by" className="m-1" />
             <input
               type="text"
               placeholder="Search here"
+              className="m-1"
               onChange={(e) => {
                 searchIndividual(e.target.value)
               }}
@@ -152,6 +125,7 @@ const Product = () => {
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
             {product?.data?.data && (
               <DataGrid
+                className="customTable"
                 getRowId={(row) => Math.random()}
                 rows={product.data.data}
                 columns={columns}
@@ -161,8 +135,16 @@ const Product = () => {
                 sx={datagridSx}
               />
             )}
-            {/* <Pagination count={11} defaultPage={6} /> */}
           </div>
+          <Container>
+            <Pagination
+              className="pagination"
+              count={product?.data?.links ? product.data.links.length - 2 : 1}
+              page={page}
+              defaultPage={page}
+              onChange={(e, number) => changePage(e, number)}
+            />
+          </Container>
         </Container>
       </Container>
     </MainBoard>

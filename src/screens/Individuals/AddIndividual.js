@@ -130,7 +130,7 @@ function AddIndividual() {
                   handleChange={(e) => handleChange(e)}
                   name="name"
                   placeholder={namePlaceholder}
-                  value={inputs.name?inputs.name:""}
+                  value={inputs.name ? inputs.name : ''}
                   label="Name"
                   error={false}
                   required={true}
@@ -142,7 +142,7 @@ function AddIndividual() {
                   label="Email"
                   name="email"
                   required={true}
-                  value={inputs.email?inputs.email:""}
+                  value={inputs.email ? inputs.email : ''}
                   error={false}
                   placeholder={emailPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -172,7 +172,7 @@ function AddIndividual() {
                   label="Phone"
                   name="phone"
                   required={true}
-                  value={inputs.phone?inputs.phone:""}
+                  value={inputs.phone ? inputs.phone : ''}
                   error={false}
                   placeholder={phonePlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -184,7 +184,7 @@ function AddIndividual() {
                   handleChange={(e) => handleChange(e)}
                   name="address"
                   placeholder={addressPlaceholder}
-                  value={inputs.address?inputs.address:""}
+                  value={inputs.address ? inputs.address : ''}
                   label="Address"
                   error={false}
                   required={true}
@@ -216,7 +216,13 @@ function AddIndividual() {
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Button type="submit" variant="outlined" color="primary" className="name" style={{ margin: '5px' }}>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                  className="name"
+                  style={{ margin: '15px 5px' }}
+                >
                   Cancel
                 </Button>
                 <Button
@@ -224,7 +230,7 @@ function AddIndividual() {
                   variant="contained"
                   color="primary"
                   className="name"
-                  style={{ margin: '5px', boxShadow: 'none' }}
+                  style={{ margin: '15px 5px', boxShadow: 'none' }}
                 >
                   Submit
                 </Button>
