@@ -65,9 +65,6 @@ const DefaultLayout = () => {
               </Grid>
             </Grid>
             {/* dashboard cards ends*/}
-            {/* dashboard merchant */}
-
-            {/* dashboard merchant ends*/}
           </MainBoard>
         </Grid>
       </Grid>
