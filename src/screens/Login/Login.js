@@ -45,6 +45,7 @@ const Login = () => {
   }
 
   useEffect(() => {
+    console.log("I am login");
     if (userInfo) {
       navigate('/dashboard')
     }

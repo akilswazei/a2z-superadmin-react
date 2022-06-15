@@ -131,6 +131,7 @@ export const signin = (email, password) => async (dispatch) => {
 }
 
 export const signout = () => (dispatch) => {
+  console.log("I am action");
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_SIGNOUT })
 }

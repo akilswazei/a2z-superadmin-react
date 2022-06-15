@@ -63,8 +63,9 @@ const Header = () => {
 
   const logoutHandler = (e) => {
     e.preventDefault()
+    console.log("I am going to logout");
     dispatch(signout())
-    navigate('/login')
+   // navigate('/login')
   }
 
   return (

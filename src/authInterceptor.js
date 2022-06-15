@@ -8,6 +8,7 @@ const dispatch = useDispatch()
 // Adds a default interceptor for all calls.
 // Calls the signout action if the server returns a 401 response.
 export const authInterceptor = () => {
+  console.log("test123");
   axios.interceptors.response.use(
     (response) => {
       return response

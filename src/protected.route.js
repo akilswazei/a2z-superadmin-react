@@ -4,6 +4,8 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ loggedIn }) => {
+  console.log("I am protected");
+
   return !!loggedIn ? <Outlet /> : <Navigate to="/login" />
 }
 
