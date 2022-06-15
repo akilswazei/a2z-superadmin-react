@@ -8,6 +8,10 @@ export default function formStyles() {
           backgroundColor: '#F9F9FC',
           border: 'none',
         },
+        '&:nth-of-type(2n-1)': {
+          backgroundColor: '#f2f4ffc8',
+          border: 'none',
+        },
       },
     },
     '& .MuiDataGrid-columnHeaders': {

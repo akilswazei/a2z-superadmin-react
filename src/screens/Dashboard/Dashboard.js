@@ -8,7 +8,24 @@ import ReceiptIcon from '@mui/icons-material/Receipt'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import StorefrontIcon from '@mui/icons-material/Storefront'
 import Merchant from '../Merchants/Merchants'
+import Chart from './Chart'
+import { UserData } from './Data'
+import { useState } from 'react'
+import CustomDatagrid from './CustomDatagrid'
+import { Container, createStyles } from '@material-ui/core'
 const DefaultLayout = () => {
+  const [userData, setUserData] = useState({
+    labels: UserData.map((data) => data.year),
+    datasets: [
+      {
+        label: 'Users Gained',
+        data: UserData.map((data) => data.userGain),
+        backgroundColor: ['rgba(255,255,255)'],
+        borderColor: 'blue',
+        borderWidth: 1,
+      },
+    ],
+  })
   return (
     <div>
       {/* <AppSidebar /> */}
@@ -65,6 +82,48 @@ const DefaultLayout = () => {
               </Grid>
             </Grid>
             {/* dashboard cards ends*/}
+            {/* dashboard chart*/}
+            <Grid container spacing={1}>
+              <Grid item md={9} className="m-0">
+                <Chart chartData={userData} />
+              </Grid>
+              <Grid item md={3}>
+                <div className="small-chart">
+                  <div className="small-cart-p">
+                    <p className="bold">New Leads</p>
+                    <p className="custom-p">28 Daily Avg</p>
+                  </div>
+                  <div className="small-cart-num">
+                    <p>+955</p>
+                  </div>
+                </div>
+              </Grid>
+            </Grid>
+            {/* dashboard chart ends*/}
+            {/* dashboard leads and invoice cards */}
+            <Grid container spacing={2}>
+              <Grid item md={6}>
+                <div className="custom-card-dashboard">
+                  <h6 className="">Invoice</h6>
+                  <Container fluid className="custom-container-white p-0">
+                    <div>
+                      <CustomDatagrid />
+                    </div>
+                  </Container>
+                </div>
+              </Grid>
+              <Grid item md={6}>
+                <div className="custom-card-dashboard">
+                  <h6 className="">New Leads</h6>
+                  <Container fluid className="custom-container-white p-0">
+                    <div>
+                      <CustomDatagrid />
+                    </div>
+                  </Container>
+                </div>
+              </Grid>
+            </Grid>
+            {/* dashboard leads and invoice cards ends*/}
           </MainBoard>
         </Grid>
       </Grid>
