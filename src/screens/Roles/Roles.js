@@ -1,55 +1,130 @@
 /* eslint-disable prettier/prettier */
-import { cilPencil, cilTrash, cilUserPlus } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton } from '@coreui/react';
-import React, { useEffect } from 'react'
+import * as React from 'react'
+
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { getRoles } from 'src/redux/actions/UserRoles';
+
+import MainBoard from 'src/components/include/MainBoard'
+import { Container } from '@material-ui/core'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import { makeStyles, Pagination } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import { getRoles } from 'src/services/RolesServices'
+import { deleteRole } from 'src/services/RoleService'
+import EditIcon from '@mui/icons-material/Edit'
+import { useNavigate } from 'react-router-dom'
+import DeleteIcon from '@mui/icons-material/Delete'
+import FormStyles from 'src/helper/FormStyles'
+const datagridSx = FormStyles
 
 const Roles = () => {
-  
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const getState = useSelector((state) => state)
+  const {
+    userSignin: { userInfo },
+  } = getState
 
-  const userRole = useSelector(state => state.userRole);
-  const {loading, roles, error} = userRole;
-  
-  let sr_no = 0;
+  const [roles, setRoles] = useState({})
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
 
+  const getRolesData = async () => {
+    setRoles(await getRoles(userInfo))
+  }
+
+  const searchRoles = async (value) => {
+    setSearch(value)
+    setPage(1)
+    setRoles(await getRoles(userInfo, 1, value))
+  }
+
+  const changePage = async (value) => {
+    setPage(value)
+    setRoles(await getRoles(userInfo, value, search))
+  }
+
+  const handleDelete = async (eid, e) => {
+    deleteRole(userInfo, eid)
+    setRoles({
+      ...roles,
+      data: { ...roles.data, data: [...roles.data.data.filter((v, i) => v.eid != eid)] },
+    })
+  }
   useEffect(() => {
-    dispatch(getRoles());
-  }, [dispatch]);
+    getRolesData()
+  }, [])
 
+  console.log(roles)
+  let sr_no = 0
+  const columns = [
+    { field: 'name', headerName: 'Role', width: 150 },
+    {
+      field: 'actions',
+      width: 100,
+      renderCell: (cellValue) => {
+        return (
+          <div className="edit-delete-div">
+            <span className="pencil-icon" onClick={(e) => navigate('/role/edit/' + cellValue?.row?.eid)}>
+              <EditIcon />
+            </span>
+            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
+              <DeleteIcon />
+            </span>
+          </div>
+        )
+      },
+    },
+  ]
+
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/role/add')
+  }
   return (
-    <>
-      <Link to="/users-management/roles/add-roles"><CButton color="danger">Add Role<CIcon icon={cilUserPlus}  size='lg'/></CButton></Link>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Roles</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-        {
-            loading ? "Loading" : error ? "Error" : (
-              
-              roles ?. data ?.map((role, key) => {
-                return (
-                  <CTableRow key={key}>
-                    <CTableHeaderCell scope="row">{++sr_no}</CTableHeaderCell>
-                    <CTableDataCell>{role.name}</CTableDataCell>
-                    <CTableDataCell><CIcon icon={cilPencil}  size='lg'/> <CIcon icon={cilTrash} size='lg'/> </CTableDataCell>
-                  </CTableRow>
-                ) ;
-              })
-            )
-          }
-         
-        </CTableBody>
-      </CTable>
-    </>
+    <MainBoard>
+      <Container fluid>
+        <Container className="p-0 mt-4">
+          <h6>Roles</h6>
+        </Container>
+        <Container className="background-white-theme">
+          <div className="justify-flex-end input-div">
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => {
+                searchRoles(e.target.value)
+              }}
+            />
+            <button onClick={navigateFunction} className="custom-blue-btn m-2">
+              Add Role<span>{<PersonAddAltIcon />}</span>
+            </button>
+          </div>
+          <div style={{ height: '75vh', width: '100%' }} className="py-2">
+            {roles?.data && (
+              <DataGrid
+                className="customTable"
+                getRowId={(row) => Math.random()}
+                rows={roles.data}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+                sx={datagridSx}
+              />
+            )}
+          </div>
+          <Container>
+            <Pagination
+              className="pagination"
+              count={roles?.data?.links ? roles.data.links.length - 2 : 1}
+              page={page}
+              defaultPage={page}
+              onChange={(e, number) => changePage(e, number)}
+            />
+          </Container>
+        </Container>
+      </Container>
+    </MainBoard>
   )
 }
-export default Roles;
+export default Roles

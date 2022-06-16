@@ -33,9 +33,9 @@ const DefaultLayout = () => {
         <Grid item md={12}>
           <MainBoard>
             {/* dashboard cards */}
-            <Grid item md={11} className="mx-auto my-3">
-              <Grid container spacing={2}>
-                <Grid item md={3}>
+            <Grid item md={12} sm={12} xs={12} className="mx-2 my-3">
+              <Grid container spacing={1}>
+                <Grid item md={3} sm={6} xs={6}>
                   <div className="dashboard-card-div">
                     <div className="dashboard-card-icon">
                       <StorefrontIcon />
@@ -46,7 +46,7 @@ const DefaultLayout = () => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={3} sm={6} xs={6}>
                   <div className="dashboard-card-div dashboard-blue">
                     <div className="dashboard-card-icon">
                       <ReceiptIcon />
@@ -57,7 +57,7 @@ const DefaultLayout = () => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={3} sm={6} xs={6}>
                   <div className="dashboard-card-div dashboard-yellow">
                     <div className="dashboard-card-icon">
                       <PeopleAltIcon />
@@ -68,7 +68,7 @@ const DefaultLayout = () => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={3} sm={6} xs={6}>
                   <div className="dashboard-card-div dashboard-orange">
                     <div className="dashboard-card-icon">
                       <StoreIcon />
@@ -84,8 +84,11 @@ const DefaultLayout = () => {
             {/* dashboard cards ends*/}
             {/* dashboard chart*/}
             <Grid container spacing={1}>
-              <Grid item md={9} className="m-0">
-                <Chart chartData={userData} />
+              <Grid item md={8} sm={12} xs={12} className="mx-auto">
+                <h6>Merchant</h6>
+                <Container fluid className="custom-container-white p-0">
+                  <Chart chartData={userData} />
+                </Container>
               </Grid>
               <Grid item md={3}>
                 <div className="small-chart">
@@ -101,8 +104,8 @@ const DefaultLayout = () => {
             </Grid>
             {/* dashboard chart ends*/}
             {/* dashboard leads and invoice cards */}
-            <Grid container spacing={2}>
-              <Grid item md={6}>
+            <Grid container spacing={0}>
+              <Grid item md={6} sm={12} xs={12}>
                 <div className="custom-card-dashboard">
                   <h6 className="">Invoice</h6>
                   <Container fluid className="custom-container-white p-0">
@@ -112,7 +115,7 @@ const DefaultLayout = () => {
                   </Container>
                 </div>
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={6} sm={12} xs={12}>
                 <div className="custom-card-dashboard">
                   <h6 className="">New Leads</h6>
                   <Container fluid className="custom-container-white p-0">
@@ -124,6 +127,7 @@ const DefaultLayout = () => {
               </Grid>
             </Grid>
             {/* dashboard leads and invoice cards ends*/}
+            <Grid container></Grid>
           </MainBoard>
         </Grid>
       </Grid>
