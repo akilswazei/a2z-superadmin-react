@@ -21,6 +21,10 @@ import AddProduct from './screens/Products/AddProduct'
 import Payout from './screens/Payout/Payout'
 import AddPayout from './screens/Payout/AddPayout'
 
+import Roles from './screens/Roles/Roles'
+import AddRoles from './screens/Roles/AddRoles'
+import Supplier from './screens/Supplier/Supplier'
+import AddSupplier from './screens/Supplier/AddSupplier'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -96,6 +100,10 @@ class App extends Component {
 
                 <Route exact path="/orders" element={<Order />} />
                 <Route exact path="order/edit/:eid" element={<OrderDetail />} />
+                <Route exact path="/roles" element={<Roles />} />
+                <Route exact path="/role/add" element={<AddRoles />} />
+                <Route exact path="/suppliers" element={<Supplier />} />
+                <Route exact path="/supplier/add" element={<AddSupplier />} />
               </Route>
             </Routes>
           </Suspense>

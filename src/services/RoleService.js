@@ -1,12 +1,13 @@
+/* eslint-disable prettier/prettier */
 import axios from 'axios'
 
-export const getSuppliers = async (userInfo, page = 1, search_keyword = '') => {
+export const getRoles = async (userInfo, page = 1, search_keyword = '') => {
   console.log(search_keyword)
   let getpara = []
   getpara[0] = page == 1 ? '' : 'page=' + page
   getpara[1] = search_keyword == '' ? '' : 's=' + search_keyword
   const para = getpara.join('&')
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/team/list-individual?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/role/get-super-admin-role?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
@@ -14,9 +15,9 @@ export const getSuppliers = async (userInfo, page = 1, search_keyword = '') => {
   return data
 }
 
-export const getSupplier = async (userInfo, eid = '') => {
+export const getRole = async (userInfo, eid = '') => {
   const para = 'eid=' + eid
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/team/show-individual?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/role/get-super-admin-role?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
@@ -24,9 +25,9 @@ export const getSupplier = async (userInfo, eid = '') => {
   return data
 }
 
-export const deleteSupplier = async (userInfo, eid) => {
+export const deleteRole = async (userInfo, eid) => {
   const { data } = await axios.post(
-    process.env.REACT_APP_BASE_URL + '/admin/team/delete',
+    process.env.REACT_APP_BASE_URL + '/admin/role/get-super-admin-role',
     {
       eid: eid,
     },
@@ -38,9 +39,9 @@ export const deleteSupplier = async (userInfo, eid) => {
   )
   return true
 }
-export const addSupplier = async (userInfo, userdata) => {
+export const addRole = async (userInfo, userdata) => {
   const { data } = await axios
-    .post(process.env.REACT_APP_BASE_URL + '/admin/team/store-individual', userdata, {
+    .post(process.env.REACT_APP_BASE_URL + '/admin/role/get-super-admin-role', userdata, {
       headers: {
         Authorization: 'Bearer ' + userInfo.data.token,
       },
@@ -50,9 +51,9 @@ export const addSupplier = async (userInfo, userdata) => {
     })
   return data
 }
-export const updateSupplier = async (userInfo, userdata) => {
+export const updateRole = async (userInfo, userdata) => {
   const { data } = await axios
-    .post(process.env.REACT_APP_BASE_URL + '/admin/team/update-individual', userdata, {
+    .post(process.env.REACT_APP_BASE_URL + '/admin/role/get-super-admin-role', userdata, {
       headers: {
         Authorization: 'Bearer ' + userInfo.data.token,
       },

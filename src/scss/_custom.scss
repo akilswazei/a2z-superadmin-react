@@ -426,3 +426,47 @@
         background-color: #F89E8B;
     }
 }
+.small-chart{
+    background-color: $dashboard-red;
+    padding: 0.8em;
+    margin: 2em 0.5em 0 0.2em;
+    min-height: 30vh;
+    border-radius: 0.3em;
+    display: flex;
+    justify-content: space-between;
+    
+    p{
+        color: white;
+        margin: 0.2em;
+    }
+    .bold, .small-cart-num{
+        font-weight: 700;
+    }
+    .custom-p{
+        font-size: 0.7em;
+    }
+}
+.custom-card-dashboard{
+    div{
+        
+        border-radius: 0.3em;
+    }
+    h6{
+        font-weight: 600;
+    }
+    margin: 2em 1em;
+}
+.custom-checkbox-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $font-color-gray;
+    border-radius: 0.3em;
+}
+.custom-font{
+    color: $font-color-gray;
+    h6{
+        color: $font-color-gray;
+    }
+}

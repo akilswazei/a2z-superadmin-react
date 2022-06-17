@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { TextField } from '@material-ui/core'
-
-import React from 'react'
+import * as React from 'react'
 
 export function CustomText({ name, value, handleChange, placeholder, error, required, label }) {
   return (

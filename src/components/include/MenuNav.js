@@ -36,119 +36,118 @@ const styles = (theme) => ({
 })
 function getItems() {
   var json = {
+    id: 1,
+    title: 'first',
+    link: '',
+    items: [
+      {
         id: 1,
-        title: 'first',
+        name: 'Dashboard',
+        link: '/dashboard',
+        icon: <DashboardIcon />,
+      },
+      {
+        id: 2,
+        name: 'User Management',
+        icon: <PersonIcon />,
         link: '',
-        items: [
+        subitems: [
           {
             id: 1,
-            name: 'Dashboard',
-            link: '/dashboard',
-            icon: <DashboardIcon />,
+            name: 'A2Z Users',
+            link: '/users',
           },
           {
             id: 2,
-            name: 'User Management',
-            icon: <PersonIcon />,
+            name: 'Outsource',
             link: '',
             subitems: [
               {
                 id: 1,
-                name: 'A2Z Users',
-                link: '/users',
+                name: 'Freelancer',
+                link: '/individuals',
               },
               {
                 id: 2,
-                name: 'Outsource',
-                link: '',
-                subitems: [
-                  {
-                    id: 1,
-                    name: 'Freelancer',
-                    link: '/individuals',
-                  },
-                  {
-                    id: 2,
-                    name: 'Agency',
-                    link: '/teams',
-                  },
-                  {
-                    id: 3,
-                    name: 'Role',
-                    link: '/roles',
-                  },
-                ],
+                name: 'Agency',
+                link: '/teams',
               },
-              
+              {
+                id: 3,
+                name: 'Role',
+                link: '/roles',
+              },
             ],
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: 'Leads',
+        link: '/dashboard',
+        icon: <BallotIcon />,
+      },
+      {
+        id: 4,
+        name: 'Merchants',
+        icon: <StoreIcon />,
+        link: '',
+        subitems: [
+          {
+            id: 1,
+            name: 'All Merchant',
+            link: '/merchants',
+          },
+          {
+            id: 2,
+            name: 'Store',
+            link: '/stores',
           },
           {
             id: 3,
-            name: 'Leads',
+            name: 'Terminal',
             link: '/dashboard',
-            icon: <BallotIcon />,
-          },
-          {
-            id: 4,
-            name: 'Merchants',
-            icon: <StoreIcon />,
-            link: '',
-            subitems: [
-              {
-                id: 1,
-                name: 'All Merchant',
-                link: '/merchants',
-              },
-              {
-                id: 2,
-                name: 'Store',
-                link: '/stores',
-              },
-              {
-                id: 3,
-                name: 'Terminal',
-                link: '/dashboard',
-              },
-            ],
-          },
-          {
-            id: 5,
-            name: 'Marketplace',
-            icon: <StorefrontIcon />,
-            link: '',
-            subitems: [
-              {
-                id: 1,
-                name: 'Order',
-                link: '/orders',
-              },
-              {
-                id: 2,
-                name: 'Product',
-                link: '/products',
-              },
-              {
-                id: 3,
-                name: 'Supplier',
-                link: '/dashboard',
-              },
-            ],
-          },
-          {
-            id: 6,
-            name: 'Sales Invoice',
-            icon: <ReceiptIcon />,
-            link: '/dashboard',
-          },
-          {
-            id: 7,
-            name: 'Support',
-            icon: <HelpIcon />,
-            link: '/',
           },
         ],
-      }
-      
+      },
+      {
+        id: 5,
+        name: 'Marketplace',
+        icon: <StorefrontIcon />,
+        link: '',
+        subitems: [
+          {
+            id: 1,
+            name: 'Order',
+            link: '/orders',
+          },
+          {
+            id: 2,
+            name: 'Product',
+            link: '/products',
+          },
+          {
+            id: 3,
+            name: 'Supplier',
+            link: '/suppliers',
+          },
+        ],
+      },
+      {
+        id: 6,
+        name: 'Sales Invoice',
+        icon: <ReceiptIcon />,
+        link: '/dashboard',
+      },
+      {
+        id: 7,
+        name: 'Support',
+        icon: <HelpIcon />,
+        link: '/',
+      },
+    ],
+  }
+
   return json
 }
 class Navlist extends React.Component {
@@ -161,89 +160,87 @@ class Navlist extends React.Component {
     const { classes } = this.props
     return (
       <div>
-            <List className={classes.root} key={nav.id}>
-              {nav.items.map((item) => {
-                return (
-                  <div key={item.id}>
+        <List className={classes.root} key={nav.id}>
+          {nav.items.map((item) => {
+            return (
+              <div key={item.id}>
+                <div key={item.id}>
+                  <ListItem button key={item.id} onClick={this.handleClick.bind(this, item.name)}>
+                    <NavLink exact activeClassName="navbar__link--active" className="navbar__link" to={item.link}>
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.name} />
+                      {item.subitems != null ? this.state[item.name] ? <ExpandLess /> : <ExpandMore /> : ''}
+                    </NavLink>
+                  </ListItem>
+                  <Collapse key={'c' + item.id} in={this.state[item.name]} timeout="auto" unmountOnExit>
+                    {item.subitems &&
+                      item.subitems.map((sitem) => {
+                        return (
+                          <div key={sitem.id}>
+                            <div key={sitem.id}>
+                              <ListItem
+                                button
+                                key={sitem.id}
+                                className={classes.nested}
+                                onClick={this.handleClick.bind(this, sitem.name)}
+                              >
+                                <NavLink
+                                  exact
+                                  activeClassName="navbar__link--active"
+                                  className="navbar__link"
+                                  to={sitem.link}
+                                >
+                                  <ListItemIcon>{sitem.icon}</ListItemIcon>
+                                  <ListItemText key={sitem.id} primary={sitem.name} />
+                                  {sitem.subitems != null ? (
+                                    this.state[sitem.name] ? (
+                                      <ExpandLess />
+                                    ) : (
+                                      <ExpandMore />
+                                    )
+                                  ) : (
+                                    ''
+                                  )}
+                                </NavLink>
+                              </ListItem>
 
-                      <div key={item.id}>
-                        <ListItem button key={item.id} onClick={this.handleClick.bind(this, item.name)}>
-                          <NavLink exact activeClassName="navbar__link--active" className="navbar__link" to={item.link}>
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.name} />
-                            {
-                                item.subitems != null ? 
-                                    this.state[item.name] ? <ExpandLess /> : <ExpandMore /> : 
-                                    ""
-                            }
-                          </NavLink>
-                        </ListItem>
-                        <Collapse
-                          key={"c"+item.id}
-                          in={this.state[item.name]}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                            {item.subitems && item.subitems.map((sitem) => {
-                              return (
-                                <div key={sitem.id}>
-
-                                  <div key={sitem.id}>
-                                  <ListItem button key={sitem.id} className={classes.nested} onClick={this.handleClick.bind(this, sitem.name)}>
-                                    <NavLink
-                                        exact
-                                        activeClassName="navbar__link--active"
-                                        className="navbar__link"
-                                        to={sitem.link}
-                                    >
-                                        <ListItemIcon>{sitem.icon}</ListItemIcon>
-                                        <ListItemText key={sitem.id} primary={sitem.name} />
-                                        {
-                                            sitem.subitems != null ? 
-                                                (this.state[sitem.name] ? <ExpandLess /> : <ExpandMore />) : 
-                                                ""
-                                        }
-                                    </NavLink>
-                                    </ListItem>
-                                  
-                                    <Collapse
-                                    key={'c'+item.id+sitem.id}
-                                    in={this.state[sitem.name]}
-                                    timeout="auto"
-                                    unmountOnExit
-                                    >
-                                        {sitem.subitems && sitem.subitems.map((ssitem) => {
-                                            return (
-                                            <ListItem button key={ssitem.id} >
-                                                <NavLink
-                                                exact
-                                                activeClassName="navbar__link--active"
-                                                className="navbar__link"
-                                                to={ssitem.link}
-                                                >
-                                                    <ListItemIcon>{ssitem.icon}</ListItemIcon>
-                                                    <ListItemText key={ssitem.id} primary={ssitem.name} />
-                                                </NavLink>
-                                            </ListItem>
-                                        )})}
-                                    </Collapse>
-                              </div></div>
-
-                              )
-                            })}
-                        </Collapse>
-                      </div>
-                    
-                  </div>
-                )
-              })}
-              {/* <Divider key={list.id} absolute /> */}
-            </List>
-            
-        </div>
-          )
-
-    
+                              <Collapse
+                                key={'c' + item.id + sitem.id}
+                                in={this.state[sitem.name]}
+                                timeout="auto"
+                                unmountOnExit
+                              >
+                                {sitem.subitems &&
+                                  sitem.subitems.map((ssitem) => {
+                                    return (
+                                      <ListItem button key={ssitem.id}>
+                                        {console.log(ssitem)}
+                                        <NavLink
+                                          exact
+                                          activeClassName="navbar__link--active"
+                                          className="navbar__link"
+                                          to={ssitem.link}
+                                        >
+                                          <ListItemIcon>{ssitem.icon}</ListItemIcon>
+                                          <ListItemText key={ssitem.id} primary={ssitem.name} />
+                                        </NavLink>
+                                      </ListItem>
+                                    )
+                                  })}
+                              </Collapse>
+                            </div>
+                          </div>
+                        )
+                      })}
+                  </Collapse>
+                </div>
+              </div>
+            )
+          })}
+          {/* <Divider key={list.id} absolute /> */}
+        </List>
+      </div>
+    )
   }
 }
 Navlist.propTypes = {
