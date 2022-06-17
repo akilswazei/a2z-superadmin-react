@@ -9,54 +9,54 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { getOrders } from 'src/services/OrderService'
+import { getSubscriptions } from 'src/services/SubscriptionService'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FormStyles from 'src/helper/FormStyles'
 const datagridSx = FormStyles
 
-const Order = () => {
+const Subscription = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
-  const [order, setOrder] = useState({})
+  const [subscription, setSubscription] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const getOrderData = async () => {
-    setOrder(await getOrders(userInfo))
+  const getSubscriptionData = async () => {
+    setSubscription(await getSubscriptions(userInfo))
   }
 
-  const searchOrder = async (value) => {
+  const searchSubscription = async (value) => {
     setSearch(value)
     setPage(1)
-    setOrder(await getOrders(userInfo, 1, value))
+    setSubscription(await getSubscriptions(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setOrder(await getOrders(userInfo, value, search))
+    setSubscription(await getSubscriptions(userInfo, value, search))
   }
 
   // const handleDelete = async (eid, e) => {
   //   deleteIndividual(userInfo, eid)
-  //   setOrder({
-  //     ...order,
-  //     data: { ...order.data, data: [...order.data.data.filter((v, i) => v.eid != eid)] },
+  //   setSubscription({
+  //     ...subscription,
+  //     data: { ...subscription.data, data: [...subscription.data.data.filter((v, i) => v.eid != eid)] },
   //   })
   // }
   useEffect(() => {
-    getOrderData()
+    getSubscriptionData()
   }, [])
 
-  console.log(order)
+  console.log(subscription)
   let sr_no = 0
   const columns = [
-    { field: 'eid', headerName: 'Order ID', width: 150 },
+    { field: 'eid', headerName: 'Subscription ID', width: 150 },
     { field: 'merchant_id', headerName: 'Merchant', width: 200 },
 
     {
@@ -76,7 +76,7 @@ const Order = () => {
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/order/edit/' + cellValue?.row?.eid)}>
+            <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
             <span className="delete-icon">
@@ -96,7 +96,7 @@ const Order = () => {
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Orders</h6>
+          <h6>Subscriptions</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
@@ -105,7 +105,7 @@ const Order = () => {
               className="m-1"
               placeholder="Sort By"
               onChange={(e) => {
-                searchOrder(e.target.value)
+                searchSubscription(e.target.value)
               }}
             />
             {/* <button className="custom-blue-btn m-2">
@@ -116,16 +116,16 @@ const Order = () => {
               placeholder="Search here"
               className="m-1"
               onChange={(e) => {
-                searchOrder(e.target.value)
+                searchSubscription(e.target.value)
               }}
             />
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {order?.data?.data && (
+            {subscription?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random()}
-                rows={order.data.data}
+                rows={subscription.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -137,7 +137,7 @@ const Order = () => {
           <Container>
             <Pagination
               className="pagination"
-              count={order?.data?.links ? order.data.links.length - 2 : 1}
+              count={subscription?.data?.links ? subscription.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}
@@ -148,4 +148,4 @@ const Order = () => {
     </MainBoard>
   )
 }
-export default Order
+export default Subscription

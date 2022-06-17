@@ -7,6 +7,7 @@ import './index.css'
 import Individuals from './screens/Individuals/Individuals'
 import AddIndividual from './screens/Individuals/AddIndividual'
 import Product from './screens/Products/Product'
+
 import Stores from './screens/Store/Stores'
 import AddStore from './screens/Store/AddStore'
 import Merchants from './screens/Merchants/Merchants'
@@ -16,6 +17,10 @@ import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 import OrderDetail from './screens/Order/OrderDetail'
 import AddMerchant from './screens/Merchants/AddMerchant'
 import AddProduct from './screens/Products/AddProduct'
+
+import Payout from './screens/Payout/Payout'
+import AddPayout from './screens/Payout/AddPayout'
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -81,10 +86,16 @@ class App extends Component {
 
                 <Route exact path="/merchants" element={<Merchants />} />
                 <Route exact path="/merchant/add" element={<AddMerchant />} />
-                <Route exact path="/orders" element={<Order />} />
+               
                 <Route exact path="/products" element={<Product />} />
                 <Route exact path="/product/add" element={<AddProduct />} />
-                <Route exact path="/orderdetail" element={<OrderDetail />} />
+                <Route exact path="/product/edit/:eid" element={<AddProduct />} />
+
+                <Route exact path="/payouts" element={<Payout />} />
+                <Route exact path="/payout/add" element={<AddPayout />} />
+
+                <Route exact path="/orders" element={<Order />} />
+                <Route exact path="order/edit/:eid" element={<OrderDetail />} />
               </Route>
             </Routes>
           </Suspense>

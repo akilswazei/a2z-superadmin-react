@@ -9,63 +9,72 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { getOrders } from 'src/services/OrderService'
+import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { getPayout, getPayouts } from 'src/services/PayoutService'
 import FormStyles from 'src/helper/FormStyles'
+
 const datagridSx = FormStyles
 
-const Order = () => {
+const Payout = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
-  const [order, setOrder] = useState({})
+  const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const getOrderData = async () => {
-    setOrder(await getOrders(userInfo))
+  const getPayoutData = async () => {
+    setPayout(await getPayouts(userInfo))
   }
 
-  const searchOrder = async (value) => {
+  const searchIndividual = async (value) => {
     setSearch(value)
     setPage(1)
-    setOrder(await getOrders(userInfo, 1, value))
+    setPayout(await getPayouts(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setOrder(await getOrders(userInfo, value, search))
+    setPayout(await getPayouts(userInfo, value, search))
   }
 
-  // const handleDelete = async (eid, e) => {
-  //   deleteIndividual(userInfo, eid)
-  //   setOrder({
-  //     ...order,
-  //     data: { ...order.data, data: [...order.data.data.filter((v, i) => v.eid != eid)] },
-  //   })
-  // }
+  const handleDelete = async (eid, e) => {
+    deleteIndividual(userInfo, eid)
+    setPayout({
+      ...payout,
+      data: { ...payout.data, data: [...payout.data.data.filter((v, i) => v.eid != eid)] },
+    })
+  }
   useEffect(() => {
-    getOrderData()
+    getPayoutData()
   }, [])
 
-  console.log(order)
+  console.log(payout)
   let sr_no = 0
   const columns = [
-    { field: 'eid', headerName: 'Order ID', width: 150 },
-    { field: 'merchant_id', headerName: 'Merchant', width: 200 },
-
+    { field: 'payout_name', headerName: 'Payout', width: 350 },
+    // { field: 'category', headerName: 'Category', width: 150 },
+    // { field: 'brand', headerName: 'Brand', width: 150 },
+    // { field: 'supplier', headerName: 'Supplier', width: 150 },
+    { field: 'supplier_price', headerName: 'Supplier Price', width: 150 },
+    { field: 'selling_price', headerName: 'Store Sell Price', width: 150 },
+    { field: 'eid', headerName: 'username', width: 150 },
+    // { field: 'company_name', headerName: 'Name', width: 200 },
+    // { field: 'company_email', headerName: 'Email', width: 300 },
+    // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
       width: 150,
       renderCell: (cellValues) => {
         return (
           <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
-            {cellValues?.row?.status == 1 ? 'Processing' : 'completed'}
+            {cellValues?.row?.status == 1 ? 'Inactive' : 'Active'}
           </button>
         )
       },
@@ -76,10 +85,10 @@ const Order = () => {
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/order/edit/' + cellValue?.row?.eid)}>
+            <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
-            <span className="delete-icon">
+            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
               <DeleteIcon />
             </span>
           </div>
@@ -88,44 +97,37 @@ const Order = () => {
     },
   ]
 
-  //   const navigateFunction = (e) => {
-  //     e.preventDefault()
-  //     navigate('/individual/add')
-  //   }
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/individual/add')
+  }
   return (
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Orders</h6>
+          <h6>Payouts</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
-            <input
-              type="text"
-              className="m-1"
-              placeholder="Sort By"
-              onChange={(e) => {
-                searchOrder(e.target.value)
-              }}
-            />
-            {/* <button className="custom-blue-btn m-2">
-              Add Individual<span>{<PersonAddAltIcon />}</span>
-            </button> */}
+            <input type="text" placeholder="Sort by" className="m-1" />
             <input
               type="text"
               placeholder="Search here"
               className="m-1"
               onChange={(e) => {
-                searchOrder(e.target.value)
+                searchIndividual(e.target.value)
               }}
             />
+            <button onClick={navigateFunction} className="custom-blue-btn m-2">
+              Add Payouts<span>{<PersonAddAltIcon />}</span>
+            </button>
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {order?.data?.data && (
+            {payout?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random()}
-                rows={order.data.data}
+                rows={payout.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -137,7 +139,7 @@ const Order = () => {
           <Container>
             <Pagination
               className="pagination"
-              count={order?.data?.links ? order.data.links.length - 2 : 1}
+              count={payout?.data?.links ? payout.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}
@@ -148,4 +150,4 @@ const Order = () => {
     </MainBoard>
   )
 }
-export default Order
+export default Payout

@@ -39,7 +39,7 @@ export function CustomEmail({ handleChange, value, name, placeholder, label, req
         id={name}
         name={name}
         type="email"
-        value={value}
+        defaultValue={value}
         variant="outlined"
         error={false}
         placeholder={placeholder}
@@ -95,6 +95,33 @@ export function CustomPhone({ handleChange, value, name, placeholder, label, req
     </>
   )
 }
+export function CustomSelect({ handleChange,options, value, name, label, required }) {
+  return (
+    <>
+      <h6 className="color-gray">
+        {label}
+        <sup>{required === true ? '*' : ''}</sup>
+      </h6>
+
+      <select
+          labelId="demo-simple-select-helper-label"
+          id={name}
+          label={label}
+          name={name}
+          fullWidth={true}
+          onChange={(e) => handleChange(e)}
+        >
+          {
+          options.map((ovalue,key) => {
+            return (<option selected={value==ovalue.eid?"selected":""} key={ovalue.eid} value={ovalue.eid}>{ovalue.name}</option>)
+          }) 
+
+          }
+      </select>
+      </>
+  )
+}
+      
 export function CustomDate({ handleChange, value, name, placeholder, label, required }) {
   return (
     <>

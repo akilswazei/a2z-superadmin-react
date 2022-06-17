@@ -215,7 +215,6 @@ class Navlist extends React.Component {
                                         {sitem.subitems && sitem.subitems.map((ssitem) => {
                                             return (
                                             <ListItem button key={ssitem.id} >
-                                                { console.log(ssitem) }
                                                 <NavLink
                                                 exact
                                                 activeClassName="navbar__link--active"

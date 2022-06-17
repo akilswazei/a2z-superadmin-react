@@ -16,10 +16,30 @@ export const getProducts = async (userInfo, page = 1, search_keyword = '') => {
 
 export const getProduct = async (userInfo, eid = '') => {
   const para = 'eid=' + eid
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/product/list' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/product/show?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
+  })
+  return data
+}
+
+export const addProduct= async (userInfo, userdata) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/product/store',userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
+}
+
+export const updateProduct= async (userInfo, userdata) => {
+  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/product/update',userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  }).catch((error) => {
+      return error.response
   })
   return data
 }

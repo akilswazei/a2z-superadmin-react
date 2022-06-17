@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
-import { addUser } from 'src/services/UserServices'
+import { addProduct,updateProduct,getProduct } from 'src/services/ProductService'
+import { getSuppliers } from 'src/services/SupplierService'
+import { getCategories } from 'src/services/CategoryService'
 import MainBoard from 'src/components/include/MainBoard'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -13,6 +15,8 @@ import DialogTitle from '@mui/material/DialogTitle'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
+import { useParams } from 'react-router-dom'
+import { validate } from 'src/helper/validation'
 import {
   Container,
   Button,
@@ -27,9 +31,11 @@ import {
 } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
+import { CustomEmail, CustomPasssword, CustomText, CustomSelect } from 'src/helper/helper'
+import { cilChevronDoubleLeft } from '@coreui/icons'
 
 function AddProduct() {
+  let suupliers;
   const getState = useSelector((state) => state)
   const navigate = useNavigate()
 
@@ -37,11 +43,19 @@ function AddProduct() {
     userSignin: { userInfo },
   } = getState
 
-  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
+  const { eid } = useParams()
+  let initialInputState = { status: 1 }
+
+  const [inputs, setInputs] = useState(initialInputState)
+  const [suppliers, setSuppliers] = useState([])
+  const [categories, setCategories] = useState([])
+  
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
+
+
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -51,13 +65,27 @@ function AddProduct() {
   //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
-    if (inputs.password == inputs.confirm_password) {
-      setErros({ ...errors, confirm_password: '' })
-      await addUser(userInfo, inputs)
-      setOpen(true)
-    } else {
-      setErros({ ...errors, confirm_password: 'password not matched' })
+    let allerrors = validate(inputs, {})
+    if (Object.keys(allerrors).length === 0) {
+      let response
+      if (eid) {
+        console.log('update will done')
+        response = await updateProduct(userInfo, inputs)
+      } else {
+        response = await addProduct(userInfo, inputs)
+      }
+      if (response.data && Object.keys(response.data).length != 0) {
+        allerrors = response.data
+        console.log(allerrors.email)
+        Object.keys(allerrors).forEach(function (ckey) {
+          allerrors[ckey] = allerrors[ckey].join()
+          console.log(allerrors[ckey])
+        })
+      } else {
+        setOpen(true)
+      }
     }
+    setErros(allerrors)
   }
 
   const getRolesData = async () => {
@@ -66,16 +94,34 @@ function AddProduct() {
 
   const handleClose = () => {
     setOpen(false)
-    navigate('../users', { replace: true })
+    navigate('../products', { replace: true })
+  }
+  const getProductData = async (eid) => {
+    const beforeUpdateData = await getProduct(userInfo, eid)
+    setInputs(beforeUpdateData.data)
+  }
+  const get_supplier_list = async (eid) => {
+    const supplier_data = await getSuppliers(userInfo)
+    supplier_data?.data?.data.map((value,key)=>{
+      suppliers.push({eid: value.eid,name: value.supplier_name})
+    })
+  }
+  const get_category_list = async (eid) => {
+    const category_data = await getCategories(userInfo)
+    category_data?.data?.data.map((value,key)=>{
+      categories.push({eid: value.eid,name: value.category_name})
+    })
   }
 
   useEffect(() => {
+    get_supplier_list();
+    get_category_list();
     getRolesData()
+    if (eid) {
+      getProductData(eid)
+    }
   }, [])
-  const namePlaceholder = 'Please enter product name'
-  const emailPlaceholder = 'Please enter your e-mail'
-  const passwordPlaceholder = 'Please enter password'
-  const confirmPasswordPlaceholder = 'Please re-enter password'
+
   React.useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
@@ -115,177 +161,204 @@ function AddProduct() {
         <Container className="background-white-theme my-3 custom-container-white">
           <form onSubmit={submitHandler}>
             <Grid container spacing={2}>
-              <Grid item xs={6} md={4}>
+            <Grid item xs={12} className="my-3 p-0">
+                <h6 className="m-0 p-0">Details</h6>
+              </Grid>
+              <Grid item xs={12} md={12}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="product-name"
-                  placeholder={namePlaceholder}
+                  name="product_name"
+                  placeholder="product name"
                   id="product-name"
-                  value=""
+                  value={inputs.product_name?inputs.product_name:""}
                   label="Product Name"
                   error={false}
                   required={true}
                 />
               </Grid>
 
-              <Grid item xs={6} md={4}>
+              <Grid item xs={12} md={12}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="product-name"
-                  placeholder="Please enter nick name"
-                  value=""
-                  label="Product Nickname"
+                  name="product_details"
+                  placeholder="Please enter details"
+                  value={inputs.product_details?inputs.product_details:""}
+                  label="Product Details"
                   error={false}
                   required={true}
                 />
               </Grid>
 
-              <Grid item xs={6} md={4}>
+              <Grid item sx={4} md={4}>
                 <CustomText
+                  label="Product UPC"
+                  name="product_upc"
+                  required={true}
+                  error={false}
+                  value={inputs.product_upc?inputs.product_upc:""}
+                  placeholder="Enter UPC"
                   handleChange={(e) => handleChange(e)}
-                  name="product-name"
-                  placeholder="Subscription product"
-                  value=""
+                />
+              </Grid>
+
+              <Grid item sx={4} md={4}>
+                <CustomText
+                  label="Product SKU"
+                  name="product_sku"
+                  required={true}
+                  error={false}
+                  value={inputs.product_sku?inputs.product_sku:""}
+                  placeholder="Enter UPC"
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>              
+              <Grid item sx={4} md={4}>
+                <CustomText
+                  label="Quantity"
+                  name="quantity"
+                  required={true}
+                  error={false}
+                  value={inputs.quantity?inputs.quantity:""}
+                  placeholder="Please enter quantity  "
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item sx={4} md={4}>
+                <CustomText
+                  label="Manufacturer"
+                  name="manufacturer"
+                  required={true}
+                  error={false}
+                  value={inputs.manufacturer?inputs.manufacturer:""}
+                  placeholder="Please enter manufacturer name"
+                  handleChange={(e) => handleChange(e)}
+                />
+              </Grid>
+
+
+
+              <Grid item sx={4} md={4}>
+                
+                <CustomSelect
+                    label="Supplier"
+                    name="supplier"
+                    fullWidth={true}
+                    required={true}
+                    error={false}
+                    value={inputs.supplier?inputs.supplier:""}
+                    handleChange={(e) => handleChange(e)}
+                    options={suppliers}
+                  />
+                </Grid>
+                
+              <Grid item sx={4} md={4}>
+
+              <CustomSelect
+                    label="Category"
+                    name="category"
+                    fullWidth={true}
+                    required={true}
+                    error={false}
+                    value={inputs.category?inputs.category:""}
+                    handleChange={(e) => handleChange(e)}
+                    options={categories}
+                  />
+
+              </Grid>
+              
+              
+              
+              <Grid item sx={4} md={4}>
+                <FormGroup>
+                  <CustomSelect
+                    label="Product Of"
+                    name="is_in_house"
+                    required={true}
+                    error={false}
+                    value={inputs.is_in_house?inputs.is_in_house:""}
+                    placeholder="is in house"
+                    handleChange={(e) => handleChange(e)}
+                    options={[{eid:1,name:"In house"},{eid:2,name:"marketplace"}]}
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={6} md={4}>
+                <CustomSelect
+                  handleChange={(e) => handleChange(e)}
+                  name="is_subscription"
+                  placeholder="Product Type"
+                  value={inputs.is_subscription?inputs.is_subscription:""}
                   label="Type of product"
                   error={false}
                   required={true}
+                  options={[{eid:1,name:"Subscription Product"},{eid:0,name:"Normal Product"}]}
                 />
               </Grid>
 
-              <Grid item sx={4} md={4}>
+              <Grid item xs={6} md={4}>
                 <CustomText
-                  label="Unit in a Package"
-                  name="unit"
-                  required={true}
-                  error={false}
-                  value=""
-                  placeholder="Pack of 1"
                   handleChange={(e) => handleChange(e)}
+                  name="subscription_day"
+                  placeholder="Subscription product"
+                  value={inputs.subscription_day?inputs.subscription_day:""}
+                  label="Subscription Days"
+                  error={false}
+                  required={true}
                 />
               </Grid>
-              <Grid item sx={4} md={4}>
-                <CustomText
-                  label="Size"
-                  name="size"
-                  required={true}
-                  error={false}
-                  value=""
-                  placeholder="Please enter size"
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item sx={4} md={4}>
-                <CustomText
-                  label="Supplier"
-                  name="supplier"
-                  required={true}
-                  error={false}
-                  value=""
-                  placeholder="Please select supplier"
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item sx={4} md={4}>
-                <CustomText
-                  label="Brand"
-                  name="brand"
-                  required={true}
-                  error={false}
-                  value=""
-                  placeholder="Please select brand"
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
+
               <Grid item md={8}></Grid>
+              <Grid item xs={12} className="my-3 p-0">
+                <h6 className="m-0 p-0">Price and order requirement</h6>
+              </Grid>
               <Grid item sx={4} md={6}>
                 <CustomText
-                  label="Supplier Price"
-                  name="supplier-price"
+                  label="A2Z Cost Price"
+                  name="atz_cost_price"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.atz_cost_price?inputs.atz_cost_price:""}
                   placeholder="Please enter supplier price"
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
               <Grid item sx={4} md={6}>
                 <CustomText
-                  label="Margin Profit in Store (in %)"
-                  name="profit"
+                  label="A2Z Selling Price"
+                  name="atz_selling_price"
                   required={false}
                   error={false}
-                  value=""
+                  value={inputs.atz_selling_price?inputs.atz_selling_price:""}
                   placeholder="Please enter profite"
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
               <Grid item sx={4} md={6}>
                 <CustomText
-                  label="Store Sell Price"
-                  name="sell-price"
+                  label="MRP"
+                  name="mrp"
                   required={true}
                   error={false}
-                  value=""
-                  placeholder="Please enter store sell price"
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item sx={4} md={6}>
-                <CustomText
-                  label="Discount"
-                  name="discount"
-                  required={false}
-                  error={false}
-                  value=""
-                  placeholder="Please enter discount"
+                  value={inputs.mrp?inputs.mrp:""}
+                  placeholder="Please MRP"
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
 
-              <Grid item sx={4} md={12}>
-                <FormGroup>
-                  <FormControlLabel control={<Checkbox defaultChecked />} label="is E-commerce Product?" />
-                </FormGroup>
+              <Grid item sx={4} md={6}>
+                <CustomText
+                  label="Min Order Quantity"
+                  name="min_order_quantity"
+                  required={true}
+                  error={false}
+                  value={inputs.min_order_quantity?inputs.min_order_quantity:""}
+                  placeholder="Please enter quantity"
+                  handleChange={(e) => handleChange(e)}
+                />
               </Grid>
-              <Grid item md={12}>
-                <FormControlLabel disabled control={<Checkbox />} label="Container Deposite" />
-                <FormControlLabel disabled control={<Checkbox />} label="FAX" />
-              </Grid>
-              <Grid container spacing={2}>
-                <Grid item md={4}>
-                  <CustomText
-                    label="Combo name"
-                    name="combo-name"
-                    required={false}
-                    error={false}
-                    value=""
-                    placeholder="Please enter combo name"
-                    handleChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-                <Grid item md={4}>
-                  <CustomText
-                    label="Units in a Combo"
-                    name="units"
-                    required={false}
-                    error={false}
-                    value=""
-                    placeholder="Please enter units in combo"
-                    handleChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-                <Grid item md={4}>
-                  <CustomText
-                    label="Combo Price"
-                    name="combo-price"
-                    required={false}
-                    error={false}
-                    value=""
-                    placeholder="Please enter units combo price"
-                    handleChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-              </Grid>
+
+              {/* image is left */}
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <Button
