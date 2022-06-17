@@ -61,7 +61,7 @@ const MerchantDash = () => {
 
   return (
     <Container>
-      <Container className="p-0 ">
+      <Container className="p-0">
         <h6>Merchants</h6>
       </Container>
       <Container className="background-white-theme custom-container-white">

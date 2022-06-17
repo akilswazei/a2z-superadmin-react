@@ -42,13 +42,15 @@ const Order = () => {
     setOrder(await getOrders(userInfo, value, search))
   }
 
-  // const handleDelete = async (eid, e) => {
-  //   deleteIndividual(userInfo, eid)
-  //   setOrder({
-  //     ...order,
-  //     data: { ...order.data, data: [...order.data.data.filter((v, i) => v.eid != eid)] },
-  //   })
-  // }
+  const getStoreName = (params) => {
+    return `${params.row.store.store_name || ''}`
+  }
+  const getStoreContact = (params) => {
+    return `${params.row.store.store_contact || ''}`
+  }
+  const getOrderDate = (params) => {
+    return `${params.row.store.updated_date}`
+  }
   useEffect(() => {
     getOrderData()
   }, [])
@@ -56,16 +58,29 @@ const Order = () => {
   console.log(order)
   let sr_no = 0
   const columns = [
-    { field: 'eid', headerName: 'Order ID', width: 150 },
     {
-      field: 'store_email',
-      headerName: 'Merchant',
-      width: 200,
-      valueGetter: (params) => {
-        console.log({ params })
-      },
+      field: 'store_date',
+      headerName: 'Date',
+      width: 150,
+
+      valueGetter: getOrderDate,
+    },
+    {
+      field: 'store_name',
+      headerName: 'Store',
+      width: 170,
+
+      valueGetter: getStoreName,
+    },
+    {
+      field: 'store_contact',
+      headerName: 'Store Contact',
+      width: 150,
+
+      valueGetter: getStoreContact,
     },
 
+    { field: 'total_price', headerName: 'Amount', width: 150 },
     {
       field: 'status',
       width: 150,

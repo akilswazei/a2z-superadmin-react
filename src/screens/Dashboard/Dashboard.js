@@ -32,7 +32,7 @@ const DefaultLayout = () => {
       {/* <AppSidebar /> */}
       <Grid container>
         <Grid item md={12}>
-          <MainBoard>
+          <MainBoard className="superadmin-dashboard-div">
             {/* dashboard cards */}
             <Grid item md={12} sm={12} xs={12} className="mx-2 my-3">
               <Grid container spacing={1}>
