@@ -6,7 +6,7 @@ export const getSuppliers = async (userInfo, page = 1, search_keyword = '') => {
   getpara[0] = page == 1 ? '' : 'page=' + page
   getpara[1] = search_keyword == '' ? '' : 's=' + search_keyword
   const para = getpara.join('&')
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/team/list-individual?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/supplier/list?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },

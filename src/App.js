@@ -11,16 +11,22 @@ import Product from './screens/Products/Product'
 import Stores from './screens/Store/Stores'
 import AddStore from './screens/Store/AddStore'
 import Merchants from './screens/Merchants/Merchants'
+
 import Order from './screens/Order/Order'
+import OrderDetail from './screens/Order/OrderDetail'
+
+import Subscription from './screens/Subscription/Subscription'
+import SubscriptionDetail from './screens/Subscription/SubscriptionDetail'
+
 import { withThemeCreator } from '@material-ui/styles'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
-import OrderDetail from './screens/Order/OrderDetail'
+
 import AddMerchant from './screens/Merchants/AddMerchant'
 import AddProduct from './screens/Products/AddProduct'
 
 import Payout from './screens/Payout/Payout'
 import AddPayout from './screens/Payout/AddPayout'
-
+ 
 import Roles from './screens/Roles/Roles'
 import AddRoles from './screens/Roles/AddRoles'
 import Supplier from './screens/Supplier/Supplier'
@@ -100,6 +106,14 @@ class App extends Component {
 
                 <Route exact path="/orders" element={<Order />} />
                 <Route exact path="order/edit/:eid" element={<OrderDetail />} />
+
+                <Route exact path="/subscriptions" element={<Subscription />} />
+                <Route exact path="subscription/edit/:eid" element={<SubscriptionDetail />} />
+
+                <Route exact path="/payouts" element={<Payout />} />
+                <Route exact path="/payout/edit/:eid" element={<AddPayout />} />
+
+
                 <Route exact path="/roles" element={<Roles />} />
                 <Route exact path="/role/add" element={<AddRoles />} />
                 <Route exact path="/suppliers" element={<Supplier />} />

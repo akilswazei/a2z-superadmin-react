@@ -72,13 +72,14 @@ function getItems() {
                 name: 'Agency',
                 link: '/teams',
               },
-              {
-                id: 3,
-                name: 'Role',
-                link: '/roles',
-              },
             ],
           },
+          {
+            id: 3,
+            name: 'Role',
+            link: '/roles',
+          }
+
         ],
       },
       {
@@ -102,12 +103,7 @@ function getItems() {
             id: 2,
             name: 'Store',
             link: '/stores',
-          },
-          {
-            id: 3,
-            name: 'Terminal',
-            link: '/dashboard',
-          },
+          }
         ],
       },
       {
@@ -120,6 +116,11 @@ function getItems() {
             id: 1,
             name: 'Order',
             link: '/orders',
+          },
+          {
+            id: 2,
+            name: 'Subscription',
+            link: '/subscriptions',
           },
           {
             id: 2,
@@ -214,7 +215,6 @@ class Navlist extends React.Component {
                                   sitem.subitems.map((ssitem) => {
                                     return (
                                       <ListItem button key={ssitem.id}>
-                                        {console.log(ssitem)}
                                         <NavLink
                                           exact
                                           activeClassName="navbar__link--active"

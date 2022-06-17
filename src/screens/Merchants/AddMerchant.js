@@ -1,15 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
 import { addUser } from 'src/services/UserServices'
+import { addMerchant,updateMerchant,getMerchant } from 'src/services/MerchantService'
 import MainBoard from 'src/components/include/MainBoard'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { validate } from 'src/helper/validation'
+
+
 import {
   Container,
   Button,
@@ -38,6 +42,7 @@ function AddMerchant() {
     userSignin: { userInfo },
   } = getState
 
+  const { eid } = useParams()
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
@@ -52,15 +57,28 @@ function AddMerchant() {
   //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
-    if (inputs.password == inputs.confirm_password) {
-      setErros({ ...errors, confirm_password: '' })
-      await addUser(userInfo, inputs)
-      setOpen(true)
-    } else {
-      setErros({ ...errors, confirm_password: 'password not matched' })
+    let allerrors = validate(inputs, {})
+    if (Object.keys(allerrors).length === 0) {
+      let response
+      if (eid) {
+        console.log('update will done')
+        response = await updateMerchant(userInfo, inputs)
+      } else {
+        response = await addMerchant(userInfo, inputs)
+      }
+      if (response.data && Object.keys(response.data).length != 0) {
+        allerrors = response.data
+        console.log(allerrors.email)
+        Object.keys(allerrors).forEach(function (ckey) {
+          allerrors[ckey] = allerrors[ckey].join()
+          console.log(allerrors[ckey])
+        })
+      } else {
+        setOpen(true)
+      }
     }
+    setErros(allerrors)
   }
-
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
@@ -73,11 +91,7 @@ function AddMerchant() {
   useEffect(() => {
     getRolesData()
   }, [])
-  const namePlaceholder = 'Please enter your name'
-  const emailPlaceholder = 'Please enter your e-mail'
-  const passwordPlaceholder = 'Please enter password'
-  const confirmPasswordPlaceholder = 'Please re-enter password'
-
+  
   return (
     <MainBoard>
       <Dialog
@@ -109,10 +123,10 @@ function AddMerchant() {
                 <Grid item sx={8} md={8}>
                   <CustomText
                     label="Legal Business Name of Entity"
-                    name="business-name"
+                    name="legal_business_name"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.legal_business_name?inputs.legal_business_name:""}
                     placeholder="A AND B MARKET PLUS, INC"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -120,10 +134,10 @@ function AddMerchant() {
                 <Grid item sx={4} md={4}>
                   <CustomText
                     label="Fedral Tax ID"
-                    name="status"
+                    name="federl_tax_id"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.federl_tax_id?inputs.federl_tax_id:""}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -131,10 +145,10 @@ function AddMerchant() {
                 <Grid item sx={8} md={8}>
                   <CustomText
                     label="Doing Business as (DBA)"
-                    name="dba"
+                    name="doing_business_name"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.doing_business_name?inputs.doing_business_name:""}
                     placeholder="CAMPUS AND LIQUOR"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -142,10 +156,10 @@ function AddMerchant() {
                 <Grid item sx={4} md={4}>
                   <CustomText
                     label="State Tax ID"
-                    name="status"
+                    name="state_tax_id"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.state_tax_id?inputs.state_tax_id:""}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -156,7 +170,7 @@ function AddMerchant() {
                     name="address"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.address?inputs.address:""}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -167,7 +181,7 @@ function AddMerchant() {
                     name="city"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.city?inputs.city:""}
                     placeholder="SAN DIEGO"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -178,7 +192,7 @@ function AddMerchant() {
                     name="state"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.state?inputs.state:""}
                     placeholder="CA"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -186,10 +200,10 @@ function AddMerchant() {
                 <Grid item sx={6} md={4}>
                   <CustomText
                     label="Zip Code"
-                    name="zip-code"
+                    name="zip_code"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.zip_code?inputs.zip_code:""}
                     placeholder="A2DE10"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -197,10 +211,10 @@ function AddMerchant() {
                 <Grid item sx={4} md={4}>
                   <CustomText
                     label="Business Phone Number"
-                    name="business_name"
+                    name="business_phone_number"
                     required={false}
                     error={false}
-                    value=""
+                    value={inputs.business_phone_number?inputs.business_phone_number:""}
                     placeholder="709-999-9999"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -208,10 +222,10 @@ function AddMerchant() {
                 <Grid item sx={4} md={4}>
                   <CustomText
                     label="Cell Phone"
-                    name="business_name"
+                    name="mobile_no"
                     required={true}
                     error={false}
-                    value=""
+                    value={inputs.mobile_no?inputs.mobile_no:""}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -222,7 +236,7 @@ function AddMerchant() {
                     name="website"
                     required={false}
                     error={false}
-                    value=""
+                    value={inputs.website?inputs.website:""}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -237,10 +251,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="First Name"
-                  name="first-name"
+                  name="authorize_person_first_name"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.authorize_person_first_name?inputs.authorize_person_first_name:""}
                   placeholder="Luis"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -248,10 +262,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Last Name"
-                  name="last-name"
+                  name="authorize_person_last_name"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.authorize_person_last_name?inputs.authorize_person_last_name:""}
                   placeholder="Brown"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -259,10 +273,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Email"
-                  name="email"
+                  name="authorize_person_email"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.authorize_person_email?inputs.authorize_person_email:""}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -270,10 +284,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Title"
-                  name="title"
+                  name="authorize_person_title"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.authorize_person_title?inputs.authorize_person_title:""}
                   placeholder="Manager"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -284,7 +298,7 @@ function AddMerchant() {
                   name="phone-2"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.product_name?inputs.product_name:""}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -295,7 +309,7 @@ function AddMerchant() {
                   name="fax"
                   required={true}
                   error={false}
-                  value=""
+                  value={inputs.product_name?inputs.product_name:""}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />

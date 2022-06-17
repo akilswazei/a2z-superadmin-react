@@ -1,13 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
-import { addStore } from 'src/services/StoreService'
 import MainBoard from 'src/components/include/MainBoard'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
+import { addStore,updateStore,getStore } from 'src/services/StoreService'
+import { validate } from 'src/helper/validation'
+
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { Container, Button, Icon, TextField, Paper, Typography, Grid, InputLabel } from '@material-ui/core'
@@ -22,9 +24,12 @@ function AddStore() {
     userSignin: { userInfo },
   } = getState
 
+  const { eid } = useParams()
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
+  const [errors, setErros] = React.useState(false)
+
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -34,11 +39,28 @@ function AddStore() {
   //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
-    console.log(inputs)
-    await addStore(userInfo, inputs)
-    setOpen(true)
+    let allerrors = validate(inputs, {})
+    if (Object.keys(allerrors).length === 0) {
+      let response
+      if (eid) {
+        console.log('update will done')
+        response = await updateStore(userInfo, inputs)
+      } else {
+        response = await addStore(userInfo, inputs)
+      }
+      if (response.data && Object.keys(response.data).length != 0) {
+        allerrors = response.data
+        console.log(allerrors.email)
+        Object.keys(allerrors).forEach(function (ckey) {
+          allerrors[ckey] = allerrors[ckey].join()
+          console.log(allerrors[ckey])
+        })
+      } else {
+        setOpen(true)
+      }
+    }
+    setErros(allerrors)
   }
-
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
@@ -61,7 +83,7 @@ function AddStore() {
       backgroundColor: (theme.palette.mode = 'light'),
       border: '1px solid #ced4da',
       fontSize: 16,
-      Width: 'auto',
+      Width: 'auto', 
       padding: '10px 12px',
     },
   }))

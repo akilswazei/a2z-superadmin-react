@@ -58,7 +58,7 @@ function AddPayout() {
     } else {
       setErros({ ...errors, confirm_password: 'password not matched' })
     }
-  }
+  } 
 
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))

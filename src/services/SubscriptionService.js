@@ -6,7 +6,7 @@ export const getSubscriptions = async (userInfo, page = 1, search_keyword = '') 
   getpara[0] = page == 1 ? '' : 'page=' + page
   getpara[1] = search_keyword == '' ? '' : 's=' + search_keyword
   const para = getpara.join('&')
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/subscription/list?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/subscription/list?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
@@ -16,7 +16,7 @@ export const getSubscriptions = async (userInfo, page = 1, search_keyword = '') 
 
 export const getSubscription = async (userInfo, eid = '') => {
   const para = 'eid=' + eid
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/team/show-individual?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/subscription/show?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
