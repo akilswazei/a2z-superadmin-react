@@ -57,7 +57,14 @@ const Order = () => {
   let sr_no = 0
   const columns = [
     { field: 'eid', headerName: 'Order ID', width: 150 },
-    { field: 'merchant_id', headerName: 'Merchant', width: 200 },
+    {
+      field: 'store_email',
+      headerName: 'Merchant',
+      width: 200,
+      valueGetter: (params) => {
+        console.log({ params })
+      },
+    },
 
     {
       field: 'status',
