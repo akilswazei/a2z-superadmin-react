@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getRoles } from 'src/services/RolesServices'
 import { addSupplier, getSupplier, getSuppliers, updateSupplier } from 'src/services/SupplierService'
+import { getCategories } from 'src/services/CategoryService'
+
 import MainBoard from 'src/components/include/MainBoard'
 import { useParams } from 'react-router-dom'
 import { validate } from 'src/helper/validation'
@@ -14,7 +16,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
+import { CustomEmail, CustomPasssword, CustomText, CustomPhone,CustomSelect } from 'src/helper/helper'
 
 function AddSupplier() {
   const getState = useSelector((state) => state)
@@ -29,8 +31,8 @@ function AddSupplier() {
   const [suppliers, setSuppliers] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState({})
+  const [categories, setCategories] = React.useState([])
 
-  console.log(inputs.name)
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -61,12 +63,19 @@ function AddSupplier() {
     }
     setErros(allerrors)
   }
-  const getSupplierData = async () => {
-    setSuppliers(await getSuppliers(userInfo))
-  }
-  const getSuppliersData = async (eid) => {
+
+  const getSupplierData = async (eid) => {
     const beforeUpdateData = await getSupplier(userInfo, eid)
-    setInputs(beforeUpdateData.data.user)
+    console.log(beforeUpdateData)
+    setInputs(beforeUpdateData.data)
+  }
+  const get_category_list = async () => {
+    const category_data = await getCategories(userInfo)
+    const categories_temp=[];
+    category_data?.data?.data.map((value,key)=>{
+      categories_temp.push({eid: value.eid,name: value.category_name})
+    })
+    setCategories(categories_temp)
   }
   const handleClose = () => {
     setOpen(false)
@@ -75,9 +84,10 @@ function AddSupplier() {
 
   useEffect(() => {
     if (eid) {
-      getSuppliersData(eid)
+      getSupplierData(eid)
     }
-    getSupplierData()
+    get_category_list()
+
   }, [])
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
@@ -116,9 +126,9 @@ function AddSupplier() {
               <Grid item xs={6}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="supplier-name"
+                  name="supplier_name"
                   placeholder={namePlaceholder}
-                  value={inputs.name ? inputs.name : ''}
+                  value={inputs.supplier_name ? inputs.supplier_name : ''}
                   label="Supplier Name"
                   error={false}
                   required={true}
@@ -128,9 +138,9 @@ function AddSupplier() {
               <Grid item xs={6}>
                 <CustomText
                   label="Contact Number"
-                  name="contact-number"
+                  name="contact_number"
                   required={true}
-                  value={inputs.phone ? inputs.phone : ''}
+                  value={inputs.contact_number ? inputs.contact_number : ''}
                   error={false}
                   placeholder={phonePlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -164,9 +174,9 @@ function AddSupplier() {
               <Grid item xs={6}>
                 <CustomText
                   label="Supplier Details"
-                  name="supplier-details"
+                  name="supplier_details"
                   required={true}
-                  value={inputs.details ? inputs.details : ''}
+                  value={inputs.supplier_details ? inputs.supplier_details : ''}
                   error={false}
                   placeholder="Please enter supplier details"
                   handleChange={(e) => handleChange(e)}
@@ -174,14 +184,15 @@ function AddSupplier() {
               </Grid>
 
               <Grid item xs={6}>
-                <CustomText
+                <CustomSelect
                   label="Supplier Category"
-                  name="supplier-category"
+                  name="category"
                   required={true}
                   value={inputs.category ? inputs.category : ''}
                   error={false}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
+                  options={categories}
                 />
               </Grid>
               <Grid container spacing={2}>
@@ -191,20 +202,21 @@ function AddSupplier() {
                 <Grid item xs={6}>
                   <CustomText
                     label="Name"
-                    name="rep-name"
+                    name="respsentative_name"
                     required={true}
-                    value={inputs.name ? inputs.name : ''}
+                    value={inputs.respsentative_name ? inputs.respsentative_name : ''}
                     error={false}
                     placeholder={namePlaceholder}
                     handleChange={(e) => handleChange(e)}
+                    
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <CustomEmail
                     label="Email"
-                    name="email"
+                    name="respsentative_email"
                     required={true}
-                    value={inputs.email ? inputs.email : ''}
+                    value={inputs.respsentative_email ? inputs.respsentative_email : ''}
                     error={false}
                     placeholder={emailPlaceholder}
                     handleChange={(e) => handleChange(e)}
@@ -213,53 +225,16 @@ function AddSupplier() {
                 <Grid item xs={6}>
                   <CustomText
                     handleChange={(e) => handleChange(e)}
-                    name="rep-phone"
+                    name="respsentative_contact_no"
                     placeholder={phonePlaceholder}
-                    value={inputs.phone ? inputs.phone : ''}
+                    value={inputs.respsentative_contact_no ? inputs.respsentative_contact_no : ''}
                     label="Phone"
                     error={false}
                     required={true}
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid item xs={12} className="mt-4">
-                  <h6>Supervisor Information</h6>
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomText
-                    label="Name"
-                    name="rep-name"
-                    required={true}
-                    value={inputs.name ? inputs.name : ''}
-                    error={false}
-                    placeholder={namePlaceholder}
-                    handleChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomEmail
-                    label="Email"
-                    name="email"
-                    required={true}
-                    value={inputs.email ? inputs.email : ''}
-                    error={false}
-                    placeholder={emailPlaceholder}
-                    handleChange={(e) => handleChange(e)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomText
-                    handleChange={(e) => handleChange(e)}
-                    name="rep-phone"
-                    placeholder={phonePlaceholder}
-                    value={inputs.phone ? inputs.phone : ''}
-                    label="Phone"
-                    error={false}
-                    required={true}
-                  />
-                </Grid>
-              </Grid>
+
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 <Button
                   type="submit"

@@ -38,7 +38,7 @@ export function CustomEmail({ handleChange, value, name, placeholder, label, req
         id={name}
         name={name}
         type="email"
-        defaultValue={value}
+        value={value}
         variant="outlined"
         error={false}
         placeholder={placeholder}
@@ -101,7 +101,7 @@ export function CustomSelect({ handleChange,options, value, name, label, require
         {label}
         <sup>{required === true ? '*' : ''}</sup>
       </h6>
-
+      { console.log(options) }
       <select
           labelId="demo-simple-select-helper-label"
           id={name}

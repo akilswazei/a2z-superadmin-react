@@ -96,6 +96,7 @@ class App extends Component {
 
                 <Route exact path="/merchants" element={<Merchants />} />
                 <Route exact path="/merchant/add" element={<AddMerchant />} />
+                <Route exact path="/merchant/edit/:eid" element={<AddMerchant />} />
                
                 <Route exact path="/products" element={<Product />} />
                 <Route exact path="/product/add" element={<AddProduct />} />
@@ -116,8 +117,10 @@ class App extends Component {
 
                 <Route exact path="/roles" element={<Roles />} />
                 <Route exact path="/role/add" element={<AddRoles />} />
+                
                 <Route exact path="/suppliers" element={<Supplier />} />
                 <Route exact path="/supplier/add" element={<AddSupplier />} />
+                <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />
               </Route>
             </Routes>
           </Suspense>

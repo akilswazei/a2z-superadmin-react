@@ -82,14 +82,21 @@ function AddMerchant() {
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
+  const getMerchantData = async (eid) => {
+    const beforeUpdateData = await getMerchant(userInfo, eid)
+    setInputs(beforeUpdateData.data.merchant)
+  }
 
   const handleClose = () => {
     setOpen(false)
-    navigate('../users', { replace: true })
+    navigate('../merchants', { replace: true })
   }
 
   useEffect(() => {
     getRolesData()
+    if (eid) {
+      getMerchantData(eid)
+    }
   }, [])
   
   return (
@@ -112,6 +119,7 @@ function AddMerchant() {
       <Container fluid>
         <Container className="p-0 mt-4">
           <h6>Add Merchant</h6>
+          {console.log(inputs)}
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
           <form onSubmit={submitHandler}>
@@ -295,10 +303,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Phone"
-                  name="phone-2"
+                  name="authorize_person_phone_no"
                   required={true}
                   error={false}
-                  value={inputs.product_name?inputs.product_name:""}
+                  value={inputs.authorize_person_phone_no?inputs.authorize_person_phone_no:""}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -306,10 +314,10 @@ function AddMerchant() {
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Fax No."
-                  name="fax"
+                  name="authorize_person_fax_no"
                   required={true}
                   error={false}
-                  value={inputs.product_name?inputs.product_name:""}
+                  value={inputs.authorize_person_fax_no?inputs.authorize_person_fax_no:""}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -324,10 +332,10 @@ function AddMerchant() {
               <Grid item md={8}>
                 <FormControl className="custom-radio">
                   <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                    <FormControlLabel value="sole-proprietor" control={<Radio />} label="Sole Proprietor" />
-                    <FormControlLabel value="partnership" control={<Radio />} label="Partnership" />
-                    <FormControlLabel value="corporation" control={<Radio />} label="Corpration" />
-                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                    <FormControlLabel  control={<Radio name="ownership" value="sole-proprietor" onChange={(e) => handleChange(e)} />} label="Sole Proprietor" />
+                    <FormControlLabel  control={<Radio name="ownership" value="partnership" onChange={(e) => handleChange(e)} />} label="Partnership" />
+                    <FormControlLabel  control={<Radio name="ownership" value="corporation" onChange={(e) => handleChange(e)} />} label="Corpration" />
+                    <FormControlLabel  control={<Radio name="ownership" value="other" onChange={(e) => handleChange(e)} />} label="Other" />
                   </RadioGroup>
                 </FormControl>
               </Grid>
