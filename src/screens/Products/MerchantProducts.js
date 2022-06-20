@@ -13,12 +13,13 @@ import { deleteIndividual, getIndividuals } from 'src/services/IndividualService
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getProduct, getProducts } from 'src/services/ProductService'
+
+import { getMerchantProducts } from 'src/services/ProductService'
 import FormStyles from 'src/helper/FormStyles'
 
 const datagridSx = FormStyles
 
-const Product = () => {
+const MerchantProduct = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
@@ -30,18 +31,18 @@ const Product = () => {
   const [page, setPage] = useState(1)
 
   const getProductData = async () => {
-    setProduct(await getProducts(userInfo))
+    setProduct(await getMerchantProducts(userInfo))
   }
 
   const searchIndividual = async (value) => {
     setSearch(value)
     setPage(1)
-    setProduct(await getProducts(userInfo, 1, value))
+    setProduct(await getMerchantProducts(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setProduct(await getProducts(userInfo, value, search))
+    setProduct(await getMerchantProducts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
@@ -105,7 +106,7 @@ const Product = () => {
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Products</h6>
+          <h6>Merchant Products</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
@@ -150,4 +151,4 @@ const Product = () => {
     </MainBoard>
   )
 }
-export default Product
+export default MerchantProduct

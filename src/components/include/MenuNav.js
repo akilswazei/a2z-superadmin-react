@@ -78,8 +78,7 @@ function getItems() {
             id: 3,
             name: 'Role',
             link: '/roles',
-          }
-
+          },
         ],
       },
       {
@@ -103,7 +102,7 @@ function getItems() {
             id: 2,
             name: 'Store',
             link: '/stores',
-          }
+          },
         ],
       },
       {
@@ -132,6 +131,11 @@ function getItems() {
             name: 'Supplier',
             link: '/suppliers',
           },
+          {
+            id: 4,
+            name: 'Merchant Products',
+            link: '/merchant-products',
+          },
         ],
       },
       {
@@ -150,7 +154,7 @@ function getItems() {
             name: 'Payout History',
             link: '/payouts/history',
           },
-        ]
+        ],
       },
       {
         id: 7,

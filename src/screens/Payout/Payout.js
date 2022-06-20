@@ -14,7 +14,13 @@ import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { getPayout, getPayouts } from 'src/services/PayoutService'
 import FormStyles from 'src/helper/FormStyles'
-
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import TextField from '@material-ui/core/TextField'
+import { CustomText } from 'src/helper/helper'
 const datagridSx = FormStyles
 
 const Payout = () => {
@@ -27,7 +33,8 @@ const Payout = () => {
   const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-
+  const [open, setOpen] = React.useState(false)
+  const [payNumber, setPayNumber] = React.useState()
   const getPayoutData = async () => {
     setPayout(await getPayouts(userInfo))
   }
@@ -85,25 +92,66 @@ const Payout = () => {
     // },
     {
       field: 'actions',
-      width: 100,
+      width: 300,
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
             <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <button>Pay</button>
+              <button className="custom-pay-btn" onClick={handleClick}>
+                Pay
+              </button>
+              <button className="custom-pay-btn">Pay history</button>
+              <button className="custom-pay-btn">Pay description</button>
             </span>
           </div>
         )
       },
     },
   ]
-
+  const handleClick = () => {
+    setOpen(!open)
+  }
+  const handleClose = () => {
+    setOpen(false)
+    navigate('../payouts', { replace: true })
+  }
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/payout/add')
   }
+  const handleCreate = (e) => {
+    e.preventDefault()
+    console.log(payNumber)
+    setPayNumber('')
+    setOpen(false)
+  }
+
   return (
     <MainBoard>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Merchant ID'}</DialogTitle>
+        <DialogContent>
+          <CustomText
+            label="Pay value in ($)"
+            name="pay"
+            placeholder="Value in $"
+            error={false}
+            required={true}
+            handleChange={(e) => handleCreate(e)}
+          />
+          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
+        </DialogContent>
+        <DialogActions>
+          <button className="custom-pay-btn" onClick={handleClose}>
+            Submit
+          </button>
+        </DialogActions>
+      </Dialog>
       <Container fluid>
         <Container className="p-0 mt-4">
           <h6>Payouts</h6>

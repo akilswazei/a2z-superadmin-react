@@ -49,6 +49,10 @@ const Subscription = () => {
   //     data: { ...subscription.data, data: [...subscription.data.data.filter((v, i) => v.eid != eid)] },
   //   })
   // }
+  const getAmount = (params) => {
+    const total_amt = params.row.product.atz_selling_price
+    return total_amt
+  }
   useEffect(() => {
     getSubscriptionData()
   }, [])
@@ -58,7 +62,14 @@ const Subscription = () => {
   const columns = [
     { field: 'eid', headerName: 'Subscription ID', width: 150 },
     { field: 'merchant_id', headerName: 'Merchant', width: 200 },
-
+    { field: 'subscription_start_date', headerName: 'Start Date', width: 200 },
+    { field: 'subscription_end_date', headerName: 'Next Renewal', width: 200 },
+    {
+      field: 'total_amount',
+      headerName: 'Amount',
+      width: 200,
+      valueGetter: getAmount,
+    },
     {
       field: 'status',
       width: 150,

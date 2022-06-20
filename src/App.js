@@ -27,11 +27,12 @@ import AddProduct from './screens/Products/AddProduct'
 import Payout from './screens/Payout/Payout'
 import PayoutHistory from './screens/Payout/PayoutHistory'
 import AddPayout from './screens/Payout/AddPayout'
- 
+
 import Roles from './screens/Roles/Roles'
 import AddRoles from './screens/Roles/AddRoles'
 import Supplier from './screens/Supplier/Supplier'
 import AddSupplier from './screens/Supplier/AddSupplier'
+import MerchantProduct from './screens/Products/MerchantProducts'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -98,7 +99,7 @@ class App extends Component {
                 <Route exact path="/merchants" element={<Merchants />} />
                 <Route exact path="/merchant/add" element={<AddMerchant />} />
                 <Route exact path="/merchant/edit/:eid" element={<AddMerchant />} />
-               
+
                 <Route exact path="/products" element={<Product />} />
                 <Route exact path="/product/add" element={<AddProduct />} />
                 <Route exact path="/product/edit/:eid" element={<AddProduct />} />
@@ -115,13 +116,13 @@ class App extends Component {
                 <Route exact path="/payouts" element={<Payout />} />
                 <Route exact path="/payouts/history" element={<PayoutHistory />} />
 
-
                 <Route exact path="/roles" element={<Roles />} />
                 <Route exact path="/role/add" element={<AddRoles />} />
 
                 <Route exact path="/suppliers" element={<Supplier />} />
                 <Route exact path="/supplier/add" element={<AddSupplier />} />
                 <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />
+                <Route exact path="/merchant-products" element={<MerchantProduct />} />
               </Route>
             </Routes>
           </Suspense>
