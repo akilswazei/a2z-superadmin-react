@@ -12,7 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getPayout, getPayouts } from 'src/services/PayoutService'
+import {  getPayoutsHistory } from 'src/services/PayoutService'
 import FormStyles from 'src/helper/FormStyles'
 
 const datagridSx = FormStyles
@@ -29,18 +29,18 @@ const Payout = () => {
   const [page, setPage] = useState(1)
 
   const getPayoutData = async () => {
-    setPayout(await getPayouts(userInfo))
+    setPayout(await getPayoutsHistory(userInfo))
   }
 
   const searchPayout = async (value) => {
     setSearch(value)
     setPage(1)
-    setPayout(await getPayouts(userInfo, 1, value))
+    setPayout(await getPayoutsHistory(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setPayout(await getPayouts(userInfo, value, search))
+    setPayout(await getPayoutsHistory(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
@@ -66,9 +66,8 @@ const Payout = () => {
     { field: 'eid', headerName: 'Eid', width: 150 },
     { field: 'Name', headerName: 'Name', width: 150 },
     { field: 'outsource_type', headerName: 'Type', width: 150 },
-    { field: 'total_earn', headerName: 'Total Earn', width: 150 },
-    { field: 'total_paid', headerName: 'Paid', width: 150 },
-    { field: 'to_pay', headerName: 'To Pay', width: 150 },
+    { field: 'amount', headerName: 'Amount', width: 150 },
+    { field: 'date', headerName: 'Date', width: 150 },
     // { field: 'company_name', headerName: 'Name', width: 200 },
     // { field: 'company_email', headerName: 'Email', width: 300 },
     // { field: 'service_type', headerName: 'service type', width: 150 },
@@ -83,19 +82,7 @@ const Payout = () => {
     //     )
     //   },
     // },
-    {
-      field: 'actions',
-      width: 100,
-      renderCell: (cellValue) => {
-        return (
-          <div className="edit-delete-div">
-            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <button>Pay</button>
-            </span>
-          </div>
-        )
-      },
-    },
+    
   ]
 
   const navigateFunction = (e) => {
@@ -106,7 +93,7 @@ const Payout = () => {
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Payouts</h6>
+          <h6>Payout History</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">

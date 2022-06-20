@@ -56,9 +56,9 @@ const Supplier = () => {
   console.log(supplier)
   let sr_no = 0
   const columns = [
-    { field: 'eid', headerName: 'username', width: 150 },
-    // { field: 'company_name', headerName: 'Name', width: 200 },
-    // { field: 'company_email', headerName: 'Email', width: 300 },
+    { field: 'eid', headerName: 'EID', width: 150 },
+    { field: 'supplier_name', headerName: 'Name', width: 200 },
+    { field: 'email', headerName: 'Email', width: 300 },
     // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',

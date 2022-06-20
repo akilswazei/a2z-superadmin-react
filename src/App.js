@@ -25,6 +25,7 @@ import AddMerchant from './screens/Merchants/AddMerchant'
 import AddProduct from './screens/Products/AddProduct'
 
 import Payout from './screens/Payout/Payout'
+import PayoutHistory from './screens/Payout/PayoutHistory'
 import AddPayout from './screens/Payout/AddPayout'
  
 import Roles from './screens/Roles/Roles'
@@ -102,8 +103,8 @@ class App extends Component {
                 <Route exact path="/product/add" element={<AddProduct />} />
                 <Route exact path="/product/edit/:eid" element={<AddProduct />} />
 
-                <Route exact path="/payouts" element={<Payout />} />
-                <Route exact path="/payout/add" element={<AddPayout />} />
+                {/* <Route exact path="/payouts" element={<Payout />} />
+                <Route exact path="/payout/add" element={<AddPayout />} /> */}
 
                 <Route exact path="/orders" element={<Order />} />
                 <Route exact path="order/edit/:eid" element={<OrderDetail />} />
@@ -112,12 +113,12 @@ class App extends Component {
                 <Route exact path="subscription/edit/:eid" element={<SubscriptionDetail />} />
 
                 <Route exact path="/payouts" element={<Payout />} />
-                <Route exact path="/payout/edit/:eid" element={<AddPayout />} />
+                <Route exact path="/payouts/history" element={<PayoutHistory />} />
 
 
                 <Route exact path="/roles" element={<Roles />} />
                 <Route exact path="/role/add" element={<AddRoles />} />
-                
+
                 <Route exact path="/suppliers" element={<Supplier />} />
                 <Route exact path="/supplier/add" element={<AddSupplier />} />
                 <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />

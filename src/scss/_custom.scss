@@ -1,6 +1,14 @@
 // Here you can add other styles
 //styling for sidebar
 
+.superadmin-dashboard-div{
+    overflow-x: hidden;
+}
+.superadmin-dashboard-mainboard{
+    overflow-x: hidden;
+   
+}
+
 .background-white-theme{
     background-color: white;
 }
@@ -164,6 +172,12 @@
         }
     }
     
+}
+.Navlist-nested-5 {
+    padding-left: 16px !important;
+}
+.Navlist-nested-19{
+    padding-left: 16px !important;
 }
 .sidebar-nav{
     background-color: $theme-color-blue;
@@ -429,7 +443,7 @@
 .small-chart{
     background-color: $dashboard-red;
     padding: 0.8em;
-    margin: 2em 0.5em 0 0.2em;
+    margin: 3.6em 0.5em 0 0.2em;
     min-height: 30vh;
     border-radius: 0.3em;
     display: flex;
@@ -463,10 +477,19 @@
     justify-content: center;
     border: 1px solid $font-color-gray;
     border-radius: 0.3em;
+    min-height: 50px;
 }
 .custom-font{
     color: $font-color-gray;
     h6{
         color: $font-color-gray;
     }
+}
+.custom-select-input{
+    min-height: 49px;
+    padding: 0.3em;
+    width:100%;
+    border: 1px solid #b2b1b1;
+    border-radius: 0.3em;
+    color: #b2b1b1;
 }

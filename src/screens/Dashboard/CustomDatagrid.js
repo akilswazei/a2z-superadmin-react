@@ -19,7 +19,7 @@ function CustomDatagrid() {
   useEffect(() => {
     getUserData()
   }, [])
-  console.log(users)
+
   const columns = [
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'role', headerName: 'Role', width: 150 },

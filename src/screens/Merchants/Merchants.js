@@ -15,11 +15,21 @@ import FormStyles from 'src/helper/FormStyles'
 const datagridSx = FormStyles
 const Merchant = () => {
   const columns = [
-    { field: 'business_contact_name', headerName: 'Business Name', width: 150 },
-    { field: 'business_contact_email', headerName: 'email', width: 200 },
-    { field: 'merchant_id', headerName: 'merchant ID', width: 200 },
     { field: 'eid', headerName: 'ID' },
+    { field: 'merchant_id', headerName: 'merchant ID', width: 200 },
+    { field: 'legal_business_name', headerName: 'Business Name', width: 150 },
+    { field: 'authorize_person_email', headerName: 'email', width: 200 },
     { field: 'onbording_date', headerName: 'Onboarding Date', width: 200 },
+    {
+      field: 'status',
+      renderCell: (cellValues) => {
+        return (
+          <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
+            {cellValues?.row?.status == 1 ? 'Declined' : 'Approved'}
+          </button>
+        )
+      },
+    },
     {
       field: 'Delete',
       headerName: 'Action',
@@ -38,16 +48,7 @@ const Merchant = () => {
         )
       },
     },
-    {
-      field: 'status',
-      renderCell: (cellValues) => {
-        return (
-          <button className={cellValues?.row?.status == 1 ? 'red-btn' : 'green-btn'}>
-            {cellValues?.row?.status == 1 ? 'Declined' : 'Approved'}
-          </button>
-        )
-      },
-    },
+
   ]
   const getrows = () => {
     let rows = []
@@ -129,7 +130,7 @@ const Merchant = () => {
             {merchants?.data?.data && (
               <DataGrid
                 getRowId={(row) => Math.random()}
-                rows={getrows()}
+                rows={merchants.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}

@@ -42,6 +42,9 @@ export default function formStyles() {
         display: 'none',
       },
     },
+    '& .MuiButtonBase-root .MuiListItem-root .MuiListItem-button': {
+      paddingLeft: '16px',
+    },
   }
   return datagridSx
 }

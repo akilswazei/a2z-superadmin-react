@@ -136,9 +136,21 @@ function getItems() {
       },
       {
         id: 6,
-        name: 'Sales Invoice',
+        name: 'Payout',
         icon: <ReceiptIcon />,
-        link: '/dashboard',
+        link: '',
+        subitems: [
+          {
+            id: 1,
+            name: 'Payouts',
+            link: '/payouts',
+          },
+          {
+            id: 2,
+            name: 'Payout History',
+            link: '/payouts/history',
+          },
+        ]
       },
       {
         id: 7,

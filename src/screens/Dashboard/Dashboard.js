@@ -13,6 +13,7 @@ import { UserData } from './Data'
 import { useState } from 'react'
 import CustomDatagrid from './CustomDatagrid'
 import { Container, createStyles } from '@material-ui/core'
+import MerchantDash from './MerchantDash'
 const DefaultLayout = () => {
   const [userData, setUserData] = useState({
     labels: UserData.map((data) => data.year),
@@ -31,7 +32,7 @@ const DefaultLayout = () => {
       {/* <AppSidebar /> */}
       <Grid container>
         <Grid item md={12}>
-          <MainBoard>
+          <MainBoard className="superadmin-dashboard-div">
             {/* dashboard cards */}
             <Grid item md={12} sm={12} xs={12} className="mx-2 my-3">
               <Grid container spacing={1}>
@@ -84,11 +85,13 @@ const DefaultLayout = () => {
             {/* dashboard cards ends*/}
             {/* dashboard chart*/}
             <Grid container spacing={1}>
-              <Grid item md={8} sm={12} xs={12} className="mx-auto">
-                <h6>Merchant</h6>
-                <Container fluid className="custom-container-white p-0">
-                  <Chart chartData={userData} />
-                </Container>
+              <Grid item md={9} sm={12} xs={12} className="">
+                <div className="custom-card-dashboard">
+                  <h6>Merchant</h6>
+                  <Container fluid className="custom-container-white p-0 m-0">
+                    <Chart chartData={userData} className="my-1" />
+                  </Container>
+                </div>
               </Grid>
               <Grid item md={3}>
                 <div className="small-chart">
@@ -127,7 +130,11 @@ const DefaultLayout = () => {
               </Grid>
             </Grid>
             {/* dashboard leads and invoice cards ends*/}
-            <Grid container></Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <MerchantDash />
+              </Grid>
+            </Grid>
           </MainBoard>
         </Grid>
       </Grid>
