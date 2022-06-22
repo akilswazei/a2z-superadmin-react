@@ -33,7 +33,9 @@ const Payout = () => {
   const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [open, setOpen] = React.useState(false)
+  const [openPay, setOpenPay] = React.useState(false)
+  const [openPayHistory, setOpenPayHistory] = React.useState(false)
+  const [openPayDesc, setOpenPayDesc] = React.useState(false)
   const [payNumber, setPayNumber] = React.useState()
   const getPayoutData = async () => {
     setPayout(await getPayouts(userInfo))
@@ -97,22 +99,40 @@ const Payout = () => {
         return (
           <div className="edit-delete-div">
             <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <button className="custom-pay-btn" onClick={handleClick}>
+              <button className="custom-pay-btn" onClick={handleClickPay}>
                 Pay
               </button>
-              <button className="custom-pay-btn">Pay history</button>
-              <button className="custom-pay-btn">Pay description</button>
+              <button className="custom-pay-btn" onClick={handleClickPayHistory}>
+                Pay history
+              </button>
+              <button className="custom-pay-btn" onClick={handleClickPayDesc}>
+                Pay description
+              </button>
             </span>
           </div>
         )
       },
     },
   ]
-  const handleClick = () => {
-    setOpen(!open)
+  const handleClickPay = () => {
+    setOpenPay(!openPay)
   }
-  const handleClose = () => {
-    setOpen(false)
+  const handleClickPayHistory = () => {
+    setOpenPayHistory(!openPayHistory)
+  }
+  const handleClickPayDesc = () => {
+    setOpenPayDesc(!openPayDesc)
+  }
+  const handlePayClose = () => {
+    setOpenPay(false)
+    navigate('../payouts', { replace: true })
+  }
+  const handlePayHistoryClose = () => {
+    setOpenPayHistory(false)
+    navigate('../payouts', { replace: true })
+  }
+  const handlePayDescClose = () => {
+    setOpenPayDesc(false)
     navigate('../payouts', { replace: true })
   }
   const navigateFunction = (e) => {
@@ -123,14 +143,15 @@ const Payout = () => {
     e.preventDefault()
     console.log(payNumber)
     setPayNumber('')
-    setOpen(false)
+    setOpenPay(false)
   }
 
   return (
     <MainBoard>
+      {/* this dialogue box is for pay */}
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={openPay}
+        onClose={handlePayClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -147,11 +168,64 @@ const Payout = () => {
           {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
         </DialogContent>
         <DialogActions>
-          <button className="custom-pay-btn" onClick={handleClose}>
+          <button className="custom-pay-btn" onClick={handlePayClose}>
             Submit
           </button>
         </DialogActions>
       </Dialog>
+      {/* pay dialogue box ends here */}
+      {/* this dialogue box is for pay history */}
+      <Dialog
+        open={openPayHistory}
+        onClose={handlePayHistoryClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'History'}</DialogTitle>
+        <DialogContent>
+          <CustomText
+            label="Pay value in ($)"
+            name="pay"
+            placeholder="Value in $"
+            error={false}
+            required={true}
+            handleChange={(e) => handleCreate(e)}
+          />
+          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
+        </DialogContent>
+        <DialogActions>
+          <button className="custom-pay-btn" onClick={handlePayHistoryClose}>
+            Submit
+          </button>
+        </DialogActions>
+      </Dialog>
+      {/* pay  dialogue box ends here */}
+      {/* this dialogue box is for pay description */}
+      <Dialog
+        open={openPayDesc}
+        onClose={handlePayDescClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Description'}</DialogTitle>
+        <DialogContent>
+          <CustomText
+            label="Pay value in ($)"
+            name="pay"
+            placeholder="Value in $"
+            error={false}
+            required={true}
+            handleChange={(e) => handleCreate(e)}
+          />
+          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
+        </DialogContent>
+        <DialogActions>
+          <button className="custom-pay-btn" onClick={handlePayDescClose}>
+            Submit
+          </button>
+        </DialogActions>
+      </Dialog>
+      {/* pay description  dialogue box ends here */}
       <Container fluid>
         <Container className="p-0 mt-4">
           <h6>Payouts</h6>
