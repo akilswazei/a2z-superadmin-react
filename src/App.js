@@ -123,6 +123,7 @@ class App extends Component {
                 <Route exact path="/supplier/add" element={<AddSupplier />} />
                 <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />
                 <Route exact path="/merchant-products" element={<MerchantProduct />} />
+                <Route exact path="/payouthistory" element={<PayoutHistory />} />
               </Route>
             </Routes>
           </Suspense>

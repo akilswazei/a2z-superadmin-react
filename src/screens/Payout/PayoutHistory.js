@@ -12,7 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {  getPayoutsHistory } from 'src/services/PayoutService'
+import { getPayoutsHistory } from 'src/services/PayoutService'
 import FormStyles from 'src/helper/FormStyles'
 
 const datagridSx = FormStyles
@@ -82,7 +82,6 @@ const Payout = () => {
     //     )
     //   },
     // },
-    
   ]
 
   const navigateFunction = (e) => {
@@ -96,20 +95,6 @@ const Payout = () => {
           <h6>Payout History</h6>
         </Container>
         <Container className="background-white-theme">
-          <div className="justify-flex-end input-div">
-            <input type="text" placeholder="Sort by" className="m-1" />
-            <input
-              type="text"
-              placeholder="Search here"
-              className="m-1"
-              onChange={(e) => {
-                searchPayout(e.target.value)
-              }}
-            />
-            <button onClick={navigateFunction} className="custom-blue-btn m-2">
-              Add Payouts<span>{<PersonAddAltIcon />}</span>
-            </button>
-          </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
             {payout?.data?.data && (
               <DataGrid

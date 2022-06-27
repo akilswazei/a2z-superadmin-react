@@ -9,18 +9,15 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { makeStyles, Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import EditIcon from '@mui/icons-material/Edit'
+
 import { useNavigate } from 'react-router-dom'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { getPayout, getPayouts } from 'src/services/PayoutService'
+import { getPayout, getPayouts, getPayoutsHistory } from 'src/services/PayoutService'
 import FormStyles from 'src/helper/FormStyles'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
-import TextField from '@material-ui/core/TextField'
+
 import { CustomText } from 'src/helper/helper'
+
+import Modal from '@mui/material/Modal'
+import Box from '@mui/material/Box'
 const datagridSx = FormStyles
 
 const Payout = () => {
@@ -33,14 +30,19 @@ const Payout = () => {
   const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [openPay, setOpenPay] = React.useState(false)
-  const [openPayHistory, setOpenPayHistory] = React.useState(false)
-  const [openPayDesc, setOpenPayDesc] = React.useState(false)
   const [payNumber, setPayNumber] = React.useState()
+  const [openPay, setOpenPay] = React.useState(false)
+  const [openHistoryPay, setHistoryPay] = React.useState(false)
+  const [openDesciptionPay, setDescriptionPay] = React.useState(false)
+  const [eidNum, setEidNum] = React.useState('')
+  const [payoutHistory, setPayoutHistory] = React.useState({})
+
   const getPayoutData = async () => {
     setPayout(await getPayouts(userInfo))
   }
-
+  const getPayoutHistoryData = async () => {
+    setPayoutHistory(await getPayoutsHistory(userInfo, eidNum))
+  }
   const searchPayout = async (value) => {
     setSearch(value)
     setPage(1)
@@ -61,9 +63,32 @@ const Payout = () => {
   }
   useEffect(() => {
     getPayoutData()
+    getPayoutHistoryData()
   }, [])
+  const captureId = (cellValue) => {
+    setEidNum(cellValue?.row?.eid)
+  }
+  const navigateFunction = (e) => {
+    e.preventDefault()
+    navigate('/payout/add')
+  }
+  const handleCreate = (e) => {
+    e.preventDefault()
+    console.log(payNumber)
+    setPayNumber('')
+    setOpenPay(false)
+  }
+  const handlePayOpen = () => setOpenPay(true)
+  const handlePayClose = () => setOpenPay(false)
+  const handleHistoryClose = () => setHistoryPay(false)
+  const handleHistoryOpen = (cellValue, e) => {
+    captureId(cellValue, e)
+    setHistoryPay(true)
+  }
+  const handleDescriptionOpen = () => setDescriptionPay(true)
+  const handleDescriptionClose = () => setDescriptionPay(false)
 
-  console.log(payout)
+  console.log(payoutHistory)
   let sr_no = 0
   const columns = [
     // { field: 'payout_name', headerName: 'Payout', width: 350 },
@@ -72,11 +97,10 @@ const Payout = () => {
     // { field: 'supplier', headerName: 'Supplier', width: 150 },
     // { field: 'supplier_price', headerName: 'Supplier Price', width: 150 },
     // { field: 'selling_price', headerName: 'Store Sell Price', width: 150 },
-    { field: 'eid', headerName: 'Eid', width: 150 },
-    { field: 'Name', headerName: 'Name', width: 150 },
-    { field: 'outsource_type', headerName: 'Type', width: 150 },
-    { field: 'total_earn', headerName: 'Total Earn', width: 150 },
-    { field: 'total_paid', headerName: 'Paid', width: 150 },
+    { field: 'eid', headerName: 'EID', width: 150 },
+    { field: 'company_name', headerName: 'Name', width: 150 },
+    { field: 'hire_for', headerName: 'Type', width: 150 },
+
     { field: 'to_pay', headerName: 'To Pay', width: 150 },
     // { field: 'company_name', headerName: 'Name', width: 200 },
     // { field: 'company_email', headerName: 'Email', width: 300 },
@@ -97,15 +121,15 @@ const Payout = () => {
       width: 300,
       renderCell: (cellValue) => {
         return (
-          <div className="edit-delete-div">
-            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <button className="custom-pay-btn" onClick={handleClickPay}>
+          <div className="">
+            <span className="" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
+              <button className="custom-pay-btn" onClick={handlePayOpen}>
                 Pay
               </button>
-              <button className="custom-pay-btn" onClick={handleClickPayHistory}>
+              <button className="custom-pay-btn" onClick={(e) => handleHistoryOpen(cellValue?.row?.eid, e)}>
                 Pay history
               </button>
-              <button className="custom-pay-btn" onClick={handleClickPayDesc}>
+              <button className="custom-pay-btn" onClick={handleDescriptionOpen} id={cellValue?.row?.eid}>
                 Pay description
               </button>
             </span>
@@ -114,49 +138,39 @@ const Payout = () => {
       },
     },
   ]
-  const handleClickPay = () => {
-    setOpenPay(!openPay)
-  }
-  const handleClickPayHistory = () => {
-    setOpenPayHistory(!openPayHistory)
-  }
-  const handleClickPayDesc = () => {
-    setOpenPayDesc(!openPayDesc)
-  }
-  const handlePayClose = () => {
-    setOpenPay(false)
-    navigate('../payouts', { replace: true })
-  }
-  const handlePayHistoryClose = () => {
-    setOpenPayHistory(false)
-    navigate('../payouts', { replace: true })
-  }
-  const handlePayDescClose = () => {
-    setOpenPayDesc(false)
-    navigate('../payouts', { replace: true })
-  }
-  const navigateFunction = (e) => {
-    e.preventDefault()
-    navigate('/payout/add')
-  }
-  const handleCreate = (e) => {
-    e.preventDefault()
-    console.log(payNumber)
-    setPayNumber('')
-    setOpenPay(false)
-  }
+  const column2 = [
+    { field: 'eid', headerName: 'Eid', width: 150 },
+    { field: 'Name', headerName: 'Name', width: 150 },
+  ]
 
+  // const handlePayClose = () => {
+  //   setOpenPay(false)
+  //   navigate('../payouts', { replace: true })
+  // }
+
+  console.log(payout)
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-30%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '1px solid #000',
+    boxShadow: 24,
+    p: 4,
+  }
   return (
     <MainBoard>
       {/* this dialogue box is for pay */}
-      <Dialog
+      <Modal
         open={openPay}
         onClose={handlePayClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Merchant ID'}</DialogTitle>
-        <DialogContent>
+        <Box sx={style} className="w-50">
+          <h6>Pay</h6>
           <CustomText
             label="Pay value in ($)"
             name="pay"
@@ -165,66 +179,69 @@ const Payout = () => {
             required={true}
             handleChange={(e) => handleCreate(e)}
           />
-          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
-        </DialogContent>
-        <DialogActions>
-          <button className="custom-pay-btn" onClick={handlePayClose}>
-            Submit
+          <button className="custom-pay-btn my-3" onClick={handlePayClose}>
+            Pay
           </button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Modal>
       {/* pay dialogue box ends here */}
       {/* this dialogue box is for pay history */}
-      <Dialog
-        open={openPayHistory}
-        onClose={handlePayHistoryClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        open={openHistoryPay}
+        onClose={handleHistoryClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <DialogTitle id="alert-dialog-title">{'History'}</DialogTitle>
-        <DialogContent>
-          <CustomText
-            label="Pay value in ($)"
-            name="pay"
-            placeholder="Value in $"
-            error={false}
-            required={true}
-            handleChange={(e) => handleCreate(e)}
-          />
-          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
-        </DialogContent>
-        <DialogActions>
-          <button className="custom-pay-btn" onClick={handlePayHistoryClose}>
-            Submit
+        <Box sx={style} className="w-50">
+          <h6>Pay History</h6>
+          <div style={{ height: '40vh', width: '100%' }} className="py-2">
+            {payout?.data?.data && (
+              <DataGrid
+                className="customTable"
+                getRowId={(row) => Math.random()}
+                rows={payout.data.data}
+                columns={column2}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                sx={datagridSx}
+              />
+            )}
+          </div>
+          <button className="custom-close-btn my-3" onClick={handleHistoryClose}>
+            Close
           </button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Modal>
+
       {/* pay  dialogue box ends here */}
+
       {/* this dialogue box is for pay description */}
-      <Dialog
-        open={openPayDesc}
-        onClose={handlePayDescClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        open={openDesciptionPay}
+        onClose={handleDescriptionClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Description'}</DialogTitle>
-        <DialogContent>
-          <CustomText
-            label="Pay value in ($)"
-            name="pay"
-            placeholder="Value in $"
-            error={false}
-            required={true}
-            handleChange={(e) => handleCreate(e)}
-          />
-          {/* <DialogContentText id="alert-dialog-description">Successfully Submitted</DialogContentText> */}
-        </DialogContent>
-        <DialogActions>
-          <button className="custom-pay-btn" onClick={handlePayDescClose}>
-            Submit
+        <Box sx={style} className="w-50">
+          <h6>Pay Description</h6>
+          <div style={{ height: '50vh', width: '100%' }} className="py-2">
+            {payout?.data?.data && (
+              <DataGrid
+                className="customTable"
+                getRowId={(row) => Math.random()}
+                rows={payout.data.data}
+                columns={column2}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                sx={datagridSx}
+              />
+            )}
+          </div>
+          <button className="custom-close-btn my-3" onClick={handleDescriptionClose}>
+            Close
           </button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Modal>
       {/* pay description  dialogue box ends here */}
       <Container fluid>
         <Container className="p-0 mt-4">
