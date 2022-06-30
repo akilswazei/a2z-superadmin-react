@@ -66,7 +66,7 @@ import axios from 'axios'
 //   return json_data
 // }
 
-export const getPayouts = async (userInfo, page = 1, search_keyword = '') => {
+export const getPayouts = async (userInfo, page = 2, search_keyword = '') => {
   console.log(search_keyword)
   let getpara = []
   getpara[0] = page == 1 ? '' : 'page=' + page
@@ -80,17 +80,30 @@ export const getPayouts = async (userInfo, page = 1, search_keyword = '') => {
   return data
 }
 
-export const getPayoutsHistory = async (userInfo, eid) => {
+export const getPayoutsHistory = async (userInfo, eid = '') => {
   let getpara = []
 
-  getpara[0] = eid
+  getpara[0] = eid == '' ? '' : 'eid=' + eid
+
   const para = getpara.join('&')
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + 'admin/payout/payout-history?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/payout/payout-history?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
   })
+  return data
+}
+export const getPayHistory = async (userInfo, eid = '') => {
+  let getpara = []
 
+  getpara[0] = eid == '' ? '' : 'eid=' + eid
+
+  const para = getpara.join('&')
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/payout/payment-history?' + para, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
   return data
 }
 

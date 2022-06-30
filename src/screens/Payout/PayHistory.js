@@ -8,9 +8,11 @@ import FormStyles from 'src/helper/FormStyles'
 const datagridSx = FormStyles
 
 const column2 = [
-  { field: 'merchant_id', headerName: 'Merchant ID', width: 150 },
-  { field: 'payout_amount', headerName: 'Amount', width: 150 },
-  { field: 'payout_date', headerName: 'Amount', width: 150 },
+  { field: 'payout_payment_eid', headerName: 'Payout ID', width: 150 },
+  { field: 'credit', headerName: 'Credited $', width: 120 },
+  { field: 'debit', headerName: 'Debited $', width: 120 },
+  { field: 'payment_detail', headerName: 'Payment Detail', width: 150 },
+  { field: 'payment_type', headerName: 'Payment type', width: 150 },
   {
     field: 'status',
     width: 150,
@@ -23,23 +25,23 @@ const column2 = [
     },
   },
 ]
-function PayoutHistory({ openHistoryPayout, handleHistoryClose, payoutHistory, style }) {
+function PayHistory({ openPayHistory, handleHistoryPayClose, payHistory, style }) {
   return (
     <>
       <Modal
-        open={openHistoryPayout}
-        onClose={handleHistoryClose}
+        open={openPayHistory}
+        onClose={handleHistoryPayClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="w-50">
           <h6>Payout History</h6>
           <div style={{ height: '40vh', width: '100%' }} className="py-2">
-            {payoutHistory?.data?.data && (
+            {payHistory?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random()}
-                rows={payoutHistory.data.data}
+                rows={payHistory.data.data}
                 columns={column2}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -47,7 +49,7 @@ function PayoutHistory({ openHistoryPayout, handleHistoryClose, payoutHistory, s
               />
             )}
           </div>
-          <button className="custom-close-btn my-3" onClick={handleHistoryClose}>
+          <button className="custom-close-btn my-3" onClick={handleHistoryPayClose}>
             Close
           </button>
         </Box>
@@ -56,4 +58,4 @@ function PayoutHistory({ openHistoryPayout, handleHistoryClose, payoutHistory, s
   )
 }
 
-export default PayoutHistory
+export default PayHistory

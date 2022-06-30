@@ -149,11 +149,6 @@ function getItems() {
             name: 'Payouts',
             link: '/payouts',
           },
-          {
-            id: 2,
-            name: 'Payout History',
-            link: '/payouts/history',
-          },
         ],
       },
       {
