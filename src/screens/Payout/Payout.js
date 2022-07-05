@@ -16,6 +16,7 @@ import Box from '@mui/material/Box'
 import PayoutHistory from './PayoutHistory'
 import { getPayHistory } from 'src/services/PayoutService'
 import PayHistory from './PayHistory'
+import Pay from './Pay'
 
 const datagridSx = FormStyles
 
@@ -29,12 +30,12 @@ const Payout = () => {
   const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [payNumber, setPayNumber] = React.useState()
-  const [openPay, setOpenPay] = React.useState(false)
-  const [openHistoryPayout, setHistoryPayout] = React.useState(false)
-  const [openHistoryPay, setOpenHistoryPay] = React.useState(false)
-  const [eidNum, setEidNum] = React.useState('')
-  const [payoutHistory, setPayoutHistory] = React.useState({})
+
+  const [openPay, setOpenPay] = useState(false)
+  const [openHistoryPayout, setHistoryPayout] = useState(false)
+  const [openHistoryPay, setOpenHistoryPay] = useState(false)
+  const [eidNum, setEidNum] = useState('')
+  const [payoutHistory, setPayoutHistory] = useState({})
   const [payHistory, setPayHistory] = useState({})
 
   const getPayoutData = async () => {
@@ -80,13 +81,10 @@ const Payout = () => {
     e.preventDefault()
     navigate('/payout/add')
   }
-  const handleCreate = (e) => {
-    e.preventDefault()
-    console.log(payNumber)
-    setPayNumber('')
-    setOpenPay(false)
+  const handlePayOpen = (cellValue, e) => {
+    captureId(cellValue)
+    setOpenPay(true)
   }
-  const handlePayOpen = () => setOpenPay(true)
   const handlePayClose = () => setOpenPay(false)
   const handleHistoryClose = () => setHistoryPayout(false)
   const handleHistoryPayClose = () => setOpenHistoryPay(false)
@@ -114,7 +112,7 @@ const Payout = () => {
         return (
           <div className="">
             <span className="" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <button className="custom-pay-btn" onClick={handlePayOpen}>
+              <button className="custom-pay-btn" onClick={(e) => handlePayOpen(cellValue?.row?.eid, e)}>
                 Pay
               </button>
               <button className="custom-pay-btn" onClick={(e) => handleHistoryOpen(cellValue?.row?.eid, e)}>
@@ -146,48 +144,15 @@ const Payout = () => {
     p: 4,
   }
 
-  console.log(payHistory)
   return (
     <MainBoard>
       {/* this dialogue box is for pay */}
-      <Modal
-        open={openPay}
-        onClose={handlePayClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} className="w-50">
-          <h6>Pay</h6>
-          <div>
-            <CustomText
-              label="Pay value in ($)"
-              name="pay"
-              placeholder="Value in $"
-              error={false}
-              required={true}
-              handleChange={(e) => handleCreate(e)}
-            />
-          </div>
-          <div className="mt-3">
-            <CustomText
-              label="Description"
-              name="description"
-              placeholder="Description"
-              error={false}
-              required={true}
-              handleChange={(e) => handleCreate(e)}
-            />
-          </div>
 
-          <button className="custom-pay-btn my-3" onClick={handlePayClose}>
-            Pay
-          </button>
-        </Box>
-      </Modal>
+      <Pay openPay={openPay} handlePayClose={handlePayClose} style={style} eidNum={eidNum} />
       {/* pay dialogue box ends here */}
       {/* this dialogue box is for pay history */}
       <PayoutHistory
-        openHistoryPay={openHistoryPayout}
+        openHistoryPayout={openHistoryPayout}
         handleHistoryClose={handleHistoryClose}
         payoutHistory={payoutHistory}
         style={style}

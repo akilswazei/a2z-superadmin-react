@@ -35,7 +35,7 @@ function PayHistory({ openPayHistory, handleHistoryPayClose, payHistory, style }
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="w-50">
-          <h6>Payout History</h6>
+          <h3>Payout History</h3>
           <div style={{ height: '40vh', width: '100%' }} className="py-2">
             {payHistory?.data?.data && (
               <DataGrid
