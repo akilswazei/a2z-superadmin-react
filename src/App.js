@@ -51,6 +51,9 @@ const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+
+const Lead = React.lazy(() => import('./screens/Lead/Lead'))
+
 //app theme component
 const theme = createTheme({
   palette: {
@@ -85,6 +88,8 @@ class App extends Component {
 
                 <Route exact path="/users" element={<Users />} />
                 <Route exact path="/user/add" element={<AddUser />} />
+
+                <Route exact path="/leads" element={<Lead />} />
 
                 <Route exact path="/teams" element={<Teams />} />
                 <Route exact path="/team/add" element={<AddTeam />} />
