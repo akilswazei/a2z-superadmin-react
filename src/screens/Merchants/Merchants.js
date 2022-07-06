@@ -38,6 +38,7 @@ const Merchant = () => {
         console.log(cellValues)
         return (
           <button
+            className="custom-pay-btn"
             eid={cellValues.row.eid}
             onClick={(event) => {
               handleDelete(cellValues.row.eid, event)
@@ -48,7 +49,6 @@ const Merchant = () => {
         )
       },
     },
-
   ]
   const getrows = () => {
     let rows = []

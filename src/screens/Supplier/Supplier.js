@@ -58,7 +58,7 @@ const Supplier = () => {
   const columns = [
     { field: 'eid', headerName: 'EID', width: 150 },
     { field: 'supplier_name', headerName: 'Name', width: 200 },
-    { field: 'email', headerName: 'Email', width: 300 },
+
     // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
