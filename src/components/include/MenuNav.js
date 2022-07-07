@@ -84,7 +84,7 @@ function getItems() {
       {
         id: 3,
         name: 'Leads',
-        link: '/dashboard',
+        link: '/leads',
         icon: <BallotIcon />,
       },
       {
