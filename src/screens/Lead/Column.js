@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react';
-import {TextForm} from './TextForm';
 
 Column.propTypes = {
     title: PropTypes.string,

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react';
 import {Column} from './Column';
 import {DraggableCard} from './Card';
-import {TextForm} from './TextForm';
 
 Board.propTypes = {
     cards: PropTypes.object,

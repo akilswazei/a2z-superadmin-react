@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
-import {Board} from 'src/Board';
+import {Board} from 'src/screens/Lead/Board';
 import MainBoard from 'src/components/include/MainBoard'
 import { Container, createStyles } from '@material-ui/core'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import { AddLeadPopup } from 'src/screens/Lead/AddLeadPopup'
+
 
 
 let _columnId = 0;
@@ -21,7 +24,20 @@ const initialColumns = ['New', 'Contacted', 'Proposal Sent', 'Proposal Sent'].ma
   cardIds: initialCards.slice(i * 4, i * 4 + 4).map(card => card.id),
 }));
 
+// ST - Modal
+const triggerText = 'Add Lead';
+
+const onSubmit = (event) => {
+    
+    event.preventDefault(event);
+    console.log(event.target.name.value);
+    console.log(event.target.email.value);
+};
+
+// EN - Modal  
+
 class Lead extends Component {
+
   state = {
     cards: initialCards,
     columns: initialColumns,
@@ -83,17 +99,27 @@ class Lead extends Component {
             <h6 className="p-0">A2Z Leads</h6>
             </Container>
             <Container className="background-white-theme custom-container-white">
-                <div style={{ height: '100vh', width: '100%',overflow:'y' }} className="py-2">
-  
 
-                  <Board
-                    cards={this.state.cards}
-                    columns={this.state.columns}
-                    moveCard={this.moveCard}
-                    addCard={this.addCard}
-                    addColumn={this.addColumn}
-                  />
-             </div>
+                <div className="justify-flex-end input-div">
+                <input
+                  type="text"
+                  placeholder="Search here"                  
+                />
+                 <AddLeadPopup triggerText={triggerText} onSubmit={onSubmit} />
+                
+              </div>
+              <hr></hr>
+
+                <div style={{ height: '100vh', width: '100%',overflow:'y' }} className="py-2">  
+
+                      <Board
+                        cards={this.state.cards}
+                        columns={this.state.columns}
+                        moveCard={this.moveCard}
+                        addCard={this.addCard}
+                        addColumn={this.addColumn}
+                      />
+                </div>
             </Container>
         </Container>
         </MainBoard>
