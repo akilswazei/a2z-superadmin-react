@@ -79,6 +79,11 @@ function getItems() {
             name: 'Role',
             link: '/roles',
           },
+          {
+            id: 4,
+            name: 'Post',
+            link: '/posts',
+          },
         ],
       },
       {
