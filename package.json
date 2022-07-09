@@ -63,7 +63,8 @@
     "redux-thunk": "^2.4.1",
     "scripts": "^0.1.0",
     "simplebar-react": "^2.4.1",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "form-serialize": "0.7.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
