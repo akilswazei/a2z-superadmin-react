@@ -19,7 +19,15 @@ const columns = [
   { field: 'title', headerName: 'Title', width: 200 },
   { field: 'short_description', headerName: 'Short Description', width: 300 },
   { field: 'description', headerName: 'Description', width: 300 },
-  { field: 'image', headerName: 'Image', width: 300 },
+  {
+    field: 'image',
+    renderCell: (cellValues) => {
+      return <img src={cellValues?.row?.image} />
+    },
+    headerName: 'Image',
+    width: 300,
+    height: 300,
+  },
   {
     field: 'status',
     renderCell: (cellValues) => {

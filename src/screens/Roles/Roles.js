@@ -2,12 +2,12 @@
 import * as React from 'react'
 
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import MainBoard from 'src/components/include/MainBoard'
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { getRoles } from 'src/services/RolesServices'
 import { deleteRole } from 'src/services/RoleService'
