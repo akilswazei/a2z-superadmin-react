@@ -100,7 +100,7 @@ export default function User() {
   //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
   //   ]
 
-  console.log(datagridSx)
+  console.log(users)
   let sr_no = 0
   return (
     // <MainBoard>

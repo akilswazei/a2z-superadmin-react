@@ -53,7 +53,8 @@ const Payout = () => {
     setPayout(await getPayouts(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
+    console.log(value)
     setPage(value)
     setPayout(await getPayouts(userInfo, value, search))
   }
@@ -192,11 +193,11 @@ const Payout = () => {
             {payout?.data?.data && (
               <DataGrid
                 className="customTable"
-                getRowId={(row) => Math.random()}
+                getRowId={(row) => Math.random() * 100}
                 rows={payout.data.data}
                 columns={columns}
                 pageSize={10}
-                rowsPerPageOptions={[10]}
+                rowsPerPageOptions={[0]}
                 checkboxSelection
                 sx={datagridSx}
               />

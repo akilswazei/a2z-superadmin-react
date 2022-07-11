@@ -74,7 +74,7 @@ export default function HelpDesk() {
   const changePage = async (e, value) => {
     console.log(value)
     setPage(value)
-    setPosts(await setPosts(userInfo, value, search))
+    setPosts(await getPosts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {

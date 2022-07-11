@@ -37,7 +37,8 @@ const Supplier = () => {
     setSupplier(await getSuppliers(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
+    console.log(value)
     setPage(value)
     setSupplier(await getSuppliers(userInfo, value, search))
   }
@@ -120,7 +121,7 @@ const Supplier = () => {
                 rows={supplier.data.data}
                 columns={columns}
                 pageSize={10}
-                rowsPerPageOptions={[10]}
+                rowsPerPageOptions={[0]}
                 checkboxSelection
                 sx={datagridSx}
               />
