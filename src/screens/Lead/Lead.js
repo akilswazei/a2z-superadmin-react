@@ -41,6 +41,10 @@ const onSubmit = (event) => {
 };
 // EN - Modal
 
+const handleDragEnd = (event) => {
+    console.log("Stop");
+};
+
 const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
@@ -81,16 +85,6 @@ class Lead extends Component {
 
         this.setState({ cards: this.state.newcard[0] })
         this.setState({ columns: this.state.newcolumn[0] })
-
-        // console.table(temp_array);
-        // console.log("XXX: " + JSON.stringify(this.state.columns))
-        // return false;
-        console.log("===========");
-        console.log(this.state.columns);
-        console.log("===========");
-        /*this.setState(state => ({
-          leads: [...state.leads, objData],
-        }));*/
     }
     
     componentDidMount() {
@@ -128,7 +122,9 @@ class Lead extends Component {
     }));
   };
 
-  moveCard = (cardId, destColumnId, index) => {
+  moveCard = (cardId, destColumnId, index, current_column_id) => {
+    console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);
+
     this.setState(state => ({
       columns: state.columns.map(column => ({
         ...column,
@@ -140,9 +136,12 @@ class Lead extends Component {
               : ids,
           // 1) Remove the cardId for all columns
           ids => ids.filter(id => id !== cardId)
-        )(column.cardIds),
-      })),
+        )(column.cardIds),        
+      })),      
     }));
+
+    
+
   };
 
   render() {
@@ -167,7 +166,7 @@ class Lead extends Component {
                             columns={this.state.columns}
                             moveCard={this.moveCard}
                             addCard={this.addCard}
-                            addColumn={this.addColumn}
+                            addColumn={this.addColumn}                            
                         />
                     </div>
                 </Container>

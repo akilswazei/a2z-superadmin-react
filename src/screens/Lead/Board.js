@@ -8,15 +8,10 @@ Board.propTypes = {
     columns: PropTypes.object,
     moveCard: PropTypes.func,
     addCard: PropTypes.func,
-    addColumn: PropTypes.func,    
+    addColumn: PropTypes.func,
 }
 
-export function Board({cards, columns, moveCard, addCard, addColumn}) {
-
-   console.log("COL_DATA: " + JSON.stringify(columns))
-
-   console.log("CARC_DATA: " + JSON.stringify(cards))
-
+export function Board({cards, columns, moveCard, addCard, addColumn}) {   
 
   return (    
     <div className="Board">      
@@ -24,7 +19,7 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
             <Column
               key={column.id}
               title={column.title}
-              cardtotal={column.cardIds.length}
+              cardtotal={column.cardIds.length}              
               addCard={addCard.bind(null, column.id)}
             >
               {column.cardIds
@@ -38,15 +33,16 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
                     title={card.title}
                     desc={card.desc}
                     email={card.email}
-                    phone={card.phone}
+                    phone={card.phone}                    
                     lead_date={card.lead_date}
-                    moveCard={moveCard}
+                    current_column_id={column.id}
+                    moveCard={moveCard}                    
                   />
                 ))}
               {column.cardIds.length === 0 && (
                 <DraggableCard
                   isSpacer
-                  moveCard={cardId => moveCard(cardId, column.id, 0)}
+                  moveCard={cardId => moveCard(cardId, column.id, 0)}                  
                 />
               )}
             </Column>
