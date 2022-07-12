@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import { CustomText } from 'src/helper/helper'
@@ -13,8 +13,10 @@ function Pay({ openPay, handlePayClose, style, eidNum }) {
     userSignin: { userInfo },
   } = getState
 
-  const [payData, setPayData] = useState({ eid: eidNum })
-
+  const [payData, setPayData] = useState()
+  useEffect(() => {
+    setPayData({ eid: eidNum })
+  }, [eidNum])
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -23,7 +25,6 @@ function Pay({ openPay, handlePayClose, style, eidNum }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log()
     await addPay(userInfo, payData)
     handlePayClose()
   }
