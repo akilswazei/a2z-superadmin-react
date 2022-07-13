@@ -1,21 +1,25 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import MainBoard from 'src/components/include/MainBoard'
+//material UI imports
 import { Container } from '@material-ui/core'
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { getSubscriptions } from 'src/services/SubscriptionService'
 import EditIcon from '@mui/icons-material/Edit'
-import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom style imports
 import FormStyles from 'src/helper/FormStyles'
+//custom component imports
+import MainBoard from 'src/components/include/MainBoard'
+import { getSubscriptions } from 'src/services/SubscriptionService'
+import { useNavigate } from 'react-router-dom'
+//style for data grid
 const datagridSx = FormStyles
 
+//main function starts here
 const Subscription = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -23,42 +27,43 @@ const Subscription = () => {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [subscription, setSubscription] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch
   const getSubscriptionData = async () => {
     setSubscription(await getSubscriptions(userInfo))
   }
 
+  //search
   const searchSubscription = async (value) => {
     setSearch(value)
     setPage(1)
     setSubscription(await getSubscriptions(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  //page change
+  const changePage = async (e, value) => {
     setPage(value)
     setSubscription(await getSubscriptions(userInfo, value, search))
   }
 
-  // const handleDelete = async (eid, e) => {
-  //   deleteIndividual(userInfo, eid)
-  //   setSubscription({
-  //     ...subscription,
-  //     data: { ...subscription.data, data: [...subscription.data.data.filter((v, i) => v.eid != eid)] },
-  //   })
-  // }
+  //custom function to retrive amount for data grid
   const getAmount = (params) => {
     const total_amt = params.row.product.atz_selling_price
     return total_amt
   }
+
+  //rerendering
   useEffect(() => {
     getSubscriptionData()
   }, [])
 
   console.log(subscription)
-  let sr_no = 0
+
+  //columns for data grid
   const columns = [
     { field: 'eid', headerName: 'Subscription ID', width: 150 },
     { field: 'merchant_id', headerName: 'Merchant', width: 200 },
@@ -99,10 +104,6 @@ const Subscription = () => {
     },
   ]
 
-  //   const navigateFunction = (e) => {
-  //     e.preventDefault()
-  //     navigate('/individual/add')
-  //   }
   return (
     <MainBoard>
       <Container fluid>
@@ -119,9 +120,7 @@ const Subscription = () => {
                 searchSubscription(e.target.value)
               }}
             />
-            {/* <button className="custom-blue-btn m-2">
-              Add Individual<span>{<PersonAddAltIcon />}</span>
-            </button> */}
+
             <input
               type="text"
               placeholder="Search here"

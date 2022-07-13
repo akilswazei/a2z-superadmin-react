@@ -1,18 +1,22 @@
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { getPosts, deletePosts, getPostsList } from 'src/services/PostService'
-import MainBoard from 'src/components/include/MainBoard'
-import { Container, createStyles } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+//material UI imports
+import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom style imports
 import FormStyles from 'src/helper/FormStyles'
+//custom component imports
+import { getPosts, deletePosts } from 'src/services/PostService'
+import MainBoard from 'src/components/include/MainBoard'
+
+//columns for data grid
 const columns = [
   { field: 'eid', headerName: 'ID', width: 100 },
   { field: 'date', headerName: 'Date', width: 100 },
@@ -55,20 +59,26 @@ const columns = [
   },
 ]
 
+//custom style for data grid
 const datagridSx = FormStyles
 
+//main fucntion
 export default function HelpDesk() {
+  //navigator
   const navigate = useNavigate()
+  //redux
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [posts, setPosts] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [success, setSuccess] = useState(0)
 
+  //fetch
   const getPostData = async () => {
     setPosts(await getPosts(userInfo))
   }
@@ -84,7 +94,7 @@ export default function HelpDesk() {
     setPage(value)
     setPosts(await getPosts(userInfo, value, search))
   }
-
+  //events starts here
   const handleDelete = async (eid, e) => {
     deletePosts(userInfo, eid)
     setPosts({ ...posts, data: { ...posts.data, data: [...posts.data.data.filter((v, i) => v.eid != eid)] } })
@@ -94,15 +104,14 @@ export default function HelpDesk() {
     e.preventDefault()
     navigate('/post/add')
   }
+  //re-rendrer
   useEffect(() => {
     getPostData()
   }, [])
 
   console.log(posts)
-  let sr_no = 0
+
   return (
-    // <MainBoard>
-    //   <Container fluid>
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">

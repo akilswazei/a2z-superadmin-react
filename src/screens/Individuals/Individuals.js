@@ -37,7 +37,7 @@ const Individual = () => {
     setIndividual(await getIndividuals(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
     setPage(value)
     setIndividual(await getIndividuals(userInfo, value, search))
   }

@@ -1,41 +1,30 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addProduct,updateProduct,getProduct } from 'src/services/ProductService'
-import { getSuppliers } from 'src/services/SupplierService'
-import { getCategories } from 'src/services/CategoryService'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+//material UI imports
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { useParams } from 'react-router-dom'
-import { validate } from 'src/helper/validation'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomSelect } from 'src/helper/helper'
-import { cilChevronDoubleLeft } from '@coreui/icons'
+import { Container, Button, Grid } from '@material-ui/core'
+//custom styling imports
 
+//custom component imports
+import { getRoles } from 'src/services/RolesServices'
+import { addProduct, updateProduct, getProduct } from 'src/services/ProductService'
+import { getSuppliers } from 'src/services/SupplierService'
+import { getCategories } from 'src/services/CategoryService'
+import MainBoard from 'src/components/include/MainBoard'
+import { validate } from 'src/helper/validation'
+import { CustomText, CustomSelect } from 'src/helper/helper'
+
+//main function starts here
 function AddProduct() {
-  let suupliers;
   const getState = useSelector((state) => state)
   const navigate = useNavigate()
 
@@ -49,12 +38,10 @@ function AddProduct() {
   const [inputs, setInputs] = useState(initialInputState)
   const [suppliers, setSuppliers] = useState([])
   const [categories, setCategories] = useState([])
-  
+
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState(false)
-  const [progress, setProgress] = React.useState(0)
-
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -102,41 +89,26 @@ function AddProduct() {
   }
   const get_supplier_list = async (eid) => {
     const supplier_data = await getSuppliers(userInfo)
-    supplier_data?.data?.data.map((value,key)=>{
-      suppliers.push({eid: value.eid,name: value.supplier_name})
+    supplier_data?.data?.data.map((value, key) => {
+      suppliers.push({ eid: value.eid, name: value.supplier_name })
     })
   }
   const get_category_list = async (eid) => {
     const category_data = await getCategories(userInfo)
-    category_data?.data?.data.map((value,key)=>{
-      categories.push({eid: value.eid,name: value.category_name})
+    category_data?.data?.data.map((value, key) => {
+      categories.push({ eid: value.eid, name: value.category_name })
     })
   }
 
   useEffect(() => {
-    get_supplier_list();
-    get_category_list();
+    get_supplier_list()
+    get_category_list()
     getRolesData()
     if (eid) {
       getProductData(eid)
     }
   }, [])
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0
-        }
-        const diff = Math.random() * 10
-        return Math.min(oldProgress + diff, 100)
-      })
-    }, 500)
-
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
   return (
     <MainBoard>
       <Dialog
@@ -161,7 +133,7 @@ function AddProduct() {
         <Container className="background-white-theme my-3 custom-container-white">
           <form onSubmit={submitHandler}>
             <Grid container spacing={2}>
-            <Grid item xs={12} className="my-3 p-0">
+              <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Details</h6>
               </Grid>
               <Grid item xs={12} md={12}>
@@ -170,7 +142,7 @@ function AddProduct() {
                   name="product_name"
                   placeholder="product name"
                   id="product-name"
-                  value={inputs.product_name?inputs.product_name:""}
+                  value={inputs.product_name ? inputs.product_name : ''}
                   label="Product Name"
                   error={false}
                   required={true}
@@ -182,7 +154,7 @@ function AddProduct() {
                   handleChange={(e) => handleChange(e)}
                   name="product_details"
                   placeholder="Please enter details"
-                  value={inputs.product_details?inputs.product_details:""}
+                  value={inputs.product_details ? inputs.product_details : ''}
                   label="Product Details"
                   error={false}
                   required={true}
@@ -195,7 +167,7 @@ function AddProduct() {
                   name="product_upc"
                   required={true}
                   error={false}
-                  value={inputs.product_upc?inputs.product_upc:""}
+                  value={inputs.product_upc ? inputs.product_upc : ''}
                   placeholder="Enter UPC"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -207,18 +179,18 @@ function AddProduct() {
                   name="product_sku"
                   required={true}
                   error={false}
-                  value={inputs.product_sku?inputs.product_sku:""}
+                  value={inputs.product_sku ? inputs.product_sku : ''}
                   placeholder="Enter UPC"
                   handleChange={(e) => handleChange(e)}
                 />
-              </Grid>              
+              </Grid>
               <Grid item sx={4} md={4}>
                 <CustomText
                   label="Quantity"
                   name="quantity"
                   required={true}
                   error={false}
-                  value={inputs.quantity?inputs.quantity:""}
+                  value={inputs.quantity ? inputs.quantity : ''}
                   placeholder="Please enter quantity  "
                   handleChange={(e) => handleChange(e)}
                 />
@@ -229,45 +201,38 @@ function AddProduct() {
                   name="manufacturer"
                   required={true}
                   error={false}
-                  value={inputs.manufacturer?inputs.manufacturer:""}
+                  value={inputs.manufacturer ? inputs.manufacturer : ''}
                   placeholder="Please enter manufacturer name"
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
 
-
-
               <Grid item sx={4} md={4}>
-                
                 <CustomSelect
-                    label="Supplier"
-                    name="supplier"
-                    fullWidth={true}
-                    required={true}
-                    error={false}
-                    value={inputs.supplier?inputs.supplier:""}
-                    handleChange={(e) => handleChange(e)}
-                    options={suppliers}
-                  />
-                </Grid>
-                
-              <Grid item sx={4} md={4}>
-
-              <CustomSelect
-                    label="Category"
-                    name="category"
-                    fullWidth={true}
-                    required={true}
-                    error={false}
-                    value={inputs.category?inputs.category:""}
-                    handleChange={(e) => handleChange(e)}
-                    options={categories}
-                  />
-
+                  label="Supplier"
+                  name="supplier"
+                  fullWidth={true}
+                  required={true}
+                  error={false}
+                  value={inputs.supplier ? inputs.supplier : ''}
+                  handleChange={(e) => handleChange(e)}
+                  options={suppliers}
+                />
               </Grid>
-              
-              
-              
+
+              <Grid item sx={4} md={4}>
+                <CustomSelect
+                  label="Category"
+                  name="category"
+                  fullWidth={true}
+                  required={true}
+                  error={false}
+                  value={inputs.category ? inputs.category : ''}
+                  handleChange={(e) => handleChange(e)}
+                  options={categories}
+                />
+              </Grid>
+
               <Grid item sx={4} md={4}>
                 <FormGroup>
                   <CustomSelect
@@ -275,10 +240,13 @@ function AddProduct() {
                     name="is_in_house"
                     required={true}
                     error={false}
-                    value={inputs.is_in_house?inputs.is_in_house:""}
+                    value={inputs.is_in_house ? inputs.is_in_house : ''}
                     placeholder="is in house"
                     handleChange={(e) => handleChange(e)}
-                    options={[{eid:1,name:"In house"},{eid:2,name:"marketplace"}]}
+                    options={[
+                      { eid: 1, name: 'In house' },
+                      { eid: 2, name: 'marketplace' },
+                    ]}
                   />
                 </FormGroup>
               </Grid>
@@ -288,11 +256,14 @@ function AddProduct() {
                   handleChange={(e) => handleChange(e)}
                   name="is_subscription"
                   placeholder="Product Type"
-                  value={inputs.is_subscription?inputs.is_subscription:""}
+                  value={inputs.is_subscription ? inputs.is_subscription : ''}
                   label="Type of product"
                   error={false}
                   required={true}
-                  options={[{eid:1,name:"Subscription Product"},{eid:0,name:"Normal Product"}]}
+                  options={[
+                    { eid: 1, name: 'Subscription Product' },
+                    { eid: 0, name: 'Normal Product' },
+                  ]}
                 />
               </Grid>
 
@@ -301,7 +272,7 @@ function AddProduct() {
                   handleChange={(e) => handleChange(e)}
                   name="subscription_day"
                   placeholder="Subscription product"
-                  value={inputs.subscription_day?inputs.subscription_day:""}
+                  value={inputs.subscription_day ? inputs.subscription_day : ''}
                   label="Subscription Days"
                   error={false}
                   required={true}
@@ -318,7 +289,7 @@ function AddProduct() {
                   name="atz_cost_price"
                   required={true}
                   error={false}
-                  value={inputs.atz_cost_price?inputs.atz_cost_price:""}
+                  value={inputs.atz_cost_price ? inputs.atz_cost_price : ''}
                   placeholder="Please enter supplier price"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -329,7 +300,7 @@ function AddProduct() {
                   name="atz_selling_price"
                   required={false}
                   error={false}
-                  value={inputs.atz_selling_price?inputs.atz_selling_price:""}
+                  value={inputs.atz_selling_price ? inputs.atz_selling_price : ''}
                   placeholder="Please enter profite"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -340,7 +311,7 @@ function AddProduct() {
                   name="mrp"
                   required={true}
                   error={false}
-                  value={inputs.mrp?inputs.mrp:""}
+                  value={inputs.mrp ? inputs.mrp : ''}
                   placeholder="Please MRP"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -352,7 +323,7 @@ function AddProduct() {
                   name="min_order_quantity"
                   required={true}
                   error={false}
-                  value={inputs.min_order_quantity?inputs.min_order_quantity:""}
+                  value={inputs.min_order_quantity ? inputs.min_order_quantity : ''}
                   placeholder="Please enter quantity"
                   handleChange={(e) => handleChange(e)}
                 />

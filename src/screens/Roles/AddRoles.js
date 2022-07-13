@@ -1,22 +1,27 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addIndividual, getIndividual, updateIndividual } from 'src/services/IndividualService'
-import MainBoard from 'src/components/include/MainBoard'
 import { useParams } from 'react-router-dom'
-import { validate } from 'src/helper/validation'
+//material UI imports
 import { Container, Button, Grid } from '@material-ui/core'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+//custom styling imports
+
+//custom component import
+import { getRoles } from 'src/services/RolesServices'
+import MainBoard from 'src/components/include/MainBoard'
+import { validate } from 'src/helper/validation'
 import CustomCheckbox from './CustomCheckbox'
+import { CustomText } from 'src/helper/helper'
+import { addRole, getRole, updateRole } from 'src/services/RoleService'
 
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
-
+//main fucntion starts here
 function AddRoles() {
   const getState = useSelector((state) => state)
   let navigate = useNavigate()
@@ -26,18 +31,20 @@ function AddRoles() {
   const { eid } = useParams()
   let initialInputState = { status: 1 }
 
+  //states
   const [inputs, setInputs] = useState(initialInputState)
   const [roles, setRoles] = useState({})
-  const [open, setOpen] = React.useState(false)
-  const [errors, setErros] = React.useState({})
+  const [open, setOpen] = useState(false)
+  const [errors, setErros] = useState({})
 
-  console.log(inputs.name)
-
+  //function for input value handling
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
     setInputs((values) => ({ ...values, [name]: value }))
   }
+
+  //form submission handler
   const submitHandler = async (e) => {
     e.preventDefault()
     let allerrors = validate(inputs, { name: 'required', password: 'required|confirm_password' })
@@ -45,9 +52,9 @@ function AddRoles() {
       let response
       if (eid) {
         console.log('update will done')
-        response = await updateIndividual(userInfo, inputs)
+        response = await updateRole(userInfo, inputs)
       } else {
-        response = await addIndividual(userInfo, inputs)
+        response = await addRole(userInfo, inputs)
       }
       if (response.data && Object.keys(response.data).length != 0) {
         allerrors = response.data
@@ -62,18 +69,23 @@ function AddRoles() {
     }
     setErros(allerrors)
   }
+  //fetch function
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
+
   const getIndividualData = async (eid) => {
-    const beforeUpdateData = await getIndividual(userInfo, eid)
+    const beforeUpdateData = await getRole(userInfo, eid)
     setInputs(beforeUpdateData.data.user)
   }
+
+  //close function with navigation
   const handleClose = () => {
     setOpen(false)
     navigate('../roles', { replace: true })
   }
 
+  //re render function
   useEffect(() => {
     if (eid) {
       getIndividualData(eid)

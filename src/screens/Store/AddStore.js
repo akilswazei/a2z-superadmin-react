@@ -1,21 +1,24 @@
 /* eslint-disable prettier/prettier */
-import { useNavigate,useParams } from 'react-router-dom'
+//react imports
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+//material UI imports
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import { Container, Button, Grid } from '@material-ui/core'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import { addStore,updateStore,getStore } from 'src/services/StoreService'
+//custom styling imports
+//cutom component imports
+import { getRoles } from 'src/services/RolesServices'
+import MainBoard from 'src/components/include/MainBoard'
+import { addStore, updateStore } from 'src/services/StoreService'
 import { validate } from 'src/helper/validation'
+import { CustomEmail, CustomText, CustomPhone } from 'src/helper/helper'
 
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
-import { Container, Button, Icon, TextField, Paper, Typography, Grid, InputLabel } from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
+//main function starts here
 function AddStore() {
   const getState = useSelector((state) => state)
   const navigate = useNavigate()
@@ -24,19 +27,21 @@ function AddStore() {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const { eid } = useParams()
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState(false)
 
-
+  //chnage of value in form fields
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
     setInputs((values) => ({ ...values, [name]: value }))
   }
   //const [validated, setValidated] = useState(false);
+  //fucntion for handling form submission
   const submitHandler = async (e) => {
     e.preventDefault()
     let allerrors = validate(inputs, {})
@@ -61,6 +66,8 @@ function AddStore() {
     }
     setErros(allerrors)
   }
+
+  //fetch
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
@@ -70,27 +77,15 @@ function AddStore() {
     navigate('../stores', { replace: true })
   }
 
+  //rendering
   useEffect(() => {
     getRolesData()
   }, [])
-  const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-      marginTop: theme.spacing(1),
-    },
-    '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: (theme.palette.mode = 'light'),
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      Width: 'auto', 
-      padding: '10px 12px',
-    },
-  }))
+
+  //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
   const locationPlaceholder = 'Please enter location'
-
   const phonePlaceholder = 'Please enter phone number'
   const categoryPlaceholder = 'Please enter store category'
   const devicePlacerholder = 'Please enter no. of devices'

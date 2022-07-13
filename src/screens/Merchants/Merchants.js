@@ -1,19 +1,27 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react'
-
+//react imports
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import MainBoard from 'src/components/include/MainBoard'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
+//material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+//custom components imports
 import { deleteMerchant, getMerchants } from 'src/services/MerchantService'
-import { useNavigate } from 'react-router-dom'
+import MainBoard from 'src/components/include/MainBoard'
+//custom styling imports
 import FormStyles from 'src/helper/FormStyles'
+
+//grid styling
 const datagridSx = FormStyles
+
+//main function starts here
 const Merchant = () => {
+  //colums for data grid
   const columns = [
     { field: 'eid', headerName: 'ID' },
     { field: 'merchant_id', headerName: 'merchant ID', width: 200 },
@@ -50,49 +58,47 @@ const Merchant = () => {
       },
     },
   ]
-  const getrows = () => {
-    let rows = []
-    var i = 0
-    merchants?.data?.data.map((item, key) => {
-      rows[i++] = {
-        eid: item.eid,
-        business_contact_name: item.business_contact_name,
-      }
-    })
-    return rows
-  }
+  //colums ends here
+
+  //selector function
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
-  const [merchants, setMerchant] = useState({})
+  //states
+  const [merchants, setMerchants] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch function
   const getMerchantData = async () => {
-    setMerchant(await getMerchants(userInfo))
+    setMerchants(await getMerchants(userInfo))
   }
-
+  //handle events starts here
+  //search function
   const searchMerchant = async (value) => {
     setSearch(value)
     setPage(1)
-    setMerchant(await getMerchants(userInfo, 1, value))
+    setMerchants(await getMerchants(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  //pagination function for changing page
+  const changePage = async (e, value) => {
     setPage(value)
-    setMerchant(await getMerchants(userInfo, value, search))
+    setMerchants(await getMerchants(userInfo, value, search))
   }
 
+  //detlete function
   const handleDelete = async (eid, e) => {
     deleteMerchant(userInfo, eid)
-    setMerchant({
+    setMerchants({
       ...Merchant,
       data: { ...Merchant.data, data: [...Merchant.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
-
+  //handle events ends here
+  //use effect for fresh fetch
   useEffect(() => {
     getMerchantData()
   }, [])
@@ -104,7 +110,6 @@ const Merchant = () => {
     navigate('/merchant/add')
   }
   console.log(merchants)
-  let sr_no = 0
 
   return (
     <MainBoard>
@@ -129,6 +134,7 @@ const Merchant = () => {
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
             {merchants?.data?.data && (
               <DataGrid
+                className="customTable"
                 getRowId={(row) => Math.random()}
                 rows={merchants.data.data}
                 columns={columns}
@@ -138,8 +144,16 @@ const Merchant = () => {
                 sx={datagridSx}
               />
             )}
-            {/* <Pagination count={11} defaultPage={6} /> */}
           </div>
+          <Container>
+            <Pagination
+              className="pagination"
+              count={merchants?.data?.links ? merchants.data.links.length - 2 : 1}
+              page={page}
+              defaultPage={page}
+              onChange={(e, number) => changePage(e, number)}
+            />
+          </Container>
         </Container>
       </Container>
     </MainBoard>

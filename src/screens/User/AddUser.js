@@ -1,44 +1,44 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addUser } from 'src/services/UserServices'
-import MainBoard from 'src/components/include/MainBoard'
-import Dialog from '@mui/material/Dialog'
+import { useSelector } from 'react-redux'
+//material UI imports
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
+import { Container, Button, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
+import Dialog from '@mui/material/Dialog'
+//custom style imports
+//custom component imports
+import { getRoles } from 'src/services/RolesServices'
+import { addUser } from 'src/services/UserServices'
+import MainBoard from 'src/components/include/MainBoard'
 import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
 
+//main function
 function AddTeam() {
+  //redux
   const getState = useSelector((state) => state)
+  //navigator
   const navigate = useNavigate()
 
   const {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
-  const [errors, setErros] = React.useState(false)
+  const [errors, setErrors] = React.useState(false)
 
+  //fetch
+  const getRolesData = async () => {
+    setRoles(await getRoles(userInfo))
+  }
+  //events starts here
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -49,26 +49,26 @@ function AddTeam() {
   const submitHandler = async (e) => {
     e.preventDefault()
     if (inputs.password == inputs.confirm_password) {
-      setErros({ ...errors, confirm_password: '' })
+      setErrors({ ...errors, confirm_password: '' })
       await addUser(userInfo, inputs)
       setOpen(true)
     } else {
-      setErros({ ...errors, confirm_password: 'password not matched' })
+      setErrors({ ...errors, confirm_password: 'password not matched' })
     }
   }
-
-  const getRolesData = async () => {
-    setRoles(await getRoles(userInfo))
-  }
+  //events ends
 
   const handleClose = () => {
     setOpen(false)
     navigate('../users', { replace: true })
   }
 
+  //re-rendrer
   useEffect(() => {
     getRolesData()
   }, [])
+
+  //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
   const passwordPlaceholder = 'Please enter password'
@@ -102,19 +102,6 @@ function AddTeam() {
                 <h6 className="m-0 p-0">Basic Infomation</h6>
               </Grid>
               <Grid item xs={6}>
-                {/* <h6 className="color-gray">
-                  Name<sup>*</sup>
-                </h6>
-                <TextField
-                  className="custom-form-field"
-                  required
-                  id="outlined-error"
-                  name="name"
-                  variant="outlined"
-                  placeholder="Please enter your name"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
                 <CustomText
                   handleChange={(e) => handleChange(e)}
                   name="name"

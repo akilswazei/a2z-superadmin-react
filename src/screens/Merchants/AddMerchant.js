@@ -1,41 +1,33 @@
 /* eslint-disable prettier/prettier */
-import { useNavigate,useParams } from 'react-router-dom'
+//react imports
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addUser } from 'src/services/UserServices'
-import { addMerchant,updateMerchant,getMerchant } from 'src/services/MerchantService'
-import MainBoard from 'src/components/include/MainBoard'
-import Dialog from '@mui/material/Dialog'
+import { useSelector } from 'react-redux'
+
+//material UI imports
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { validate } from 'src/helper/validation'
-
-
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
-import { CustomDate, CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
+import Dialog from '@mui/material/Dialog'
+import { Container, Button, Grid } from '@material-ui/core'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
+
+//custom component imports
+import { getRoles } from 'src/services/RolesServices'
+import { addMerchant, updateMerchant, getMerchant } from 'src/services/MerchantService'
+import MainBoard from 'src/components/include/MainBoard'
+import { validate } from 'src/helper/validation'
+import { CustomText } from 'src/helper/helper'
+
+//main function starts here
 function AddMerchant() {
   const getState = useSelector((state) => state)
+
+  //naviagte fucntion
   const navigate = useNavigate()
 
   const {
@@ -48,6 +40,7 @@ function AddMerchant() {
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState(false)
 
+  //function for handling chnages in input data
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -55,6 +48,7 @@ function AddMerchant() {
     setInputs((values) => ({ ...values, [name]: value }))
   }
   //const [validated, setValidated] = useState(false);
+  //fucntion h=for handling submission of form
   const submitHandler = async (e) => {
     e.preventDefault()
     let allerrors = validate(inputs, {})
@@ -98,7 +92,7 @@ function AddMerchant() {
       getMerchantData(eid)
     }
   }, [])
-  
+
   return (
     <MainBoard>
       <Dialog
@@ -134,7 +128,7 @@ function AddMerchant() {
                     name="legal_business_name"
                     required={true}
                     error={false}
-                    value={inputs.legal_business_name?inputs.legal_business_name:""}
+                    value={inputs.legal_business_name ? inputs.legal_business_name : ''}
                     placeholder="A AND B MARKET PLUS, INC"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -145,7 +139,7 @@ function AddMerchant() {
                     name="federl_tax_id"
                     required={true}
                     error={false}
-                    value={inputs.federl_tax_id?inputs.federl_tax_id:""}
+                    value={inputs.federl_tax_id ? inputs.federl_tax_id : ''}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -156,7 +150,7 @@ function AddMerchant() {
                     name="doing_business_name"
                     required={true}
                     error={false}
-                    value={inputs.doing_business_name?inputs.doing_business_name:""}
+                    value={inputs.doing_business_name ? inputs.doing_business_name : ''}
                     placeholder="CAMPUS AND LIQUOR"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -167,7 +161,7 @@ function AddMerchant() {
                     name="state_tax_id"
                     required={true}
                     error={false}
-                    value={inputs.state_tax_id?inputs.state_tax_id:""}
+                    value={inputs.state_tax_id ? inputs.state_tax_id : ''}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -178,7 +172,7 @@ function AddMerchant() {
                     name="address"
                     required={true}
                     error={false}
-                    value={inputs.address?inputs.address:""}
+                    value={inputs.address ? inputs.address : ''}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -189,7 +183,7 @@ function AddMerchant() {
                     name="city"
                     required={true}
                     error={false}
-                    value={inputs.city?inputs.city:""}
+                    value={inputs.city ? inputs.city : ''}
                     placeholder="SAN DIEGO"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -200,7 +194,7 @@ function AddMerchant() {
                     name="state"
                     required={true}
                     error={false}
-                    value={inputs.state?inputs.state:""}
+                    value={inputs.state ? inputs.state : ''}
                     placeholder="CA"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -211,7 +205,7 @@ function AddMerchant() {
                     name="zip_code"
                     required={true}
                     error={false}
-                    value={inputs.zip_code?inputs.zip_code:""}
+                    value={inputs.zip_code ? inputs.zip_code : ''}
                     placeholder="A2DE10"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -222,7 +216,7 @@ function AddMerchant() {
                     name="business_phone_number"
                     required={false}
                     error={false}
-                    value={inputs.business_phone_number?inputs.business_phone_number:""}
+                    value={inputs.business_phone_number ? inputs.business_phone_number : ''}
                     placeholder="709-999-9999"
                     handleChange={(e) => handleChange(e)}
                   />
@@ -233,7 +227,7 @@ function AddMerchant() {
                     name="mobile_no"
                     required={true}
                     error={false}
-                    value={inputs.mobile_no?inputs.mobile_no:""}
+                    value={inputs.mobile_no ? inputs.mobile_no : ''}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -244,7 +238,7 @@ function AddMerchant() {
                     name="website"
                     required={false}
                     error={false}
-                    value={inputs.website?inputs.website:""}
+                    value={inputs.website ? inputs.website : ''}
                     placeholder=""
                     handleChange={(e) => handleChange(e)}
                   />
@@ -262,7 +256,7 @@ function AddMerchant() {
                   name="authorize_person_first_name"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_first_name?inputs.authorize_person_first_name:""}
+                  value={inputs.authorize_person_first_name ? inputs.authorize_person_first_name : ''}
                   placeholder="Luis"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -273,7 +267,7 @@ function AddMerchant() {
                   name="authorize_person_last_name"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_last_name?inputs.authorize_person_last_name:""}
+                  value={inputs.authorize_person_last_name ? inputs.authorize_person_last_name : ''}
                   placeholder="Brown"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -284,7 +278,7 @@ function AddMerchant() {
                   name="authorize_person_email"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_email?inputs.authorize_person_email:""}
+                  value={inputs.authorize_person_email ? inputs.authorize_person_email : ''}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -295,7 +289,7 @@ function AddMerchant() {
                   name="authorize_person_title"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_title?inputs.authorize_person_title:""}
+                  value={inputs.authorize_person_title ? inputs.authorize_person_title : ''}
                   placeholder="Manager"
                   handleChange={(e) => handleChange(e)}
                 />
@@ -306,7 +300,7 @@ function AddMerchant() {
                   name="authorize_person_phone_no"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_phone_no?inputs.authorize_person_phone_no:""}
+                  value={inputs.authorize_person_phone_no ? inputs.authorize_person_phone_no : ''}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -317,7 +311,7 @@ function AddMerchant() {
                   name="authorize_person_fax_no"
                   required={true}
                   error={false}
-                  value={inputs.authorize_person_fax_no?inputs.authorize_person_fax_no:""}
+                  value={inputs.authorize_person_fax_no ? inputs.authorize_person_fax_no : ''}
                   placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
@@ -332,10 +326,22 @@ function AddMerchant() {
               <Grid item md={8}>
                 <FormControl className="custom-radio">
                   <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                    <FormControlLabel  control={<Radio name="ownership" value="sole-proprietor" onChange={(e) => handleChange(e)} />} label="Sole Proprietor" />
-                    <FormControlLabel  control={<Radio name="ownership" value="partnership" onChange={(e) => handleChange(e)} />} label="Partnership" />
-                    <FormControlLabel  control={<Radio name="ownership" value="corporation" onChange={(e) => handleChange(e)} />} label="Corpration" />
-                    <FormControlLabel  control={<Radio name="ownership" value="other" onChange={(e) => handleChange(e)} />} label="Other" />
+                    <FormControlLabel
+                      control={<Radio name="ownership" value="sole-proprietor" onChange={(e) => handleChange(e)} />}
+                      label="Sole Proprietor"
+                    />
+                    <FormControlLabel
+                      control={<Radio name="ownership" value="partnership" onChange={(e) => handleChange(e)} />}
+                      label="Partnership"
+                    />
+                    <FormControlLabel
+                      control={<Radio name="ownership" value="corporation" onChange={(e) => handleChange(e)} />}
+                      label="Corpration"
+                    />
+                    <FormControlLabel
+                      control={<Radio name="ownership" value="other" onChange={(e) => handleChange(e)} />}
+                      label="Other"
+                    />
                   </RadioGroup>
                 </FormControl>
               </Grid>

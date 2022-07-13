@@ -1,18 +1,24 @@
 import * as React from 'react'
-
+//react imports
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { getUsers, deleteUsers } from 'src/services/UserServices'
-import MainBoard from 'src/components/include/MainBoard'
-import { Container, createStyles } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+//navigation
+import { useNavigate } from 'react-router-dom'
+//material UI Imports
+import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom styling form
 import FormStyles from 'src/helper/FormStyles'
+//custom imports
+import { getUsers, deleteUsers } from 'src/services/UserServices'
+import MainBoard from 'src/components/include/MainBoard'
+//imports ends here
+
+//colums for tables starts here
 const columns = [
   { field: 'eid', headerName: 'ID', width: 100 },
   { field: 'name', headerName: 'Name', width: 250 },
@@ -44,37 +50,44 @@ const columns = [
     },
   },
 ]
+//colums for tables ends here
 
+//custom table styling variable
 const datagridSx = FormStyles
 
+//main function starts here
 export default function User() {
+  //navigate function
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [users, setUsers] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [success, setSuccess] = useState(0)
 
+  //fetching data here
   const getUserData = async () => {
     setUsers(await getUsers(userInfo))
   }
 
+  //search function
   const searchUser = async (value) => {
     setSearch(value)
     setPage(1)
     setUsers(await getUsers(userInfo, 1, value))
   }
 
+  //change page function
   const changePage = async (e, value) => {
-    console.log(value)
     setPage(value)
     setUsers(await getUsers(userInfo, value, search))
   }
 
+  //delete function
   const handleDelete = async (eid, e) => {
     deleteUsers(userInfo, eid)
     setUsers({ ...users, data: { ...users.data, data: [...users.data.data.filter((v, i) => v.eid != eid)] } })
@@ -84,27 +97,14 @@ export default function User() {
     e.preventDefault()
     navigate('/user/add')
   }
+
+  //use effect to reload the fetch function
   useEffect(() => {
     getUserData()
   }, [])
-
-  //   const rows = [
-  //     { id: 1, name: 'lannister', role: 'sales', status: 1, email: 'some@gmail.com' },
-  //     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  //     { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  //     { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  //     { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  //     { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  //     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  //     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  //   ]
-
   console.log(users)
-  let sr_no = 0
+
   return (
-    // <MainBoard>
-    //   <Container fluid>
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
@@ -150,17 +150,5 @@ export default function User() {
         </Container>
       </Container>
     </MainBoard>
-
-    //   </Container>
-    // </MainBoard>
-    // <div style={{ height: 400, width: '100%' }}>
-    //   <DataGrid
-    //     rows={rows}
-    //     columns={columns}
-    //     pageSize={5}
-    //     rowsPerPageOptions={[5]}
-    //     checkboxSelection
-    //   />
-    // </div>
   )
 }

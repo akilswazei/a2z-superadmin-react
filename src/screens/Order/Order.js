@@ -1,47 +1,58 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react'
-
+//react imports
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import MainBoard from 'src/components/include/MainBoard'
-import { Container } from '@material-ui/core'
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
-import { getOrders } from 'src/services/OrderService'
-import EditIcon from '@mui/icons-material/Edit'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+//material UI imports
+import { Container } from '@material-ui/core'
+import { Pagination } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import EditIcon from '@mui/icons-material/Edit'
+import MainBoard from 'src/components/include/MainBoard'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom components imports
+import { getOrders } from 'src/services/OrderService'
+//custom styling imports
 import FormStyles from 'src/helper/FormStyles'
+
+//styling of datagrid
 const datagridSx = FormStyles
 
+//main function starts here
 const Order = () => {
+  //navigation function
   const navigate = useNavigate()
+  //selector function
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [order, setOrder] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch function
   const getOrderData = async () => {
     setOrder(await getOrders(userInfo))
   }
 
+  //search function
   const searchOrder = async (value) => {
     setSearch(value)
     setPage(1)
     setOrder(await getOrders(userInfo, 1, value))
   }
 
+  //pagiantion fucntion for changing page
   const changePage = async (value) => {
     setPage(value)
     setOrder(await getOrders(userInfo, value, search))
   }
 
+  //custom data grid function for specific data retrival
   const getStoreName = (params) => {
     return `${params.row.store.store_name || ''}`
   }
@@ -51,35 +62,33 @@ const Order = () => {
   const getOrderDate = (params) => {
     return `${params.row.store.updated_date}`
   }
+  //use effect for rerender of the component
   useEffect(() => {
     getOrderData()
   }, [])
 
   console.log(order)
-  let sr_no = 0
+
+  //columns for data grid
   const columns = [
     {
       field: 'store_date',
       headerName: 'Date',
       width: 150,
-
       valueGetter: getOrderDate,
     },
     {
       field: 'store_name',
       headerName: 'Store',
       width: 170,
-
       valueGetter: getStoreName,
     },
     {
       field: 'store_contact',
       headerName: 'Store Contact',
       width: 150,
-
       valueGetter: getStoreContact,
     },
-
     { field: 'total_price', headerName: 'Amount', width: 150 },
     {
       field: 'status',
@@ -109,11 +118,8 @@ const Order = () => {
       },
     },
   ]
+  //colum ends here
 
-  //   const navigateFunction = (e) => {
-  //     e.preventDefault()
-  //     navigate('/individual/add')
-  //   }
   return (
     <MainBoard>
       <Container fluid>
@@ -130,9 +136,7 @@ const Order = () => {
                 searchOrder(e.target.value)
               }}
             />
-            {/* <button className="custom-blue-btn m-2">
-              Add Individual<span>{<PersonAddAltIcon />}</span>
-            </button> */}
+
             <input
               type="text"
               placeholder="Search here"

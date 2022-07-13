@@ -58,3 +58,11 @@ export const addPay = async (userInfo, userData) => {
   })
   return data
 }
+export const addPayouts = async (userInfo, userdata) => {
+  const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/payout/store', userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
+}

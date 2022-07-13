@@ -1,21 +1,26 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
-import MainBoard from 'src/components/include/MainBoard'
+import { useNavigate } from 'react-router-dom'
+//material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { getSuppliers, deleteSupplier } from 'src/services/SupplierService'
 import EditIcon from '@mui/icons-material/Edit'
-import { useNavigate } from 'react-router-dom'
-import DeleteIcon from '@mui/icons-material/Delete'
+//custom style imports
 import FormStyles from 'src/helper/FormStyles'
+//custom components here
+import MainBoard from 'src/components/include/MainBoard'
+import { getSuppliers, deleteSupplier } from 'src/services/SupplierService'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+//styling for data grid
 const datagridSx = FormStyles
 
+//main function starts here
 const Supplier = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -23,15 +28,17 @@ const Supplier = () => {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [supplier, setSupplier] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch
   const getSupplierData = async () => {
     setSupplier(await getSuppliers(userInfo))
   }
 
-  const searchIndividual = async (value) => {
+  const searchSupplier = async (value) => {
     setSearch(value)
     setPage(1)
     setSupplier(await getSuppliers(userInfo, 1, value))
@@ -50,17 +57,18 @@ const Supplier = () => {
       data: { ...supplier.data, data: [...supplier.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
+
+  //re-renderer
   useEffect(() => {
     getSupplierData()
   }, [])
 
   console.log(supplier)
-  let sr_no = 0
+
+  //coulumns for data grid
   const columns = [
     { field: 'eid', headerName: 'EID', width: 150 },
     { field: 'supplier_name', headerName: 'Name', width: 200 },
-
-    // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
       width: 150,
@@ -90,6 +98,7 @@ const Supplier = () => {
     },
   ]
 
+  //navigator function
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/supplier/add')
@@ -106,7 +115,7 @@ const Supplier = () => {
               type="text"
               placeholder="Search here"
               onChange={(e) => {
-                searchIndividual(e.target.value)
+                searchSupplier(e.target.value)
               }}
             />
             <button onClick={navigateFunction} className="custom-blue-btn m-2">

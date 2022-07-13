@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
+//react imports
 import React from 'react'
+//material UI imports
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
+//custom styling import
 import FormStyles from 'src/helper/FormStyles'
 
+//data grid styling
 const datagridSx = FormStyles
 
+//columns for data grid
 const column2 = [
   { field: 'merchant_id', headerName: 'Merchant ID', width: 150 },
   { field: 'payout_amount', headerName: 'Amount', width: 150 },
@@ -23,6 +28,8 @@ const column2 = [
     },
   },
 ]
+
+//main function starts here
 function PayoutHistory({ openHistoryPayout, handleHistoryClose, payoutHistory, style }) {
   return (
     <>

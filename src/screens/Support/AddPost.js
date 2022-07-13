@@ -1,43 +1,39 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addPost } from 'src/services/PostService'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+//material UI imports
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { Container, Button, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
+//custom style imports
+//custom component imports
+import { addPost } from 'src/services/PostService'
+import MainBoard from 'src/components/include/MainBoard'
 import { getPostsList } from 'src/services/PostService'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
 
-import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
-
+//main function
 function AddTeam() {
+  //redux
   const getState = useSelector((state) => state)
+  //navigator
   const navigate = useNavigate()
 
   const {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState(false)
   const [postList, setPostList] = useState({})
+
+  //events starts here
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -55,18 +51,21 @@ function AddTeam() {
       setErros({ ...errors, confirm_password: 'password not matched' })
     }
   }
-
-  const getPostList = async () => {
-    setPostList(await getPostsList(userInfo))
-  }
   const handleClose = () => {
     setOpen(false)
     navigate('../posts', { replace: true })
   }
+  //events ends here
+  //fetch
+  const getPostList = async () => {
+    setPostList(await getPostsList(userInfo))
+  }
 
+  //re-rendrer
   useEffect(() => {
     getPostList()
   }, [])
+
   console.log(postList)
   return (
     <MainBoard>

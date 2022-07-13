@@ -1,22 +1,27 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
-import MainBoard from 'src/components/include/MainBoard'
+import { useNavigate } from 'react-router-dom'
+//material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+//custom styling imports
+import FormStyles from 'src/helper/FormStyles'
+//custom component imports
+import MainBoard from 'src/components/include/MainBoard'
 import { getRoles } from 'src/services/RolesServices'
 import { deleteRole } from 'src/services/RoleService'
-import EditIcon from '@mui/icons-material/Edit'
-import { useNavigate } from 'react-router-dom'
-import DeleteIcon from '@mui/icons-material/Delete'
-import FormStyles from 'src/helper/FormStyles'
+
+//styling for data grid
 const datagridSx = FormStyles
 
+//main function starts here
 const Roles = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -24,25 +29,30 @@ const Roles = () => {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [roles, setRoles] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch function
   const getRolesData = async () => {
     setRoles(await getRoles(userInfo))
   }
 
+  //search function
   const searchRoles = async (value) => {
     setSearch(value)
     setPage(1)
     setRoles(await getRoles(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  //chnage page function
+  const changePage = async (e, value) => {
     setPage(value)
     setRoles(await getRoles(userInfo, value, search))
   }
 
+  //delete function
   const handleDelete = async (eid, e) => {
     deleteRole(userInfo, eid)
     setRoles({
@@ -50,12 +60,15 @@ const Roles = () => {
       data: { ...roles.data, data: [...roles.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
+
+  //re render function for fetch function
   useEffect(() => {
     getRolesData()
   }, [])
 
   console.log(roles)
-  let sr_no = 0
+
+  //columns for data grid
   const columns = [
     { field: 'name', headerName: 'Role', width: 150 },
     {
@@ -76,6 +89,7 @@ const Roles = () => {
     },
   ]
 
+  //navigation function
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/role/add')

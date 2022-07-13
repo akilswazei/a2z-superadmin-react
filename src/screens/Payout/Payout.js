@@ -1,25 +1,28 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+//material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom'
-import { getPayout, getPayouts, getPayoutsHistory } from 'src/services/PayoutService'
+//custom styling
 import FormStyles from 'src/helper/FormStyles'
-import { CustomText } from 'src/helper/helper'
-import Modal from '@mui/material/Modal'
-import Box from '@mui/material/Box'
+//custom component imports
+import MainBoard from 'src/components/include/MainBoard'
+import { getPayouts, getPayoutsHistory } from 'src/services/PayoutService'
 import PayoutHistory from './PayoutHistory'
 import { getPayHistory } from 'src/services/PayoutService'
 import PayHistory from './PayHistory'
 import Pay from './Pay'
 
+//custom style for data grid
 const datagridSx = FormStyles
 
+//main fucntion starts here
 const Payout = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -27,32 +30,38 @@ const Payout = () => {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [payout, setPayout] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-
   const [openPay, setOpenPay] = useState(false)
   const [openHistoryPayout, setHistoryPayout] = useState(false)
   const [openHistoryPay, setOpenHistoryPay] = useState(false)
   const [eidNum, setEidNum] = useState('')
   const [payoutHistory, setPayoutHistory] = useState({})
   const [payHistory, setPayHistory] = useState({})
+  //state ends here
 
+  //fetch function
   const getPayoutData = async () => {
     setPayout(await getPayouts(userInfo))
   }
+  //fetch for payout history data
   const getPayoutHistoryData = async () => {
     setPayoutHistory(await getPayoutsHistory(userInfo, eidNum))
   }
+  //fetch for pay history data
   const getPayHistoryData = async () => {
     setPayHistory(await getPayHistory(userInfo, eidNum))
   }
+  //serch function
   const searchPayout = async (value) => {
     setSearch(value)
     setPage(1)
     setPayout(await getPayouts(userInfo, 1, value))
   }
 
+  //function for change of page with new fetch request
   const changePage = async (e, value) => {
     console.log(value)
     setPage(value)
@@ -66,39 +75,50 @@ const Payout = () => {
     //   data: { ...payout.data, data: [...payout.data.data.filter((v, i) => v.eid != eid)] },
     // })
   }
+
+  //use effect for re render of fetch fucntion call
   useEffect(() => {
     getPayoutData()
   }, [])
 
+  //use effect for re render of history of payout and pay when eid changes
   useEffect(() => {
     getPayoutHistoryData()
     getPayHistoryData()
   }, [eidNum])
 
+  //function to caputre eid when user clicks on user details
   const captureId = (cellValue) => {
     setEidNum(cellValue)
   }
+  //navigation function after submission
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/payout/add')
   }
+  //modal open funation for pay modal
   const handlePayOpen = (cellValue, e) => {
     captureId(cellValue)
     setOpenPay(true)
   }
+  //close pay modal
   const handlePayClose = () => setOpenPay(false)
+  //close history modal of payout
   const handleHistoryClose = () => setHistoryPayout(false)
+  //close history pay modal
   const handleHistoryPayClose = () => setOpenHistoryPay(false)
+  //open payout history modal
   const handleHistoryOpen = (cellValue, e) => {
     captureId(cellValue)
     setHistoryPayout(true)
   }
+  //open modal of history pay
   const handleHistoryPayOpen = (cellValue, e) => {
     captureId(cellValue)
     setOpenHistoryPay(true)
   }
 
-  let sr_no = 0
+  //column for data grid
   const columns = [
     { field: 'eid', headerName: 'EID', width: 150 },
     { field: 'company_name', headerName: 'Name', width: 150 },
@@ -133,6 +153,7 @@ const Payout = () => {
     },
   ]
 
+  //custom styling for modal (pay history, payout history and pay)
   const style = {
     position: 'absolute',
     top: '50%',
@@ -158,7 +179,6 @@ const Payout = () => {
         payoutHistory={payoutHistory}
         style={style}
       />
-
       {/* pay  dialogue box ends here */}
 
       {/* this dialogue box is for pay description */}

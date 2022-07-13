@@ -1,20 +1,23 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+//material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { deleteStore, getStores } from 'src/services/StoreService'
-import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom style imports
 import FormStyles from 'src/helper/FormStyles'
+//custom components imports
+import MainBoard from 'src/components/include/MainBoard'
+import { deleteStore, getStores } from 'src/services/StoreService'
+import { useNavigate } from 'react-router-dom'
 
+//columns for data grid
 const columns = [
   { field: 'eid', headerName: 'Store ID', width: 150 },
   { field: 'store_name', headerName: 'Name', width: 300 },
@@ -38,27 +41,32 @@ const columns = [
     },
   },
 ]
+//style for data grid
 const datagridSx = FormStyles
+//main function starts here
 const Store = () => {
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [stores, setStore] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch
   const getStoreData = async () => {
     setStore(await getStores(userInfo))
   }
 
+  //search
   const searchStore = async (value) => {
     setSearch(value)
     setPage(1)
     setStore(await getStores(userInfo, 1, value))
   }
-
+  //page change
   const changePage = async (value) => {
     setPage(value)
     setStore(await getStores(userInfo, value, search))
@@ -69,16 +77,18 @@ const Store = () => {
     setStore({ ...Store, data: { ...Store.data, data: [...Store.data.data.filter((v, i) => v.eid != eid)] } })
   }
 
+  //rendering
   useEffect(() => {
     getStoreData()
   }, [])
 
-  let sr_no = 0
+  //navigate
   const navigate = useNavigate()
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/store/add')
   }
+
   console.log(stores)
   return (
     <MainBoard>

@@ -1,73 +1,77 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+//material Ui imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
 import EditIcon from '@mui/icons-material/Edit'
-import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getProduct, getProducts } from 'src/services/ProductService'
-import FormStyles from 'src/helper/FormStyles'
 
+//custom styling imports
+import FormStyles from 'src/helper/FormStyles'
+//custom component imports
+import MainBoard from 'src/components/include/MainBoard'
+import { getProducts } from 'src/services/ProductService'
+
+//styling for data grid
 const datagridSx = FormStyles
 
+//main function starts here
 const Product = () => {
+  //navigate function
   const navigate = useNavigate()
+  //selector
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [product, setProduct] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch function
   const getProductData = async () => {
     setProduct(await getProducts(userInfo))
   }
 
-  const searchIndividual = async (value) => {
+  const searchProduct = async (value) => {
     setSearch(value)
     setPage(1)
     setProduct(await getProducts(userInfo, 1, value))
   }
-
+  //change page function used in pagination
   const changePage = async (value) => {
     setPage(value)
     setProduct(await getProducts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
-    deleteIndividual(userInfo, eid)
-    setProduct({
-      ...product,
-      data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
-    })
+    // deleteIndividual(userInfo, eid)
+    // setProduct({
+    //   ...product,
+    //   data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
+    // })
   }
+
+  //re render funaction for fetch fucntion
   useEffect(() => {
     getProductData()
   }, [])
 
   console.log(product)
-  let sr_no = 0
+
   const columns = [
     { field: 'product_name', headerName: 'Product', width: 350 },
-    // { field: 'category', headerName: 'Category', width: 150 },
-    // { field: 'brand', headerName: 'Brand', width: 150 },
-    // { field: 'supplier', headerName: 'Supplier', width: 150 },
     { field: 'supplier_price', headerName: 'Cost Product', width: 150 },
     { field: 'selling_price', headerName: 'Store Sell Price', width: 150 },
     { field: 'eid', headerName: 'username', width: 150 },
-    // { field: 'company_name', headerName: 'Name', width: 200 },
-    // { field: 'company_email', headerName: 'Email', width: 300 },
-    // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
       width: 150,
@@ -115,7 +119,7 @@ const Product = () => {
               placeholder="Search here"
               className="m-1"
               onChange={(e) => {
-                searchIndividual(e.target.value)
+                searchProduct(e.target.value)
               }}
             />
             <button onClick={navigateFunction} className="custom-blue-btn m-2">

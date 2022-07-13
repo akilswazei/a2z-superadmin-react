@@ -1,22 +1,10 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addTeam } from 'src/services/TeamServices'
-import MainBoard from 'src/components/include/MainBoard'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
+import { useSelector } from 'react-redux'
+//material UI imports
+import { Container, Button, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -24,19 +12,34 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { styled } from '@material-ui/styles'
 import { InputBase } from '@mui/material'
+//custom style imports
+//custom component imports
+import { getRoles } from 'src/services/RolesServices'
+import { addTeam } from 'src/services/TeamServices'
+import MainBoard from 'src/components/include/MainBoard'
 import { CustomEmail, CustomPasssword, CustomText, CustomPhone } from 'src/helper/helper'
+
+//main function
 function AddTeam() {
   const getState = useSelector((state) => state)
+  //navigator
   let navigate = useNavigate()
+  //redux
   const {
     userSignin: { userInfo },
   } = getState
-
+  //states
   const [inputs, setInputs] = useState({ status: 1 })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState({})
 
+  //fetch
+  const getRolesData = async () => {
+    setRoles(await getRoles(userInfo))
+  }
+
+  //events starts here
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -57,30 +60,18 @@ function AddTeam() {
     }
   }
 
-  const getRolesData = async () => {
-    setRoles(await getRoles(userInfo))
-  }
   const handleClose = () => {
     setOpen(false)
     navigate('../teams', { replace: true })
   }
+  //events ends here
+
+  //re-rendrer
   useEffect(() => {
     getRolesData()
   }, [])
-  const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-      marginTop: theme.spacing(1),
-    },
-    '& .MuiInputBase-input': {
-      borderRadius: 4,
-      position: 'relative',
-      backgroundColor: (theme.palette.mode = 'light'),
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      Width: 'auto',
-      padding: '10px 12px',
-    },
-  }))
+
+  //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
   const passwordPlaceholder = 'Please enter password'
@@ -145,14 +136,6 @@ function AddTeam() {
                 </Select>
               </Grid>
               <Grid item xs={6}>
-                {/* <TextField
-                  required
-                  id="outlined-error"
-                  label="Email"
-                  name="company_email"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                /> */}
                 <CustomEmail
                   label="Email"
                   name="email"
@@ -236,17 +219,6 @@ function AddTeam() {
                   placeholder={confirmPasswordPlaceholder}
                   handleChange={(e) => handleChange(e)}
                 />
-
-                {/* <TextField
-                  error={errors.confirm_password ? true : false}
-                  id="outlined-error"
-                  label="Confirm Password"
-                  name="confirm_password"
-                  type="password"
-                  fullWidth={true}
-                  onChange={(e) => handleChange(e)}
-                  helperText={errors.confirm_password && errors.confirm_password}
-                /> */}
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>

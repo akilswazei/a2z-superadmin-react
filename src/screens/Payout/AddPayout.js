@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addUser } from 'src/services/UserServices'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+//material UI imports
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -13,70 +12,66 @@ import DialogTitle from '@mui/material/DialogTitle'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
+import { Container, Button, Grid } from '@material-ui/core'
+//custom components imports
+import MainBoard from 'src/components/include/MainBoard'
+import { CustomText } from 'src/helper/helper'
+import { addPayouts, getPayouts } from 'src/services/PayoutService'
 
+//main function starts here
 function AddPayout() {
   const getState = useSelector((state) => state)
+  //navigate fucntion
   const navigate = useNavigate()
 
   const {
     userSignin: { userInfo },
   } = getState
 
+  //states
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
-  const [roles, setRoles] = useState({})
-  const [open, setOpen] = React.useState(false)
-  const [errors, setErros] = React.useState(false)
-  const [progress, setProgress] = React.useState(0)
+  const [payouts, setPayouts] = useState({})
+  const [open, setOpen] = useState(false)
+  const [errors, setErros] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  //fucntion to handle value change in forms
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
     console.log(event.target.value)
     setInputs((values) => ({ ...values, [name]: value }))
   }
-  //const [validated, setValidated] = useState(false);
+
+  //function to handle form submit
   const submitHandler = async (e) => {
     e.preventDefault()
     if (inputs.password == inputs.confirm_password) {
       setErros({ ...errors, confirm_password: '' })
-      await addUser(userInfo, inputs)
+      await addPayouts(userInfo, inputs)
       setOpen(true)
     } else {
       setErros({ ...errors, confirm_password: 'password not matched' })
     }
-  } 
-
-  const getRolesData = async () => {
-    setRoles(await getRoles(userInfo))
   }
 
+  //fetch function
+  const getPayoutData = async () => {
+    setPayouts(await getPayouts(userInfo))
+  }
+
+  //function for modal close button
   const handleClose = () => {
     setOpen(false)
-    navigate('../users', { replace: true })
+    navigate('../payouts', { replace: true })
   }
 
+  //render function for fetch function
   useEffect(() => {
-    getRolesData()
+    getPayoutData()
   }, [])
-  const namePlaceholder = 'Please enter payout name'
-  const emailPlaceholder = 'Please enter your e-mail'
-  const passwordPlaceholder = 'Please enter password'
-  const confirmPasswordPlaceholder = 'Please re-enter password'
-  React.useEffect(() => {
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
@@ -91,6 +86,7 @@ function AddPayout() {
       clearInterval(timer)
     }
   }, [])
+
   return (
     <MainBoard>
       <Dialog
@@ -119,7 +115,7 @@ function AddPayout() {
                 <CustomText
                   handleChange={(e) => handleChange(e)}
                   name="payout-name"
-                  placeholder={namePlaceholder}
+                  placeholder="Please enter name"
                   id="payout-name"
                   value=""
                   label="Payout Name"

@@ -1,22 +1,25 @@
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { getTeams, deleteTeam } from 'src/services/TeamServices'
-import MainBoard from 'src/components/include/MainBoard'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+//material Ui imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+//custom style imports
 import FormStyles from 'src/helper/FormStyles'
+//custom components imports
+import { getTeams, deleteTeam } from 'src/services/TeamServices'
+import MainBoard from 'src/components/include/MainBoard'
+
+//columns for data grid
 const columns = [
   { field: 'eid', headerName: 'ID' },
   { field: 'company_name', headerName: 'company name', width: 200 },
-  // { field: 'compnay_email', headerName: 'company_email', width: 180 },
   { field: 'company_address', headerName: 'address', width: 300 },
   { field: 'company_mobile', headerName: 'mobile', width: 250 },
   { field: 'hire_for', headerName: 'for', width: 150 },
@@ -48,18 +51,22 @@ const columns = [
   },
 ]
 
+//styling for data grid
 const datagridSx = FormStyles
 
+//main function
 const Teams = () => {
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [teams, setTeams] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch
   const getTeamData = async () => {
     setTeams(await getTeams(userInfo))
   }
@@ -70,22 +77,23 @@ const Teams = () => {
     setTeams(await getTeams(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
     setPage(value)
     setTeams(await getTeams(userInfo, value, search))
   }
-
+  //events starts here
   const handleDelete = async (eid, e) => {
     deleteTeam(userInfo, eid)
     setTeams({ ...teams, data: { ...teams.data, data: [...teams.data.data.filter((v, i) => v.eid != eid)] } })
   }
 
+  //re-rendrer
   useEffect(() => {
     getTeamData()
   }, [])
 
   console.log(teams)
-  let sr_no = 0
+
   //navigating to add page of user
   const navigate = useNavigate()
   const navigateFunction = (e) => {

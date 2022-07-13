@@ -1,24 +1,27 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import * as React from 'react'
-
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import MainBoard from 'src/components/include/MainBoard'
-import { Container } from '@material-ui/core'
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-import { makeStyles, Pagination } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
-import { deleteIndividual, getIndividuals } from 'src/services/IndividualService'
-import EditIcon from '@mui/icons-material/Edit'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+//material UI imports
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+import { Pagination } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import { Container } from '@material-ui/core'
+import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-
-import { getMerchantProducts } from 'src/services/ProductService'
+//custom styling imports
 import FormStyles from 'src/helper/FormStyles'
+//custom component imports
+import MainBoard from 'src/components/include/MainBoard'
+import { deleteIndividual } from 'src/services/IndividualService'
+import { getMerchantProducts } from 'src/services/ProductService'
 
+//styling for data grid
 const datagridSx = FormStyles
 
+//main fucntion starts here
 const MerchantProduct = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
@@ -26,15 +29,18 @@ const MerchantProduct = () => {
     userSignin: { userInfo },
   } = getState
 
+  //state
   const [product, setProduct] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
+  //fetch function
   const getProductData = async () => {
     setProduct(await getMerchantProducts(userInfo))
   }
 
-  const searchIndividual = async (value) => {
+  //search function
+  const searchMerchantProduct = async (value) => {
     setSearch(value)
     setPage(1)
     setProduct(await getMerchantProducts(userInfo, 1, value))
@@ -52,23 +58,20 @@ const MerchantProduct = () => {
       data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
+
+  //re render function for fecth
   useEffect(() => {
     getProductData()
   }, [])
 
   console.log(product)
-  let sr_no = 0
+
+  //data grid columns
   const columns = [
     { field: 'product_name', headerName: 'Product', width: 350 },
-    // { field: 'category', headerName: 'Category', width: 150 },
-    // { field: 'brand', headerName: 'Brand', width: 150 },
-    // { field: 'supplier', headerName: 'Supplier', width: 150 },
     { field: 'supplier_price', headerName: 'Cost Product', width: 150 },
     { field: 'selling_price', headerName: 'Store Sell Price', width: 150 },
     { field: 'eid', headerName: 'username', width: 150 },
-    // { field: 'company_name', headerName: 'Name', width: 200 },
-    // { field: 'company_email', headerName: 'Email', width: 300 },
-    // { field: 'service_type', headerName: 'service type', width: 150 },
     {
       field: 'status',
       width: 150,
@@ -98,6 +101,7 @@ const MerchantProduct = () => {
     },
   ]
 
+  //navigation function
   const navigateFunction = (e) => {
     e.preventDefault()
     navigate('/product/add')
@@ -116,7 +120,7 @@ const MerchantProduct = () => {
               placeholder="Search here"
               className="m-1"
               onChange={(e) => {
-                searchIndividual(e.target.value)
+                searchMerchantProduct(e.target.value)
               }}
             />
             <button onClick={navigateFunction} className="custom-blue-btn m-2">

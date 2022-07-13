@@ -1,25 +1,29 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addSupplier, getSupplier, getSuppliers, updateSupplier } from 'src/services/SupplierService'
-import { getCategories } from 'src/services/CategoryService'
-
-import MainBoard from 'src/components/include/MainBoard'
 import { useParams } from 'react-router-dom'
-import { validate } from 'src/helper/validation'
-import { Container, Button, InputLabel, MenuItem, Select, Grid } from '@material-ui/core'
+//material UI imports
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+//custom style imports
+//custom components imports
+import { addSupplier, getSupplier, updateSupplier } from 'src/services/SupplierService'
+import { getCategories } from 'src/services/CategoryService'
+import MainBoard from 'src/components/include/MainBoard'
+import { validate } from 'src/helper/validation'
+import { Container, Button, Grid } from '@material-ui/core'
+import { CustomEmail, CustomText, CustomSelect } from 'src/helper/helper'
 
-import { CustomEmail, CustomPasssword, CustomText, CustomPhone,CustomSelect } from 'src/helper/helper'
-
+//main function starts here
 function AddSupplier() {
+  //redux
   const getState = useSelector((state) => state)
+  //navigator
   let navigate = useNavigate()
   const {
     userSignin: { userInfo },
@@ -27,13 +31,14 @@ function AddSupplier() {
   const { eid } = useParams()
   let initialInputState = { status: 1 }
 
+  //states
   const [inputs, setInputs] = useState(initialInputState)
   const [suppliers, setSuppliers] = useState({})
   const [open, setOpen] = React.useState(false)
   const [errors, setErros] = React.useState({})
   const [categories, setCategories] = React.useState([])
 
-
+  //events starts here
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
@@ -63,36 +68,40 @@ function AddSupplier() {
     }
     setErros(allerrors)
   }
+  //events ends here
 
+  //fetch
   const getSupplierData = async (eid) => {
     const beforeUpdateData = await getSupplier(userInfo, eid)
     console.log(beforeUpdateData)
     setInputs(beforeUpdateData.data)
   }
+
   const get_category_list = async () => {
     const category_data = await getCategories(userInfo)
-    const categories_temp=[];
-    category_data?.data?.data.map((value,key)=>{
-      categories_temp.push({eid: value.eid,name: value.category_name})
+    const categories_temp = []
+    category_data?.data?.data.map((value, key) => {
+      categories_temp.push({ eid: value.eid, name: value.category_name })
     })
     setCategories(categories_temp)
   }
+  //close and navigate
   const handleClose = () => {
     setOpen(false)
     navigate('../individuals', { replace: true })
   }
 
+  //re-renderer
   useEffect(() => {
     if (eid) {
       getSupplierData(eid)
     }
     get_category_list()
-
   }, [])
+
+  //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
-  const passwordPlaceholder = 'Please enter password'
-  const confirmPasswordPlaceholder = 'Please re-enter password'
   const phonePlaceholder = 'Please enter phone number'
   const addressPlaceholder = 'Please enter address'
   return (
@@ -208,7 +217,6 @@ function AddSupplier() {
                     error={false}
                     placeholder={namePlaceholder}
                     handleChange={(e) => handleChange(e)}
-                    
                   />
                 </Grid>
                 <Grid item xs={6}>
