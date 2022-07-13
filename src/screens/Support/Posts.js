@@ -19,7 +19,15 @@ const columns = [
   { field: 'title', headerName: 'Title', width: 200 },
   { field: 'short_description', headerName: 'Short Description', width: 300 },
   { field: 'description', headerName: 'Description', width: 300 },
-  { field: 'image', headerName: 'Image', width: 300 },
+  {
+    field: 'image',
+    renderCell: (cellValues) => {
+      return <img src={cellValues?.row?.image} />
+    },
+    headerName: 'Image',
+    width: 300,
+    height: 300,
+  },
   {
     field: 'status',
     renderCell: (cellValues) => {
@@ -74,7 +82,7 @@ export default function HelpDesk() {
   const changePage = async (e, value) => {
     console.log(value)
     setPage(value)
-    setPosts(await setPosts(userInfo, value, search))
+    setPosts(await getPosts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {

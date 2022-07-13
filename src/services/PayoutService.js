@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getPayouts = async (userInfo, page = 2, search_keyword = '') => {
+export const getPayouts = async (userInfo, page = 1, search_keyword = '') => {
   console.log(search_keyword)
   let getpara = []
   getpara[0] = page == 1 ? '' : 'page=' + page

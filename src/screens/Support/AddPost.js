@@ -61,7 +61,7 @@ function AddTeam() {
   }
   const handleClose = () => {
     setOpen(false)
-    navigate('../users', { replace: true })
+    navigate('../posts', { replace: true })
   }
 
   useEffect(() => {
@@ -125,7 +125,7 @@ function AddTeam() {
               </Grid>
 
               <Grid item xs={6}>
-                <InputLabel id="demo-simple-select-helper-label">Status</InputLabel>
+                <InputLabel id="demo-simple-select-helper-label">Category</InputLabel>
                 <Select
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper1"

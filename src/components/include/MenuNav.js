@@ -79,11 +79,6 @@ function getItems() {
             name: 'Role',
             link: '/roles',
           },
-          {
-            id: 4,
-            name: 'Post',
-            link: '/posts',
-          },
         ],
       },
       {
@@ -160,7 +155,14 @@ function getItems() {
         id: 7,
         name: 'Support',
         icon: <HelpIcon />,
-        link: '/',
+        link: '',
+        subitems: [
+          {
+            id: 7,
+            name: 'Post',
+            link: '/posts',
+          },
+        ],
       },
     ],
   }
