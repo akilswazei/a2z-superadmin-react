@@ -33,6 +33,8 @@ import AddRoles from './screens/Roles/AddRoles'
 import Supplier from './screens/Supplier/Supplier'
 import AddSupplier from './screens/Supplier/AddSupplier'
 import MerchantProduct from './screens/Products/MerchantProducts'
+import Post from './screens/Support/Posts'
+import AddPost from './screens/Support/AddPost'
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -129,6 +131,8 @@ class App extends Component {
                 <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />
                 <Route exact path="/merchant-products" element={<MerchantProduct />} />
                 <Route exact path="/payouthistory" element={<PayoutHistory />} />
+                <Route exact path="/posts" element={<Post />} />
+                <Route exact path="/post/add" element={<AddPost />} />
               </Route>
             </Routes>
           </Suspense>
