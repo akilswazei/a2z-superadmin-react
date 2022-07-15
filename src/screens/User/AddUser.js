@@ -31,8 +31,9 @@ function AddTeam() {
   //state
   const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
-  const [open, setOpen] = React.useState(false)
-  const [errors, setErrors] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [errors, setErrors] = useState(false)
+  const [imageUpload, setImageUpload] = useState([])
 
   //fetch
   const getRolesData = async () => {
@@ -57,7 +58,6 @@ function AddTeam() {
     }
   }
   //events ends
-
   const handleClose = () => {
     setOpen(false)
     navigate('../users', { replace: true })
@@ -107,7 +107,7 @@ function AddTeam() {
                   name="name"
                   placeholder={namePlaceholder}
                   id="name"
-                  value=""
+                  value={inputs.name ? inputs.name : ''}
                   label="Name"
                   error={false}
                   required={true}
@@ -193,6 +193,9 @@ function AddTeam() {
                   <MenuItem value={1}>Active</MenuItem>
                   <MenuItem value={2}>Inactive</MenuItem>
                 </Select>
+              </Grid>
+              <Grid item xs={12}>
+                {/* image upload */}
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
