@@ -64,10 +64,19 @@ const MerchantDash = () => {
       <Container className="p-0">
         <h6>Merchants</h6>
       </Container>
-      <Container className="background-white-theme custom-container-white">
+      <Container className="background-white-theme custom-container-white p-0">
         <div style={{ height: '75vh', width: '100%' }} className="py-3">
           {merchants?.data?.data && (
-            <DataGrid getRowId={(row) => Math.random()} rows={merchants.data.data} columns={columns} sx={datagridSx} />
+            <DataGrid
+              className="customTable"
+              getRowId={(row) => Math.random() * 100}
+              rows={merchants.data.data}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[0]}
+              checkboxSelection
+              sx={datagridSx}
+            />
           )}
         </div>
       </Container>

@@ -17,6 +17,8 @@ import { addUser } from 'src/services/UserServices'
 import MainBoard from 'src/components/include/MainBoard'
 import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
 
+import { ImageUpload } from './ImageUpload'
+
 //main function
 function AddTeam() {
   //redux
@@ -33,7 +35,6 @@ function AddTeam() {
   const [roles, setRoles] = useState({})
   const [open, setOpen] = useState(false)
   const [errors, setErrors] = useState(false)
-  const [imageUpload, setImageUpload] = useState([])
 
   //fetch
   const getRolesData = async () => {
@@ -119,7 +120,7 @@ function AddTeam() {
                   label="Email"
                   name="email"
                   required={true}
-                  value=""
+                  value={inputs.password ? inputs.password : ''}
                   error={false}
                   placeholder={emailPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -131,7 +132,7 @@ function AddTeam() {
                   label="Password"
                   name="password"
                   required={true}
-                  value=""
+                  value={inputs.confirm_password ? inputs.confirm_password : ''}
                   error={false}
                   placeholder={passwordPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -195,7 +196,7 @@ function AddTeam() {
                 </Select>
               </Grid>
               <Grid item xs={12}>
-                {/* image upload */}
+                <ImageUpload />
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
