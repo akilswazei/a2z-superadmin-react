@@ -68,7 +68,7 @@ function AddTeam() {
   useEffect(() => {
     getRolesData()
   }, [])
-
+  console.log(<ImageUpload />)
   //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'

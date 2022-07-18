@@ -42,7 +42,7 @@ export default function formStyles() {
         display: 'none',
       },
     },
-    '& .MuiButtonBase-root .MuiListItem-root .MuiListItem-button .MuiTypography-body1 .Navlist-nested-10 .Navlist-nested-9':
+    '& .MuiButtonBase-root .MuiListItem-root .MuiListItem-button .MuiTypography-body1 .Navlist-nested-10 .Navlist-nested-24 .Navlist-nested-9':
       {
         paddingLeft: '16px',
       },

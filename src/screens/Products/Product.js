@@ -17,10 +17,13 @@ import FormStyles from 'src/helper/FormStyles'
 //custom component imports
 import MainBoard from 'src/components/include/MainBoard'
 import { getProducts } from 'src/services/ProductService'
+import { getDataList } from 'src/services/GetDataList'
 
 //styling for data grid
 const datagridSx = FormStyles
 
+//url
+const url = '/admin/product/list?'
 //main function starts here
 const Product = () => {
   //navigate function
@@ -38,7 +41,7 @@ const Product = () => {
 
   //fetch function
   const getProductData = async () => {
-    setProduct(await getProducts(userInfo))
+    setProduct(await getDataList(userInfo, 1, '', url))
   }
 
   const searchProduct = async (value) => {
