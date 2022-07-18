@@ -3,7 +3,7 @@ import { TextField } from '@material-ui/core'
 
 import React from 'react'
 
-export function CustomText({ name, value, handleChange, placeholder, error, required, label }) {
+export function CustomText({ name, value, handleChange, placeholder, error={}, required, label }) {
   return (
     <>
       <h6 className="color-gray">
@@ -15,10 +15,10 @@ export function CustomText({ name, value, handleChange, placeholder, error, requ
         required={required}
         id={name}
         name={name}
-        value={value}
         variant="outlined"
-        defaultValue=""
-        error={false}
+        {...(value==''?{}:{value:value})}
+        error={error[name]?true:false}
+        helperText={error[name]?error[name]:false}
         type="text"
         placeholder={placeholder}
         fullWidth={true}
@@ -27,7 +27,7 @@ export function CustomText({ name, value, handleChange, placeholder, error, requ
     </>
   )
 }
-export function CustomEmail({ handleChange, name, placeholder, label, required }) {
+export function CustomEmail({ handleChange,value, name, placeholder, label, required }) {
   return (
     <>
       <h6 className="color-gray">
@@ -41,7 +41,7 @@ export function CustomEmail({ handleChange, name, placeholder, label, required }
         name={name}
         type="email"
         variant="outlined"
-        defaultValue=""
+        value={value}
         error={false}
         placeholder={placeholder}
         fullWidth={true}
@@ -74,7 +74,7 @@ export function CustomPasssword({ handleChange, name, placeholder, label, requir
   )
 }
 
-export function CustomPhone({ handleChange, name, placeholder, label, required }) {
+export function CustomPhone({ handleChange,value, name, placeholder, label, required }) {
   return (
     <>
       <h6 className="color-gray">
@@ -88,7 +88,7 @@ export function CustomPhone({ handleChange, name, placeholder, label, required }
         name={name}
         type="number"
         variant="outlined"
-        value=""
+        value={value}
         error={false}
         placeholder={placeholder}
         fullWidth={true}
@@ -104,7 +104,6 @@ export function CustomSelect({ handleChange, options, value, name, label, requir
         {label}
         <sup>{required === true ? '*' : ''}</sup>
       </h6>
-      {console.log(options)}
       <select
         labelId="demo-simple-select-helper-label"
         id={name}
@@ -114,6 +113,9 @@ export function CustomSelect({ handleChange, options, value, name, label, requir
         fullWidth={true}
         onChange={(e) => handleChange(e)}
       >
+        <option  key={"noselect"} value={''}>
+              Select..
+            </option>
         {options.map((ovalue, key) => {
           return (
             <option selected={value == ovalue.eid ? 'selected' : ''} key={ovalue.eid} value={ovalue.eid}>

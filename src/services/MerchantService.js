@@ -25,11 +25,14 @@ export const getMerchant = async (userInfo, eid = '') => {
 }
 
 export const addMerchant= async (userInfo, userdata) => {
-  const {data}= await axios.post(process.env.REACT_APP_BASE_URL + '/admin/merchant/store',userdata, {
+  const {data}=await axios.post(process.env.REACT_APP_BASE_URL + '/admin/merchant/store',userdata, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
   })
+  .catch(error => {
+    return error.response
+  });
   return data
 }
 
