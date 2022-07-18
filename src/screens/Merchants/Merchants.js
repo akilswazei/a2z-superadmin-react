@@ -10,6 +10,8 @@ import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 //custom components imports
 import { deleteMerchant, getMerchants } from 'src/services/MerchantService'
 import MainBoard from 'src/components/include/MainBoard'
@@ -39,21 +41,17 @@ const Merchant = () => {
       },
     },
     {
-      field: 'Delete',
-      headerName: 'Action',
-      width: 150,
-      renderCell: (cellValues) => {
-        console.log(cellValues)
+      field: 'action',
+      renderCell: (cellValue) => {
         return (
-          <button
-            className="custom-pay-btn"
-            eid={cellValues.row.eid}
-            onClick={(event) => {
-              handleDelete(cellValues.row.eid, event)
-            }}
-          >
-            Delete
-          </button>
+          <div className="edit-delete-div">
+            <span className="pencil-icon">
+              <EditIcon />
+            </span>
+            <span className="delete-icon">
+              <DeleteIcon />
+            </span>
+          </div>
         )
       },
     },
