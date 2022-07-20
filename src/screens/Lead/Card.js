@@ -25,7 +25,7 @@ export function Card(props) {
       {/*<div className="Card__title">{props.title}</div>*/}
       <div className="Card_priority_low">Low</div>
       <div className="name_and_dropdown">
-          <div className="Card_title"><span onClick={() => navigateFunction(props.id)} style={{ cursor: 'pointer' }}>{props.title}</span></div>
+          <div className="Card_title"><span onClick={(e) => props.handleHistoryOpen(props.id, e)} style={{ cursor: 'pointer' }}>{props.title}</span></div>
           <div className="Card_dropdown">...</div>
       </div>
       <div className="Card_sub_title">{props.desc}</div>

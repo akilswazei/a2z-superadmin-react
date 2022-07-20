@@ -34,6 +34,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import attechment from '../../assets/images/image5.png'
 
+import Modal from '@mui/material/Modal'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -96,7 +97,38 @@ const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
-export default function ViewLead() {
+function ViewLeadPopup({ openHistoryPayout, handleHistoryClose, payoutHistory = '', style,eidNum }) {
+  return (
+
+        <>
+          <Modal
+            open={openHistoryPayout}
+            onClose={handleHistoryClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+
+            <Box sx={style} className="w-90">
+
+            <List className='my-0 py-0'>
+                <ListItem style={{display: 'inline-block' }}>
+                <button className="custom-close-btn my-3" style={{ float: 'right' }} onClick={handleHistoryClose}>
+                    X
+                </button>
+                </ListItem>
+            </List>
+              <div style={{float: 'clear' }} >
+                <ViewLead lead_id={eidNum} />
+              </div>
+              
+            </Box>
+          </Modal>
+        </>
+
+    )
+}
+
+function ViewLead(props) {
 
     const [value, setValue] = React.useState(0);
 
@@ -104,12 +136,12 @@ export default function ViewLead() {
         setValue(newValue);
     };
 
-    const { id } = useParams();
+    const { id } = props.lead_id;
 
     const [leads, setLeads] = useState()
 
     const getLeadsData = async () => {
-        setLeads(await getLeadInfo(userInfo,id))
+        setLeads(await getLeadInfo(userInfo,props.lead_id))
     }
 
     useEffect(() => {
@@ -122,17 +154,14 @@ export default function ViewLead() {
     return (
        <>
         {leads?.data && (
-        <MainBoard>
+        
             <div className="p-2">
-                
-                <div className=" p-0 mt-4">
-                    <h6 className="p-0">A2Z View Lead</h6>
-                </div>
+
                 <div className="ViewLead">
                     <div  className="py-2">
                         <div className="row m-2">
 
-                            {/* ST - LEFT PART */}
+                            
                             <div className="col-md-2 p-2 leaddetail_left background-white-theme custom-container-white" style={{ height: '100vh',overflow:'y' }}>
                                 <div className="user_image justify-content-center d-flex mt-2">
                                     <img alt="Remy Sharp" src="/static/media/2.0c06e43dc16bee6cdfed.jpg" className="MuiAvatar-img css-1pqm26d-MuiAvatar-img" />
@@ -149,9 +178,9 @@ export default function ViewLead() {
                                     <ChatIcon className="mx-2"/>
                                 </div>
                             </div>
-                            {/* EN - LEFT PART */}
+                            
 
-                            {/* ST - MIDDLE PART */}
+                            
                             <div className="col-md-7 p-2 leaddetail_middle">
                                 <Box className="mb-2" sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -246,9 +275,9 @@ export default function ViewLead() {
                                 </TabPanel>
 
                             </div>
-                            {/* EN - MIDDLE PART */}
+                            
 
-                            {/* ST - RIGHT PART */}
+                            
                             <div className="col-md-3 p-2 leaddetail_right background-white-theme custom-container-white" style={{ height: '100vh',overflow:'y' }}>
                                 <Item  style={{"box-shadow": "none"}}>
                                     <ListItem >{<AddLinkIcon style={{ fontWeight: 700 }} />} <ListItemText style={{ fontWeight: 700 }} primary="Attachment" /><Button size="small" variant="contained" startIcon={<AddIcon />}>Add</Button></ListItem>
@@ -282,17 +311,28 @@ export default function ViewLead() {
 
                                 </Item>
                             </div>
-                            {/* EN - RIGHT PART */}
+                            
                         </div>
                     </div>
                 </div>
             </div>
-        </MainBoard>
+        
         )}
         </>        
     );  
 }
 
-ViewLead.propTypes = {
+ViewLeadPopup.propTypes = {
     id: PropTypes.number,
+    openHistoryPayout: PropTypes.func,
+    handleHistoryClose: PropTypes.func,
+    payoutHistory: PropTypes.object,
+    style: PropTypes.string,
+    eidNum:PropTypes.number
 }
+
+ViewLead.propTypes = {
+    lead_id: PropTypes.number,
+    
+}
+export default ViewLeadPopup
