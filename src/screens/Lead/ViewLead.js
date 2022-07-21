@@ -36,6 +36,8 @@ import attechment from '../../assets/images/image5.png'
 
 import Modal from '@mui/material/Modal'
 
+import LeadAttachment from 'src/screens/Lead/LeadAttachment'
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -270,12 +272,12 @@ function ViewLead(props) {
                                 <TabPanel className="tabdiv" value={value} index={1}>
                                   Item Two
                                 </TabPanel>
+
                                 <TabPanel className="tabdiv" value={value} index={2}>
-                                  Item Three
+                                    <LeadAttachment lead_id={leads.data.id}/>
                                 </TabPanel>
 
                             </div>
-                            
 
                             
                             <div className="col-md-3 p-2 leaddetail_right background-white-theme custom-container-white" style={{ height: '100vh',overflow:'y' }}>

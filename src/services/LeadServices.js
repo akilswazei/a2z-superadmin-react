@@ -31,3 +31,13 @@ export const getLeadInfo = async (userInfo,lead_id="0") => {
       })
       return data
 }
+
+export const addAttachment = async (userInfo, userdata) => {
+    console.log(userdata);
+  const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/add-attachment', userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
+}
