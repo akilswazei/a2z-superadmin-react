@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
@@ -13,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import attachment from '../../assets/images/image5.png'
+import attachment_image from '../../assets/images/image5.png'
 import { validate } from 'src/helper/validation'
 import { CustomText } from 'src/helper/helper'
 
@@ -24,7 +25,7 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import serialize from "form-serialize";
 import { addAttachment } from 'src/services/LeadServices'
-import PropTypes from 'prop-types'
+import { getAttachment } from 'src/services/LeadServices'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -38,43 +39,35 @@ function boldfont(text) {
     return ( <b>{text}</b>);
 }
 
-
-
 LeadAttachment.propTypes = {
     lead_id: PropTypes.number,
 }
 
 function LeadAttachment(props) {
 
-
-
     const getState = useSelector((state) => state)
     const {
         userSignin: { userInfo },
     } = getState
-
-    // console.log('props'+props);
-    // console.log('userInfo'+userInfo.data.user.id);
 
     let initialInputState = { status: 1 }
     const [inputs, setInputs] = useState(initialInputState)
     const [open, setOpen] = React.useState(false)
     const [errors, setErros] = React.useState(false)
 
+    const [attachments, setAttachments] = useState()
+
     const submitHandler = async (e) => {
+        
         e.preventDefault()
 
         const fieldData = serialize(e.target, { hash: true });
-    const {
-      attachment,      
-      lead_id,
-      user_id    
-    } = fieldData;
 
-    // console.log('fieldData----'+fieldData);
-    // console.log(e.target.attachment.value);
-    // console.log(e.target.lead_id.value);
-
+        /*const {
+          attachment,      
+          lead_id,
+          user_id    
+        } = fieldData;*/
 
         let allerrors = validate(inputs, {})        
         if (Object.keys(allerrors).length === 0) {
@@ -94,16 +87,30 @@ function LeadAttachment(props) {
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value
-        console.log(event.target.value)
         setInputs((values) => ({ ...values, [name]: value }))
     }
 
     const handleClose = () => {
         setOpen(false)
-        // navigate('../products', { replace: true })
     }
 
+    const getLeadsAttachment = async () => {
+        setAttachments(await getAttachment(userInfo,props.lead_id))
+    }
+
+    useEffect(() => {
+        getLeadsAttachment()
+    }, [])
+
+    console.log("attachments->: " + JSON.stringify(attachments));
+
+    // {attachments?.data && attachments.data.map((attachment, index) => {
+    //     console.log("attachments file--------->: " + attachment.file);
+    //                             }
+    //                             )}
+
     return (
+
         <div>
             <Dialog
                 open={open}
@@ -124,7 +131,7 @@ function LeadAttachment(props) {
                 <form onSubmit={submitHandler}>
                 <input type="hidden" name="lead_id" id="lead_id" value={props.lead_id} />
                 <input type="hidden" name="user_id" id="user_id" value={userInfo.data.user.id} />
-                    <Grid item xs={5}>
+                    <Grid item xs={12}>
                         <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
                             <List className="mb-3" sx={{ display: 'block' }} xs={12}>                            
                                 <ListItem >{boldfont('Attach Files')}</ListItem>                            
@@ -163,9 +170,13 @@ function LeadAttachment(props) {
                             <ListItem>{<AddLinkIcon style={{ fontWeight: 700 }} />} &nbsp;&nbsp; <ListItemText style={{ fontWeight: 700 }} primary="Attachments" /></ListItem>
                         </Item>
 
-                        <Item  style={{ "box-shadow": "none" }}>
-                            <Box
+                        <Item className="row"  style={{ "box-shadow": "none" }}>
+                              
+                            {attachments?.data && attachments.data.map((attachment,index) => {
+
+                            return <Box className="test col-md-2"
                                 component="img"
+                                key = {index}
                                 sx={{
                                   height: 233,
                                   width: 350,
@@ -173,8 +184,12 @@ function LeadAttachment(props) {
                                   maxWidth: { xs: 350, md: 250 },
                                 }}
                                 alt="Attachment"
-                                src={attachment}
+                                src={attachment_image}
                               />
+
+                              })}
+
+
                         </Item>                    
 
                     </Grid>
