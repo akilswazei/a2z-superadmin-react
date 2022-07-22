@@ -223,13 +223,14 @@
     border: none !important;
 }
 .pencil-icon{
-   
+     cursor: pointer;
     svg{
         color: $theme-color-blue;
 
     }
 }
 .delete-icon{
+    cursor: pointer;
     svg{
         color:#E2626B !important;
     }
@@ -744,4 +745,34 @@
 }
 .custom-short-desc{
     min-height: 10vh;
+}
+.flex-row-left{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+   .custom-form-padding{
+    padding-left: 1.7em;
+   }
+
+}
+.day-time-picker{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 0.7em;
+}
+.custom-horizontal-align{
+    display: flex;
+    justify-content: center;
+    
+    flex-direction: column;
+    margin: 0 auto 0 auto;
+}
+.custom-time-box{
+    display: flex;
+     align-items: center;
+      justify-content: flex-start;
+       height: 100%;
 }

@@ -21,7 +21,7 @@ import { getRoles } from 'src/services/RolesServices'
 import { addMerchant, updateMerchant, getMerchant } from 'src/services/MerchantService'
 import MainBoard from 'src/components/include/MainBoard'
 import { validate } from 'src/helper/validation'
-import { CustomText,CustomSelect } from 'src/helper/helper'
+import { CustomText, CustomSelect } from 'src/helper/helper'
 
 //main function starts here
 function AddMerchant() {
@@ -50,8 +50,8 @@ function AddMerchant() {
   //fucntion h=for handling submission of form
   const submitHandler = async (e) => {
     e.preventDefault()
-    let allerrors = validate(inputs, {authorize_person_title: 'required'})
-    console.log(allerrors);
+    let allerrors = validate(inputs, { authorize_person_title: 'required' })
+    console.log(allerrors)
     if (Object.keys(allerrors).length === 0) {
       let response
       if (eid) {
@@ -62,7 +62,7 @@ function AddMerchant() {
       }
       if (response.data && Object.keys(response.data).length != 0) {
         allerrors = response.data
-        console.log(allerrors);
+        console.log(allerrors)
         Object.keys(allerrors).forEach(function (ckey) {
           allerrors[ckey] = allerrors[ckey].join()
           //console.log(allerrors[ckey])
@@ -71,7 +71,7 @@ function AddMerchant() {
         setOpen(true)
       }
     }
-    // filter:  needs to map if field name is not matching  with api parameters 
+    // filter:  needs to map if field name is not matching  with api parameters
     setErros(allerrors)
   }
 
@@ -81,11 +81,11 @@ function AddMerchant() {
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       setRoles(await getRoles(userInfo))
     })()
     if (eid) {
-      (async () => {
+      ;(async () => {
         const beforeUpdateData = await getMerchant(userInfo, eid)
         setInputs(beforeUpdateData.data.merchant)
       })()
@@ -249,14 +249,22 @@ function AddMerchant() {
               <Grid item md={12}>
                 <FormControl className="custom-radio">
                   <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                    
-                    { ['sole-proprietor','partnership','corporation','other'].map((value,key) => {
-                        return (<FormControlLabel key={key}
-                        control={<Radio name="ownership"  value={value} checked={inputs.ownership && inputs.ownership==value ? 'checked' : ''} onChange={(e) => handleChange(e)} />}
-                        label="Sole Proprietor"
-                      />)
+                    {['sole-proprietor', 'partnership', 'corporation', 'other'].map((value, key) => {
+                      return (
+                        <FormControlLabel
+                          key={key}
+                          control={
+                            <Radio
+                              name="ownership"
+                              value={value}
+                              checked={inputs.ownership && inputs.ownership == value ? 'checked' : ''}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          }
+                          label="Sole Proprietor"
+                        />
+                      )
                     })}
-                    
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -269,7 +277,10 @@ function AddMerchant() {
                   error={errors}
                   value={inputs.authorize_person_title ? inputs.authorize_person_title : ''}
                   placeholder="Manager"
-                  options={[{eid:'manager', name:"Manager"},{eid:'owner', name:"Owner"}]}
+                  options={[
+                    { eid: 'manager', name: 'Manager' },
+                    { eid: 'owner', name: 'Owner' },
+                  ]}
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
@@ -307,7 +318,7 @@ function AddMerchant() {
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
-              
+
               <Grid item sx={6} md={4}>
                 <CustomText
                   label="Phone"
@@ -337,7 +348,6 @@ function AddMerchant() {
                   </h6>
                 </div>
               </Grid>
-              
             </Grid>
             <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Button type="submit" variant="outlined" color="primary" className="name" style={{ margin: '15px 5px' }}>
