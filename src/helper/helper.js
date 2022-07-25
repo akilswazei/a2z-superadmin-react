@@ -1,165 +1,107 @@
 /* eslint-disable react/prop-types */
-import { TextField } from '@material-ui/core'
+import { cond } from 'lodash'
+import React, { useEffect, useState } from 'react'
+import ImageUploader from 'react-images-upload'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import Modal from '@mui/material/Modal'
+import Box from '@mui/material/Box'
 
-import React from 'react'
+import { Container, Button, Grid } from '@material-ui/core'
 
-export function CustomText({ name, value, handleChange, placeholder, error={}, required, label }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <TextField
-        className="custom-form-field"
-        required={required}
-        id={name}
-        name={name}
-        variant="outlined"
-        {...(value==''?{}:{value:value})}
-        error={error[name]?true:false}
-        helperText={error[name]?error[name]:false}
-        type="text"
-        placeholder={placeholder}
-        fullWidth={true}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
-export function CustomEmail({ handleChange,value, name, placeholder, label, required }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <TextField
-        className="custom-form-field"
-        required={required}
-        id={name}
-        name={name}
-        type="email"
-        variant="outlined"
-        {...(value==''?{}:{value:value})}
-        error={false}
-        placeholder={placeholder}
-        fullWidth={true}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
-export function CustomPasssword({ handleChange, name, placeholder, label, required }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <TextField
-        className="custom-form-field"
-        required={required}
-        id={name}
-        name={name}
-        type="password"
-        variant="outlined"
-        error={false}
-        placeholder={placeholder}
-        fullWidth={true}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
-
-export function CustomPhone({ handleChange,value, name, placeholder, label, required }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <TextField
-        className="custom-form-field"
-        required={required}
-        id={name}
-        name={name}
-        type="number"
-        variant="outlined"
-        value={value}
-        error={false}
-        placeholder={placeholder}
-        fullWidth={true}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
-export function CustomFileUpload({ handleChange,error, value, name, label, required }) {
+function ImageUpload(props){
   const getState = useSelector((state) => state)
+  const [mdls,setMdls] = useState([])
+  const [pictures, setPictures] = useState({})
   const dispatch = useDispatch()
+
   const {
-    media: {fileFields},
+    media: {mediaOpen,fileFields,fileInput},
   } = getState
 
-  useEffect(() => {
-   // if(fileFields[name]==undefined){
-      console.log({[name]: {id:value,url:""}})
-      dispatch({ type: "UpdateFileField", payload: {[name]: {id:value,url:"https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg"} } })
-    //}
-
-  }, [])
-  function handleButton(){
-    console.log(fileFields)
-    dispatch({ type: "MediaOpen", payload: true })
-    dispatch({ type: "setFileInput", payload: name })
+  
+  function onDrop(pictureFiles, pictureDataURLs) { 
+  setPictures(pictureDataURLs)
+  }
+  function UploadMedia(){
+    // upload api
+    //imageUploader.clearPictures()
+    setMdls([...mdls,{id: 3, url: pictures}]);
+  }
+  function SetNClose(fid,url){
+    dispatch({ type: "MediaOpen", payload: false });
+    dispatch({ type: "UpdateFileField", payload: {[fileInput]: {id: fid, url: url }} });
   }
 
-  return (
-    <>
+  function handleMediaClose(){
+    dispatch({ type: "MediaOpen", payload: false });
+  }
+  // function triggerInput(enteredName, enteredValue) {
+  //   const input = document.getElementById(enteredName);
+  //   const lastValue = input.value;
+  //   input.value = enteredValue;
+  //   const event = new Event("input", { bubbles: true });
+  //   const tracker = input._valueTracker;
+  //   if (tracker) {
+  //     tracker.setValue(lastValue);
+  //   }
+  //   input.dispatchEvent(event);
+  // }
+    useEffect(() => {
+      {    
+        if(mediaOpen==true){
+          setMdls([{id:1, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg'},{id:2, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg'}])
+          console.log("mucore:"+mdls)
+        }
+      }
+    }, [mediaOpen])
 
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <img width="100" src={fileFields?.[name]?.url} /><br/>
-      <button  onClick={(e)=> handleButton()} >Upload Image</button>
-    </>
-  )
-}
+    const style = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-30%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+      border: '1px solid #000',
+      boxShadow: 24,
+      p: 4,
+    }
 
-export function CustomSelect({ handleChange, options,error, value, name, label, required }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <select
-        labelId="demo-simple-select-helper-label"
-        id={name}
-        className={error[name]?"custom-select-input error":"custom-select-input"}
-        label={label}
-        name={name}
-        {...(value==''?{}:{value:value})}
-        fullWidth={true}
-        onChange={(e) => handleChange(e)}
+    return (
+      <>
+
+      <Modal
+        open={mediaOpen}
+        onClose={handleMediaClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <option  key={"noselect"} value={''}>
-              Select..
-            </option>
-        {options.map((ovalue, key) => {
-          return (
-            <option selected={value == ovalue.eid ? 'selected' : ''} key={ovalue.eid} value={ovalue.eid}>
-              {ovalue.name}
-            </option>
-          )
-        })}
-      </select>
-      {error[name]?(<p className='MuiFormHelperText-root MuiFormHelperText-contained Mui-error Mui-required'>{ error[name] }</p>):""}
-    </>
-  )
+        <Box sx={style} className="w-50">
+          <h3>Payout History</h3>     
+          <div style={{ height: '80vh', width: '100%' }} className="py-2"> 
+              <ImageUploader
+                key="imup"
+                withIcon={false}
+                withPreview={true}
+                buttonText="Choose images"
+                onChange={onDrop}
+                imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg','.pdf']}
+                maxFileSize={5242880}
+                sendData={pictures}
+                name="imagepicker"
+                singleImage="true"
+              /> 
+              <button onClick={(e) => UploadMedia(e)}> upload</button>
+              { mdls?.map((value, key) => {
+                  return (  <a key="dfdsfs" onClick={(e) => SetNClose(value.id,value.url)}><img width="50"  src={value.url} /></a>
+                  )
+              }) }
+            </div>    
+          </Box>
+        </Modal>
+        </>
+
+    )
+  
 }
+export default ImageUpload
