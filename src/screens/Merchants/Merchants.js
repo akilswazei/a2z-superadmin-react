@@ -46,10 +46,10 @@ const Merchant = () => {
         return (
           <div className="edit-delete-div">
             <span className="pencil-icon">
-              <EditIcon />
+              <EditIcon  onClick={(e) => navigate('/merchant/edit/' + cellValue?.row?.eid)} />
             </span>
             <span className="delete-icon">
-              <DeleteIcon />
+              <DeleteIcon onClick={(e) =>handleDelete(cellValue?.row?.eid,e) } />
             </span>
           </div>
         )
@@ -91,8 +91,8 @@ const Merchant = () => {
   const handleDelete = async (eid, e) => {
     deleteMerchant(userInfo, eid)
     setMerchants({
-      ...Merchant,
-      data: { ...Merchant.data, data: [...Merchant.data.data.filter((v, i) => v.eid != eid)] },
+      ...merchants,
+      data: { ...merchants.data, data: [...merchants.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
   //handle events ends here

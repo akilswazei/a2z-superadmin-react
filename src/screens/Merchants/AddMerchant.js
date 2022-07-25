@@ -51,7 +51,7 @@ function AddMerchant() {
   const submitHandler = async (e) => {
     e.preventDefault()
     let allerrors = validate(inputs, {authorize_person_title: 'required'})
-    console.log(allerrors);
+    console.log(allerrors)
     if (Object.keys(allerrors).length === 0) {
       let response
       if (eid) {
@@ -71,6 +71,7 @@ function AddMerchant() {
         setOpen(true)
       }
     }
+
     // filter:  needs to map if field name is not matching  with api parameters 
     setErros(allerrors)
   }
@@ -79,6 +80,8 @@ function AddMerchant() {
     setOpen(false)
     navigate('../merchants', { replace: true })
   }
+
+  
 
   useEffect(() => {
     (async () => {
@@ -265,7 +268,6 @@ function AddMerchant() {
                 <CustomSelect
                   label="Title"
                   name="authorize_person_title"
-                  required={true}
                   error={errors}
                   value={inputs.authorize_person_title ? inputs.authorize_person_title : ''}
                   placeholder="Manager"

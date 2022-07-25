@@ -7,9 +7,14 @@ import {
   userSigninReducer,
 } from './redux/reducers/UserReducers'
 
+import {
+  mediaReducer
+} from './redux/reducers/MediaReducers'
+
 const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
+  
 
 const initialState = {
   userSignin: {
@@ -21,6 +26,7 @@ const initialState = {
 const reducer = combineReducers({
   allUsers: userReducers,
   userSignin: userSigninReducer,
+  media: mediaReducer
 })
 
 const componseEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

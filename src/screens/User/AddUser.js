@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 //react imports
 import { useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect,useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 //material UI imports
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -15,9 +15,8 @@ import Dialog from '@mui/material/Dialog'
 import { getRoles } from 'src/services/RolesServices'
 import { addUser } from 'src/services/UserServices'
 import MainBoard from 'src/components/include/MainBoard'
-import { CustomEmail, CustomPasssword, CustomText } from 'src/helper/helper'
-
-import { ImageUpload } from './ImageUpload'
+import { CustomEmail, CustomPasssword, CustomText, CustomFileUpload } from 'src/helper/helper'
+import  ImageUpload  from '../../helper/ImageUpload'
 
 //main function
 function AddTeam() {
@@ -25,13 +24,16 @@ function AddTeam() {
   const getState = useSelector((state) => state)
   //navigator
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
 
   const {
     userSignin: { userInfo },
+    media: {fileFields},
   } = getState
 
   //state
-  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
+  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655', })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = useState(false)
   const [errors, setErrors] = useState(false)
@@ -50,9 +52,14 @@ function AddTeam() {
   //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
+
+    console.log(inputs);
     if (inputs.password == inputs.confirm_password) {
+      
       setErrors({ ...errors, confirm_password: '' })
-      await addUser(userInfo, inputs)
+      let saveinfo=inputs;
+      saveinfo['image']=fileFields['image']['id']
+      await addUser(userInfo, saveinfo)
       setOpen(true)
     } else {
       setErrors({ ...errors, confirm_password: 'password not matched' })
@@ -67,8 +74,11 @@ function AddTeam() {
   //re-rendrer
   useEffect(() => {
     getRolesData()
+  },[])
+  useMemo(() => {
+  //  dispatch({ type: "CleanFileField", payload: {} })
+    console.log("clearfield")
   }, [])
-  console.log(<ImageUpload />)
   //placeholders
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
@@ -77,6 +87,7 @@ function AddTeam() {
 
   return (
     <MainBoard>
+      <ImageUpload   />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -97,7 +108,7 @@ function AddTeam() {
           <h6>Add Users</h6>
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Basic Infomation</h6>
@@ -120,7 +131,7 @@ function AddTeam() {
                   label="Email"
                   name="email"
                   required={true}
-                  value={inputs.password ? inputs.password : ''}
+                  value={inputs.email ? inputs.email : ''}
                   error={false}
                   placeholder={emailPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -132,7 +143,6 @@ function AddTeam() {
                   label="Password"
                   name="password"
                   required={true}
-                  value={inputs.confirm_password ? inputs.confirm_password : ''}
                   error={false}
                   placeholder={passwordPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -142,10 +152,9 @@ function AddTeam() {
               <Grid item xs={6}>
                 <CustomPasssword
                   label="Confirm password"
-                  name="email"
+                  name="confirm_password"
                   required={true}
                   error={false}
-                  value=""
                   placeholder={confirmPasswordPlaceholder}
                   handleChange={(e) => handleChange(e)}
                 />
@@ -196,7 +205,28 @@ function AddTeam() {
                 </Select>
               </Grid>
               <Grid item xs={12}>
-                <ImageUpload />
+                <CustomFileUpload
+                    handleChange={(e) => handleChange(e)}
+                    name="image"
+                    placeholder={namePlaceholder}
+                    id="name"
+                    value="1"
+                    label="Name"
+                    error={false}
+                    required={true}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                  <CustomFileUpload
+                    handleChange={(e) => handleChange(e)}
+                    name="image2"
+                    placeholder={namePlaceholder}
+                    id="name"
+                    value={inputs.image2 ? inputs.image2 : ''}
+                    label="Name"
+                    error={false}
+                    required={true}
+                  />
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
