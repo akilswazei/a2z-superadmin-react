@@ -776,3 +776,83 @@
       justify-content: flex-start;
        height: 100%;
 }
+.imageUpload-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 2.5em;
+    img{
+        margin:0.3em;
+        border-radius: 0.2em;
+
+    }
+    button{
+        margin:0 0.2em;
+        padding: 0.4em 0.9em;
+        background-color: $dashboard-blue;
+        border:none;
+        color: white;
+        border-radius: 0.4em;
+        font-size: 0.7em;
+        font-weight: 600;
+
+    }
+}
+.upload-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button{
+        margin:0 0.2em;
+        padding: 0.4em 0.8em;
+        background-color: $dashboard-blue;
+        border:none;
+        color: white;
+        border-radius: 0.4em;
+        font-size: 0.9em;
+        font-weight: 700;
+        &:hover{
+            background-color: white;
+            color:black;
+            border: 1px solid $dashboard-blue;
+
+        }
+    }
+    
+}
+
+.imageSelect{
+
+    a{
+        img{
+            margin: 2em 0.2em;
+            min-height: 50px;
+            max-height: 110px;
+            border-radius: 0.3em;
+
+        }
+    }
+}
+.set-btn{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button{
+        margin:0 0.2em;
+        padding: 0.4em 0.8em;
+        background-color: $dashboard-blue;
+        border:none;
+        color: white;
+        border-radius: 0.4em;
+        font-size: 0.9em;
+        font-weight: 700;
+
+        &:hover{
+            background-color: white;
+            color:black;
+            border: 1px solid $dashboard-blue;
+
+        }
+    }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //react imports
 import { useNavigate } from 'react-router-dom'
-import React, { useEffect,useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 //material UI imports
 import DialogActions from '@mui/material/DialogActions'
@@ -16,7 +16,7 @@ import { getRoles } from 'src/services/RolesServices'
 import { addUser } from 'src/services/UserServices'
 import MainBoard from 'src/components/include/MainBoard'
 import { CustomEmail, CustomPasssword, CustomText, CustomFileUpload } from 'src/helper/helper'
-import  ImageUpload  from '../../helper/ImageUpload'
+import ImageUpload from '../../helper/ImageUpload'
 
 //main function
 function AddTeam() {
@@ -26,14 +26,13 @@ function AddTeam() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-
   const {
     userSignin: { userInfo },
-    media: {fileFields},
+    media: { fileFields },
   } = getState
 
   //state
-  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655', })
+  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
   const [roles, setRoles] = useState({})
   const [open, setOpen] = useState(false)
   const [errors, setErrors] = useState(false)
@@ -53,12 +52,11 @@ function AddTeam() {
   const submitHandler = async (e) => {
     e.preventDefault()
 
-    console.log(inputs);
+    console.log(inputs)
     if (inputs.password == inputs.confirm_password) {
-      
       setErrors({ ...errors, confirm_password: '' })
-      let saveinfo=inputs;
-      saveinfo['image']=fileFields['image']['id']
+      let saveinfo = inputs
+      saveinfo['image'] = fileFields['image']['id']
       await addUser(userInfo, saveinfo)
       setOpen(true)
     } else {
@@ -74,10 +72,10 @@ function AddTeam() {
   //re-rendrer
   useEffect(() => {
     getRolesData()
-  },[])
+  }, [])
   useMemo(() => {
-  //  dispatch({ type: "CleanFileField", payload: {} })
-    console.log("clearfield")
+    //  dispatch({ type: "CleanFileField", payload: {} })
+    console.log('clearfield')
   }, [])
   //placeholders
   const namePlaceholder = 'Please enter your name'
@@ -87,7 +85,7 @@ function AddTeam() {
 
   return (
     <MainBoard>
-      <ImageUpload   />
+      <ImageUpload />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -206,8 +204,9 @@ function AddTeam() {
                   <MenuItem value={2}>Inactive</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={12}>
-                <CustomFileUpload
+              <Grid container xs={12}>
+                <Grid item xs={3}>
+                  <CustomFileUpload
                     handleChange={(e) => handleChange(e)}
                     name="image"
                     placeholder={namePlaceholder}
@@ -217,8 +216,8 @@ function AddTeam() {
                     error={false}
                     required={true}
                   />
-              </Grid>
-              <Grid item xs={12}>
+                </Grid>
+                <Grid item xs={3}>
                   <CustomFileUpload
                     handleChange={(e) => handleChange(e)}
                     name="image2"
@@ -229,6 +228,7 @@ function AddTeam() {
                     error={false}
                     required={true}
                   />
+                </Grid>
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
