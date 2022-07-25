@@ -55,7 +55,7 @@ const Store = () => {
   } = getState
 
   //states
-  const [stores, setStore] = useState({})
+  const [stores, setStore] = useState()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [merchantId, setMercantId] = useState('211019041655')
@@ -69,12 +69,13 @@ const Store = () => {
   const searchStore = async (value) => {
     setSearch(value)
     setPage(1)
-    setStore(await getStores(userInfo, 1, value))
+    setStore(await getStores(userInfo, 1, value, merchantId))
   }
   //page change
-  const changePage = async (value) => {
-    setPage(value)
-    setStore(await getStores(userInfo, value, search))
+  const changePage = async (value, number) => {
+    console.log(value, number)
+    setPage(number)
+    setStore(await getStores(userInfo, number, search, merchantId))
   }
 
   const handleDelete = async (eid, e) => {

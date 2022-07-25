@@ -14,10 +14,6 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
-import Checkbox from '@mui/material/Checkbox'
-import FormGroup from '@mui/material/FormGroup'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 //custom styling imports
 //cutom component imports
@@ -25,9 +21,7 @@ import MainBoard from 'src/components/include/MainBoard'
 import { addStore, getStores, updateStore } from 'src/services/StoreService'
 import { validate } from 'src/helper/validation'
 import { CustomEmail, CustomText, CustomPhone, CustomTimeInput } from 'src/helper/helper'
-import TimePicker from 'react-time-picker'
 import { Box } from '@mui/system'
-import { DataObjectSharp } from '@mui/icons-material'
 
 //main function starts here
 function AddStore() {
@@ -41,10 +35,14 @@ function AddStore() {
   //states
 
   const { eid } = useParams()
-  const [inputs, setInputs] = useState({ status: 1, merchant_id: '211019041655' })
+  const [inputs, setInputs] = useState({
+    status: 1,
+    merchant_id: '211019041655',
+    eid: 'TmpaOGZGSlFRbTV2VUVscFVGcFZlWEI2VUdWS1kwSnNWR1ZvUnpWemNXMXdWMXBLTWs5b2VIaG9UbnB5YW1NPQ==',
+  })
   const [stores, setStores] = useState({})
-  const [open, setOpen] = React.useState(false)
-  const [errors, setErros] = React.useState(false)
+  const [open, setOpen] = useState(false)
+  const [errors, setErros] = useState(false)
 
   //chnage of value in form fields
   const handleChange = (event) => {
@@ -108,23 +106,8 @@ function AddStore() {
             } else {
               inputData[key] = inputs[key]
             }
-            // switch (inputs) {
-            //   case inputs['monday_start'] && key === 'monday_start':
-            //     console.log('hi')
-            //     break
-            //   case inputs['monday_end'] && key === 'monday_end':
-            //     inputData['business_hours']['monday'][1] = inputs[key]
-            //     break
-            //   case inputs['tuesday_start'] && key === 'tuesday_start':
-            //     inputData['business_hours']['tuesday'][0] = inputs['tuesday_start']
-            //     break
-            //   default:
-            //     inputData[key] = inputs[key]
-            //     break
-            // }
-
-            // console.log(inputs, key)
           })
+          // console.log(inputs)
           response = await updateStore(userInfo, inputData)
           return
         }
@@ -167,7 +150,7 @@ function AddStore() {
   const locationPlaceholder = 'Please enter location'
   const phonePlaceholder = 'Please enter phone number'
   const categoryPlaceholder = 'Please enter store category'
-  const devicePlacerholder = 'Please enter no. of devices'
+
   return (
     <MainBoard>
       <Dialog
