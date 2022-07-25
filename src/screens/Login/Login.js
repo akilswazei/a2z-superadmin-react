@@ -30,7 +30,7 @@ const Login = () => {
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
     if (form.checkValidity() === false) {
