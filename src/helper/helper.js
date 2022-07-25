@@ -131,35 +131,35 @@ export function CustomPhone({ handleChange, value, name, placeholder, label, req
   )
 }
 export function CustomSelect({ handleChange, options, value, name, label, required }) {
-  return (
-    <>
-      <h6 className="color-gray">
-        {label}
-        <sup>{required === true ? '*' : ''}</sup>
-      </h6>
-      <select
-        labelId="demo-simple-select-helper-label"
-        id={name}
-        className="custom-select-input"
-        label={label}
-        name={name}
-        fullWidth={true}
-        onChange={(e) => handleChange(e)}
-      >
-        <option key={'noselect'} value={''}>
-          Select..
-        </option>
-        {options.map((ovalue, key) => {
-          return (
-            <option selected={value == ovalue.eid ? 'selected' : ''} key={ovalue.eid} value={ovalue.eid}>
-              {ovalue.name}
-            </option>
-          )
-        })}
-      </select>
-    </>
-  )
-}
+    return (
+      <>
+        <h6 className="color-gray">
+          {label}
+          <sup>{required === true ? '*' : ''}</sup>
+        </h6>
+        <select
+          labelId="demo-simple-select-helper-label"
+          id={name}
+          className="custom-select-input"
+          label={label}
+          name={name}
+          fullWidth={true}
+          onChange={(e) => handleChange(e)}
+        >
+          <option key={'noselect'} value={''}>
+            Select..
+          </option>
+          {options.map((ovalue, key) => {
+            return (
+              <option selected={value == ovalue.eid ? 'selected' : ''} key={ovalue.eid} value={ovalue.eid}>
+                {ovalue.name}
+              </option>
+            )
+          })}
+        </select>
+      </>
+    )
+  }
 export function CustomTimeInput({ handleChange, value, name, placeholder, label, required }) {
   return (
     <>

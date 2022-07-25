@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 //material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
@@ -15,66 +16,71 @@ import FormStyles from 'src/helper/FormStyles'
 //custom components imports
 import MainBoard from 'src/components/include/MainBoard'
 import { deleteStore, getStores } from 'src/services/StoreService'
-import { useNavigate } from 'react-router-dom'
 
-//columns for data grid
-const columns = [
-  { field: 'eid', headerName: 'Store ID', width: 150 },
-  { field: 'store_name', headerName: 'Name', width: 300 },
-  { field: 'store_address_1', headerName: 'Address', width: 300 },
-  { field: 'store_email', headerName: 'E-mail', width: 200 },
-  { field: 'store_contact', headerName: 'Phone', width: 200 },
-  {
-    field: 'action',
-    width: 100,
-    renderCell: (cellValue) => {
-      return (
-        <div className="edit-delete-div">
-          <span className="pencil-icon">
-            <EditIcon />
-          </span>
-          <span className="delete-icon">
-            <DeleteIcon />
-          </span>
-        </div>
-      )
-    },
-  },
-]
 //style for data grid
 const datagridSx = FormStyles
 //main function starts here
 const Store = () => {
+  //columns for data grid
+  const columns = [
+    { field: 'eid', headerName: 'Store ID', width: 150 },
+    { field: 'store_name', headerName: 'Name', width: 300 },
+    { field: 'store_address_1', headerName: 'Address', width: 300 },
+    { field: 'store_email', headerName: 'E-mail', width: 200 },
+    { field: 'store_contact', headerName: 'Phone', width: 200 },
+    {
+      field: 'action',
+      width: 100,
+      renderCell: (cellValue) => {
+        return (
+          <div className="edit-delete-div">
+            <span className="pencil-icon">
+              <EditIcon />
+            </span>
+            <span className="delete-icon">
+              <DeleteIcon
+                onClick={() => {
+                  handleDelete(cellValue.row.eid)
+                }}
+              />
+            </span>
+          </div>
+        )
+      },
+    },
+  ]
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
   } = getState
 
   //states
-  const [stores, setStore] = useState({})
+  const [stores, setStore] = useState()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [merchantId, setMercantId] = useState('211019041655')
 
   //fetch
-  const getStoreData = async () => {
-    setStore(await getStores(userInfo))
+  const getStoreData = async (value) => {
+    setStore(await getStores(userInfo, 1, value, merchantId))
   }
 
   //search
   const searchStore = async (value) => {
     setSearch(value)
     setPage(1)
-    setStore(await getStores(userInfo, 1, value))
+    setStore(await getStores(userInfo, 1, value, merchantId))
   }
   //page change
-  const changePage = async (value) => {
-    setPage(value)
-    setStore(await getStores(userInfo, value, search))
+  const changePage = async (value, number) => {
+    console.log(value, number)
+    setPage(number)
+    setStore(await getStores(userInfo, number, search, merchantId))
   }
 
   const handleDelete = async (eid, e) => {
     deleteStore(userInfo, eid)
-    setStore({ ...Store, data: { ...Store.data, data: [...Store.data.data.filter((v, i) => v.eid != eid)] } })
+    setStore({ ...stores, data: { ...stores.data, data: [...stores.data.data.filter((v, i) => v.eid != eid)] } })
   }
 
   //rendering

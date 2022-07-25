@@ -143,6 +143,7 @@ function AddTeam() {
                   label="Password"
                   name="password"
                   required={true}
+                  value={inputs.password ? inputs.password : ''}
                   error={false}
                   placeholder={passwordPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -152,9 +153,10 @@ function AddTeam() {
               <Grid item xs={6}>
                 <CustomPasssword
                   label="Confirm password"
-                  name="confirm_password"
+                  name="confirmPassword"
                   required={true}
                   error={false}
+                  value={inputs.confirm_password ? inputs.confirm_password : ''}
                   placeholder={confirmPasswordPlaceholder}
                   handleChange={(e) => handleChange(e)}
                 />
