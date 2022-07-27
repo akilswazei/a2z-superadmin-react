@@ -271,7 +271,7 @@ function ViewLead(props) {
 
                                 </TabPanel>
                                 <TabPanel className="tabdiv" value={value} index={1}>
-                                    <LeadSMS leadName={leads.data.customer_name} lead_id={leads.data.id}/>
+                                    <LeadSMS leadName={leads.data.customer_name} lead_id={leads.data.id} lead_contact_no={leads.data.authorize_person_phone_no}  />
                                 </TabPanel>
 
                                 <TabPanel className="tabdiv" value={value} index={2}>

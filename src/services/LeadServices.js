@@ -32,8 +32,7 @@ export const getLeadInfo = async (userInfo,lead_id="0") => {
       return data
 }
 
-export const addAttachment = async (userInfo, userdata) => {
-    console.log(userdata);
+export const addAttachment = async (userInfo, userdata) => {    
     const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/add-attachment', userdata, {
         headers: {
           Authorization: 'Bearer ' + userInfo.data.token,
@@ -44,6 +43,15 @@ export const addAttachment = async (userInfo, userdata) => {
 
 export const getAttachment = async (userInfo, lead_id="0") => {
     const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/get-attachment?lead_id='+lead_id, {
+        headers: {
+          Authorization: 'Bearer ' + userInfo.data.token,
+        },
+    })
+    return data
+}
+
+export const sendSMS = async (userInfo, userdata) => {
+    const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/send-sms', userdata, {
         headers: {
           Authorization: 'Bearer ' + userInfo.data.token,
         },

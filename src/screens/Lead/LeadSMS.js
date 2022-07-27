@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import attachment_image from '../../assets/images/image5.png'
 import { validate } from 'src/helper/validation'
 import { CustomText } from 'src/helper/helper'
 
@@ -25,9 +24,10 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import serialize from "form-serialize";
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import Stack from '@mui/material/Stack';
+
+import { sendSMS } from 'src/services/LeadServices'
 
 const blue = {
   500: '#007FFF',
@@ -89,9 +89,12 @@ function boldfont(text) {
 LeadSMS.propTypes = {
     lead_id: PropTypes.number,
     leadName: PropTypes.string,
+    lead_contact_no: PropTypes.string
 }
 
 function LeadSMS(props) {
+
+    console.log("props: " + JSON.stringify(props));
 
     const getState = useSelector((state) => state)
     const {
@@ -105,7 +108,24 @@ function LeadSMS(props) {
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        alert("ok");
+        
+        const fieldData = serialize(e.target, { hash: true });
+
+        let allerrors = validate(inputs, {})        
+        if (Object.keys(allerrors).length === 0) {
+            let response
+
+            response = await sendSMS(userInfo, fieldData)
+
+            console.log(response);
+
+            if (response.data && Object.keys(response.data).length != 0) {
+                allerrors = response.data
+            } else {
+                setOpen(true)
+            }
+        }        
+        setErros(allerrors)
     }
 
     const handleChange = (event) => {
@@ -145,6 +165,9 @@ function LeadSMS(props) {
                 <form onSubmit={submitHandler}>
                 <input type="hidden" name="lead_id" id="lead_id" value={props.lead_id} />
                 <input type="hidden" name="user_id" id="user_id" value={userInfo.data.user.id} />
+
+                <input type="hidden" name="lead_contact_no" id="lead_contact_no" value={props.lead_contact_no} />
+
                     <Grid item xs={12}>
                         <Item style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
                             <List className="mb-3" sx={{ display: 'block' }} xs={12}>
@@ -161,6 +184,7 @@ function LeadSMS(props) {
                                 <TextareaAutosize fullWidth 
                                     maxRows={7}
                                     minRows={7}
+                                    name="sms_text"
                                     aria-label="maximum height"
                                     placeholder="SMS Text"
                                     style={textareastyle}
