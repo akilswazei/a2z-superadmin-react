@@ -50,7 +50,7 @@ function AddMerchant() {
   //fucntion h=for handling submission of form
   const submitHandler = async (e) => {
     e.preventDefault()
-    let allerrors = validate(inputs, { authorize_person_title: 'required' })
+    let allerrors = validate(inputs, { authorize_person_first_name: 'required' })
     console.log(allerrors)
     if (Object.keys(allerrors).length === 0) {
       let response
