@@ -102,6 +102,7 @@ class App extends Component {
 
                 <Route exact path="/stores" element={<Stores />} />
                 <Route exact path="/store/add" element={<AddStore />} />
+                <Route exact path="/store/edit/:eid" element={<AddStore />} />
 
                 <Route exact path="/merchants" element={<Merchants />} />
                 <Route exact path="/merchant/add" element={<AddMerchant />} />

@@ -94,7 +94,7 @@ export const userSigninReducer = (state = initialState, action) => {
     case USER_SIGNIN_FAIL:
       return { ...state, loading: false, error: action.payload, isLoggedIn: false }
     case USER_SIGNOUT:
-      return initialState
+      return {}
     default:
       return state
   }

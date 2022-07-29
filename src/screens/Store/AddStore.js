@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography'
 //custom styling imports
 //cutom component imports
 import MainBoard from 'src/components/include/MainBoard'
-import { addStore, getStores, updateStore } from 'src/services/StoreService'
+import { addStore, getStore, updateStore } from 'src/services/StoreService'
 import { validate } from 'src/helper/validation'
 import { CustomEmail, CustomText, CustomPhone, CustomTimeInput } from 'src/helper/helper'
 import { Box } from '@mui/system'
@@ -33,85 +33,60 @@ function AddStore() {
   } = getState
 
   //states
-
   const { eid } = useParams()
   const [inputs, setInputs] = useState({
-    status: 1,
+    status: 0,
     merchant_id: '211019041655',
     eid: 'TmpaOGZGSlFRbTV2VUVscFVGcFZlWEI2VUdWS1kwSnNWR1ZvUnpWemNXMXdWMXBLTWs5b2VIaG9UbnB5YW1NPQ==',
   })
-  const [stores, setStores] = useState({})
+
   const [open, setOpen] = useState(false)
   const [errors, setErros] = useState(false)
 
   //chnage of value in form fields
-  const handleChange = (event) => {
-    const name = event.target.name
-    const value = event.target.value
-    setInputs((values) => ({ ...values, [name]: value }))
+  const handleChange = (event,extra={}) => {
+    if(extra.day){
+      const value = event.target.value
+      if(inputs.business_hours==undefined){
+        inputs.business_hours={}
+      } 
+      if(inputs.business_hours[extra.day]==undefined){
+        inputs.business_hours[extra.day]={}
+      }
+      setInputs((values) => ({ ...values, business_hours: {...values.business_hours,[extra.day]:{...values['business_hours'][extra.day],[extra.index]: value}} }))  
+    } else{
+      const name = event.target.name
+      const value = event.target.value  
+      setInputs((values) => ({ ...values, [name]: value }))
+
+    }
+    
   }
   //const [validated, setValidated] = useState(false);
   //fucntion for handling form submission
+        
   const submitHandler = async (e) => {
-    const inputData = {
-      business_hours: {
-        monday: [],
-        tuesday: [],
-        wednesday: [],
-        thursday: [],
-        friday: [],
-        saturday: [],
-        sunday: [],
-      },
-    }
-
+    var inputData = {}   
+    console.log("73")
+    console.log(inputData);
     e.preventDefault()
-    let allerrors = validate(inputs, {})
+    
+
+    let allerrors = validate(inputs, {electrical_outlets:"required"})
+   
+    let response
+
     if (Object.keys(allerrors).length === 0) {
-      let response
-      if (eid) {
-        console.log('update will done')
-        response = await updateStore(userInfo, inputs)
-      } else {
-        if (inputs && Object.keys(inputs).length !== 0) {
-          Object.keys(inputs).forEach((key) => {
-            if (inputs['monday_start'] && key === 'monday_start') {
-              inputData.business_hours.monday[0] = inputs[key]
-            } else if (inputs['monday_end'] && key === 'monday_end') {
-              inputData.business_hours.monday[1] = inputs[key]
-            } else if (inputs['tuesday_start'] && key === 'tuesday_start') {
-              inputData.business_hours.tuesday[0] = inputs[key]
-            } else if (inputs['tuesday_end'] && key === 'tuesday_end') {
-              inputData.business_hours.tuesday[1] = inputs[key]
-            } else if (inputs['wednesday_start'] && key === 'wednesday_start') {
-              inputData.business_hours.wednesday[0] = inputs[key]
-            } else if (inputs['wednesday_end'] && key === 'wednesday_end') {
-              inputData.business_hours.wednesday[1] = inputs[key]
-            } else if (inputs['thursday_start'] && key === 'thursday_start') {
-              inputData.business_hours.thursday[0] = inputs[key]
-            } else if (inputs['thursday_end'] && key === 'thursday_end') {
-              inputData.business_hours.thursday[1] = inputs[key]
-            } else if (inputs['friday_start'] && key === 'friday_start') {
-              inputData.business_hours.friday[0] = inputs[key]
-            } else if (inputs['friday_end'] && key === 'friday_end') {
-              inputData.business_hours.friday[1] = inputs[key]
-            } else if (inputs['saturday_start'] && key === 'saturday_start') {
-              inputData.business_hours.saturday[0] = inputs[key]
-            } else if (inputs['saturday_end'] && key === 'saturday_end') {
-              inputData.business_hours.saturday[1] = inputs[key]
-            } else if (inputs['sunday_start'] && key === 'sunday_start') {
-              inputData.business_hours.sunday[0] = inputs[key]
-            } else if (inputs['sunday_end'] && key === 'sunday_end') {
-              inputData.business_hours.sunday[1] = inputs[key]
-            } else {
-              inputData[key] = inputs[key]
-            }
-          })
-          // console.log(inputs)
-          response = await updateStore(userInfo, inputData)
-          return
-        }
-        response = await addStore(userInfo, inputData)
+        console.log("53")
+       
+        console.log(inputs['business_hours[monday][0]']);
+        if (eid) {
+          console.log('update will done')
+          response = await updateStore(userInfo, inputs)
+        } else {
+          console.log('add will done')
+          response = await addStore(userInfo, inputs)
+        } 
       }
       if (response.data && Object.keys(response.data).length != 0) {
         allerrors = response.data
@@ -121,9 +96,8 @@ function AddStore() {
           console.log(allerrors[ckey])
         })
       } else {
-        setOpen(true)
+          setOpen(true)
       }
-    }
     setErros(allerrors)
   }
 
@@ -131,7 +105,11 @@ function AddStore() {
 
   //fetch
   const getStoreData = async () => {
-    setStores(await getStores(userInfo))
+    let storedata=await getStore(userInfo,eid);
+    
+    setInputs({...storedata.data.store,business_hours: JSON.parse(storedata.data.store.business_hours)})
+    //console.log(storedata.data.store)
+
   }
 
   const handleClose = () => {
@@ -141,7 +119,9 @@ function AddStore() {
 
   //rendering
   useEffect(() => {
-    getStoreData()
+    if(eid){
+      getStoreData()
+    }
   }, [])
 
   //placeholders
@@ -153,6 +133,7 @@ function AddStore() {
 
   return (
     <MainBoard>
+      {console.log(inputs)}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -173,7 +154,7 @@ function AddStore() {
           <h6>Add Store</h6>
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={(e) => submitHandler(e)} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Store Detail</h6>
@@ -181,31 +162,31 @@ function AddStore() {
               <Grid item xs={4}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="name"
+                  name="store_name"
                   placeholder={namePlaceholder}
-                  value={inputs.name ? inputs.name : ''}
+                  value={inputs.store_name ? inputs.store_name : ''}
                   label="Store Name"
-                  error={false}
+                  error={errors}
                   required={true}
                 />
               </Grid>
               <Grid item xs={4}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="location"
+                  name="store_address_1"
                   placeholder={locationPlaceholder}
-                  value={inputs.location ? inputs.location : ''}
+                  value={inputs.store_address_1 ? inputs.store_address_1 : ''}
                   label="Store Location"
-                  error={false}
+                  error={errors}
                   required={true}
                 />
               </Grid>
               <Grid item xs={4}>
                 <CustomPhone
                   label="No. of devices"
-                  name="numberOfDevices"
+                  name="no_of_device"
                   required={true}
-                  value={inputs.nod ? inputs.nod : ''}
+                  value={inputs.no_of_device ? inputs.no_of_device : ''}
                   error={false}
                   placeholder={phonePlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -214,9 +195,9 @@ function AddStore() {
               <Grid item xs={4}>
                 <CustomText
                   handleChange={(e) => handleChange(e)}
-                  name="storeCategory"
+                  name="store_category"
                   placeholder={categoryPlaceholder}
-                  value=""
+                  value={inputs.store_category ? inputs.store_category : ''}
                   label="Store Category"
                   error={false}
                   required={true}
@@ -234,9 +215,9 @@ function AddStore() {
               <Grid item xs={4}>
                 <CustomPhone
                   label="Store Contact"
-                  name="phone"
+                  name="store_contact"
                   required={true}
-                  value={inputs.phone ? inputs.phone : ''}
+                  value={inputs.store_contact ? inputs.store_contact : ''}
                   error={false}
                   placeholder={phonePlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -246,9 +227,9 @@ function AddStore() {
               <Grid item xs={4}>
                 <CustomEmail
                   label="Email"
-                  name="email"
+                  name="store_email"
                   required={true}
-                  value={inputs.email ? inputs.email : ''}
+                  value={inputs.store_email ? inputs.store_email : ''}
                   error={false}
                   placeholder={emailPlaceholder}
                   handleChange={(e) => handleChange(e)}
@@ -256,192 +237,41 @@ function AddStore() {
               </Grid>
               {/* Q. business hour */}
               {/* monday starts */}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Monday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="monday_start"
-                  value={inputs.monday_start ? inputs.monday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="monday_end"
-                  value={inputs.monday_end ? inputs.monday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* monday ends*/}
-              {/* tues starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Tuesday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="tuesday_start"
-                  value={inputs.tuesday_start ? inputs.tuesday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="tuesday_end"
-                  value={inputs.tuesday_end ? inputs.tuesday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* tues ends*/}
-              {/* wed starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Wednesday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="wednesday_start"
-                  value={inputs.wednesday_start ? inputs.wednesday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="wednesday_end"
-                  value={inputs.wednesday_end ? inputs.wednesday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* wed ends*/}
-              {/* thru starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Thursday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="thursday_start"
-                  value={inputs.thursday_start ? inputs.thursday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="thursday_end"
-                  value={inputs.thursday_end ? inputs.thursday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* thru ends*/}
-              {/* fri starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Friday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="friday_start"
-                  value={inputs.friday_start ? inputs.friday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="friday_end"
-                  value={inputs.friday_end ? inputs.friday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* fri ends*/}
-              {/* sat starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Saturday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="friday_start"
-                  value={inputs.saturday_start ? inputs.saturday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="saturday_end"
-                  value={inputs.saturday_end ? inputs.saturday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={2}></Grid>
-              {/* sat ends*/}
-              {/* sun starts*/}
-              <Grid item xs={2}></Grid>
-              <Grid item xs={2}>
-                <Box className="custom-time-box">
-                  <Typography variant="h6" align="center" component="div">
-                    Sunday:
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="From:"
-                  name="sunday_start"
-                  value={inputs.sunday_start ? inputs.sunday_start : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <CustomTimeInput
-                  label="To:"
-                  name="saturday_end"
-                  value={inputs.ssunday_end ? inputs.sunday_end : ''}
-                  handleChange={(e) => handleChange(e)}
-                />
-              </Grid>
+              
+              {['monday','tuesday','wednesday','thursday','friday','saturday'].map((value) => {
+
+                return (
+                    <>
+                    <Grid item xs={2}>
+                        <Box className="custom-time-box">
+                          <Typography variant="h6" align="center" component="div">
+                            {value}:
+                          </Typography>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <CustomTimeInput
+                          label="From:"
+                          name="business_hours"
+                          value={inputs?.business_hours?.[value]?.[0]}
+                          handleChange={(e) => handleChange(e,{day:value,index:"0"})}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <CustomTimeInput
+                          label="To:"
+                          name="business_hours"
+                          value={inputs?.business_hours?.[value]?.[1]}
+                          handleChange={(e) => handleChange(e,{day:value,index:"1"})}
+                        />
+                      </Grid>
+                      <Grid item xs={4}></Grid>
+                      </>
+                      )
+
+               }) }
+
+              
               <Grid item xs={2}></Grid>
               {/* sun ends*/}
 
@@ -449,15 +279,26 @@ function AddStore() {
               <Grid item xs={12}>
                 <div className="flex-row-left">
                   <p className="m-0"> What is your current point of sale?</p>
+                      
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel
-                        name="current_point_sale"
-                        value="cashRegister"
-                        control={<Radio />}
-                        label="Cash Register"
-                      />
-                      <FormControlLabel name="current_point_sale" value="pos" control={<Radio />} label="POS" />
+                      {
+                        [
+                          {name: 'cashRegister', label: 'Cash Register'},
+                          {name: 'pos', label: 'POS'}
+                        ]
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="current_point_sale"
+                          value={value.name}
+                          control={<Radio checked={inputs.current_point_sale && inputs.current_point_sale == value.name ? 'checked' : ''} />}
+                          label={value.label}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -469,8 +310,23 @@ function AddStore() {
                   <p className="m-0">Do you have an inventory database?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="inventory_database" value="yes" control={<Radio />} label="Yes" />
-                      <FormControlLabel name="inventory_database" value="no" control={<Radio />} label="No" />
+                      {
+                        [
+                          {name: 'yes', label: 'Yes'},
+                          {name: 'no', label: 'No'}
+                        ]
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="inventory_database"
+                          value={value.name}
+                          control={<Radio checked={inputs.inventory_database && inputs.inventory_database == value.name ? 'checked' : ''} />}
+                          label={value.label}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -481,9 +337,21 @@ function AddStore() {
                   <p className="m-0">Number of Items?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="no_sale_item" value="0-1000" control={<Radio />} label="0-1000" />
-                      <FormControlLabel name="no_sale_item" value="1000-5000" control={<Radio />} label="1000-5000" />
-                      <FormControlLabel name="no_sale_item" value="10000+" control={<Radio />} label="10000+" />
+                      {
+                        ['0-1000','1000-5000','10000+']
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="no_sale_item"
+                          value={value}
+                          control={<Radio checked={inputs.no_sale_item && inputs.no_sale_item == value ? 'checked' : ''} />}
+                          label={value}
+                        />
+                        )
+                        })
+                      } 
+
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -494,10 +362,20 @@ function AddStore() {
                   <p className="m-0">Number of Employee?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="no_employee" value="0-5" control={<Radio />} label="0-5" />
-                      <FormControlLabel name="no_employee" value="6-10" control={<Radio />} label="6-10" />
-                      <FormControlLabel name="no_employee" value="10-20" control={<Radio />} label="10-20" />
-                      <FormControlLabel name="no_employee" value="20+" control={<Radio />} label="More than 20" />
+                      {
+                        ['0-5','6-10','10-20','20+']
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="no_employee"
+                          value={value}
+                          control={<Radio checked={inputs.no_employee && inputs.no_employee == value ? 'checked' : ''} />}
+                          label={value}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -508,18 +386,24 @@ function AddStore() {
                   <p className="m-0">Square Footage?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel
-                        name="square_footage"
-                        value="500-700"
-                        control={<Radio />}
-                        label="500-700 Sq ft."
-                      />
-                      <FormControlLabel
-                        name="square_footage"
-                        value="800-1200"
-                        control={<Radio />}
-                        label="800-1200 Sq ft."
-                      />
+                      {
+                        [
+                          {name: '500-700', label: '500-700 sq.ft.'},
+                          {name: '800-1200', label: '800-1200 sq.ft.'},
+                        ]
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="square_footage"
+                          value={value.name}
+                          control={<Radio checked={inputs.square_footage && inputs.square_footage == value.name ? 'checked' : ''} />}
+                          label={value.label}
+                        />
+                        )
+                        })
+                      }
+                      
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -530,9 +414,20 @@ function AddStore() {
                   <p className="m-0">Number of rolls of paper used per week?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="no_paper_role_per_week" value="1-3" control={<Radio />} label="1-3" />
-                      <FormControlLabel name="no_paper_role_per_week" value="3-6" control={<Radio />} label="3-6" />
-                      <FormControlLabel name="no_paper_role_per_week" value="6-8" control={<Radio />} label="6-8" />
+                      {
+                        ['1-3','3-6','6-8']
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="no_paper_role_per_week"
+                          value={value}
+                          control={<Radio checked={inputs.no_paper_role_per_week && inputs.no_paper_role_per_week == value ? 'checked' : ''} />}
+                          label={value}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -546,7 +441,7 @@ function AddStore() {
                     className="custom-form-padding"
                     name="average_monthly_gross"
                     placeholder="$ 00"
-                    value={inputs.averageIncome ? inputs.averageIncome : ''}
+                    value={inputs.average_monthly_gross ? inputs.average_monthly_gross : ''}
                     label=""
                     error={false}
                     required={true}
@@ -559,14 +454,24 @@ function AddStore() {
                   <p className="m-0">Internet Connections?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="internet_connections" value="wired" control={<Radio />} label="Wired" />
-                      <FormControlLabel
-                        name="internet_connections"
-                        value="wireless"
-                        control={<Radio />}
-                        label="Wireless"
-                      />
-                      <FormControlLabel name="internet_connections" value="both" control={<Radio />} label="Both" />
+                      {
+                        [
+                          {name: 'wired', label: 'Wired'},
+                          {name: 'wireless', label: 'Wireless'},
+                          {name: 'both', label: 'Both'}
+                        ]
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="internet_connections"
+                          value={value.name}
+                          control={<Radio checked={inputs.internet_connections && inputs.internet_connections == value.name ? 'checked' : ''} />}
+                          label={value.label}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -577,9 +482,22 @@ function AddStore() {
                   <p className="m-0">Electrical Outlets?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="electrical_outlets" value="1-3" control={<Radio />} label="1-3" />
-                      <FormControlLabel name="electrical_outlets" value="4-8" control={<Radio />} label="4-8" />
-                      <FormControlLabel name="electrical_outlets" value="9-15" control={<Radio />} label="9-15" />
+
+                      {
+                        ['1-3','4-8','9-15']
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="electrical_outlets"
+                          value={value}
+                          error
+                          control={<Radio checked={inputs.electrical_outlets && inputs.electrical_outlets == value ? 'checked' : ''} />}
+                          label={value}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -590,8 +508,23 @@ function AddStore() {
                   <p className="m-0">Counter Space?</p>
                   <FormControl className="custom-radio custom-form-padding">
                     <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" onChange={handleChange}>
-                      <FormControlLabel name="counter_space" value="yes" control={<Radio />} label="Yes" />
-                      <FormControlLabel name="counter_space" value="no" control={<Radio />} label="No" />
+                      {
+                        [
+                          {name: 'yes', label: 'Yes'},
+                          {name: 'no', label: 'No'}
+                        ]
+                        .map((value, key) => {
+                        return (
+                        <FormControlLabel
+                          key={key}
+                          name="counter_space"
+                          value={value.name}
+                          control={<Radio checked={inputs.counter_space && inputs.counter_space == value.name ? 'checked' : ''} />}
+                          label={value.label}
+                        />
+                        )
+                        })
+                      } 
                     </RadioGroup>
                   </FormControl>
                 </div>
