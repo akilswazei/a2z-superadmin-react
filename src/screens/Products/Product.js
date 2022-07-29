@@ -11,19 +11,15 @@ import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-
 //custom styling imports
 import FormStyles from 'src/helper/FormStyles'
 //custom component imports
 import MainBoard from 'src/components/include/MainBoard'
-import { getProducts } from 'src/services/ProductService'
-import { getDataList } from 'src/services/GetDataList'
+import { deleteProduct, getProducts } from 'src/services/ProductService'
 
 //styling for data grid
 const datagridSx = FormStyles
 
-//url
-const url = '/admin/product/list?'
 //main function starts here
 const Product = () => {
   //navigate function
@@ -35,40 +31,40 @@ const Product = () => {
   } = getState
 
   //states
-  const [product, setProduct] = useState({})
+  const [products, setProducts] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
   //fetch function
-  const getProductData = async () => {
-    setProduct(await getDataList(userInfo, 1, '', url))
+  const getProductsData = async () => {
+    setProducts(await getProducts(userInfo, 1, ''))
   }
 
   const searchProduct = async (value) => {
     setSearch(value)
     setPage(1)
-    setProduct(await getProducts(userInfo, 1, value))
+    setProducts(await getProducts(userInfo, 1, value))
   }
   //change page function used in pagination
   const changePage = async (value) => {
     setPage(value)
-    setProduct(await getProducts(userInfo, value, search))
+    setProducts(await getProducts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
-    // deleteIndividual(userInfo, eid)
-    // setProduct({
-    //   ...product,
-    //   data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
-    // })
+    deleteProduct(userInfo, eid)
+    setProducts({
+      ...products,
+      data: { ...products.data, data: [...products.data.data.filter((v, i) => v.eid != eid)] },
+    })
   }
 
   //re render funaction for fetch fucntion
   useEffect(() => {
-    getProductData()
+    getProductsData()
   }, [])
 
-  console.log(product)
+  console.log(products)
 
   const columns = [
     { field: 'product_name', headerName: 'Product', width: 350 },
@@ -95,8 +91,12 @@ const Product = () => {
             <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
-            <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
-              <DeleteIcon />
+            <span className="delete-icon">
+              <DeleteIcon
+                onClick={() => {
+                  handleDelete(cellValue.row.eid)
+                }}
+              />
             </span>
           </div>
         )
@@ -130,11 +130,11 @@ const Product = () => {
             </button>
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {product?.data?.data && (
+            {products?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random()}
-                rows={product.data.data}
+                rows={products.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -146,7 +146,7 @@ const Product = () => {
           <Container>
             <Pagination
               className="pagination"
-              count={product?.data?.links ? product.data.links.length - 2 : 1}
+              count={products?.data?.links ? products.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}

@@ -30,41 +30,41 @@ const MerchantProduct = () => {
   } = getState
 
   //state
-  const [product, setProduct] = useState({})
+  const [products, setProducts] = useState({})
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
   //fetch function
-  const getProductData = async () => {
-    setProduct(await getMerchantProducts(userInfo))
+  const getProductsData = async () => {
+    setProducts(await getMerchantProducts(userInfo, 1, ''))
   }
 
   //search function
   const searchMerchantProduct = async (value) => {
     setSearch(value)
     setPage(1)
-    setProduct(await getMerchantProducts(userInfo, 1, value))
+    setProducts(await getMerchantProducts(userInfo, 1, value))
   }
 
   const changePage = async (value) => {
     setPage(value)
-    setProduct(await getMerchantProducts(userInfo, value, search))
+    setProducts(await getMerchantProducts(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
     deleteIndividual(userInfo, eid)
-    setProduct({
-      ...product,
-      data: { ...product.data, data: [...product.data.data.filter((v, i) => v.eid != eid)] },
+    setProducts({
+      ...products,
+      data: { ...products.data, data: [...products.data.data.filter((v, i) => v.eid != eid)] },
     })
   }
 
   //re render function for fecth
   useEffect(() => {
-    getProductData()
+    getProductsData()
   }, [])
 
-  console.log(product)
+  console.log(products)
 
   //data grid columns
   const columns = [
@@ -128,11 +128,11 @@ const MerchantProduct = () => {
             </button>
           </div>
           <div style={{ height: '75vh', width: '100%' }} className="py-2">
-            {product?.data?.data && (
+            {products?.data?.data && (
               <DataGrid
                 className="customTable"
                 getRowId={(row) => Math.random()}
-                rows={product.data.data}
+                rows={products.data.data}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
@@ -144,7 +144,7 @@ const MerchantProduct = () => {
           <Container>
             <Pagination
               className="pagination"
-              count={product?.data?.links ? product.data.links.length - 2 : 1}
+              count={products?.data?.links ? products.data.links.length - 2 : 1}
               page={page}
               defaultPage={page}
               onChange={(e, number) => changePage(e, number)}

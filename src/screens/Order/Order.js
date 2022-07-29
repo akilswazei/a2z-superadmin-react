@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import MainBoard from 'src/components/include/MainBoard'
 import DeleteIcon from '@mui/icons-material/Delete'
 //custom components imports
-import { getOrders } from 'src/services/OrderService'
+import { deleteOrder, getOrders } from 'src/services/OrderService'
 //custom styling imports
 import FormStyles from 'src/helper/FormStyles'
 
@@ -67,6 +67,14 @@ const Order = () => {
     getOrderData()
   }, [])
 
+  //delete
+  const handleDelete = async (eid, e) => {
+    deleteOrder(userInfo, eid)
+    setOrder({
+      ...order,
+      data: { ...order.data, data: [...order.data.data.filter((v, i) => v.eid != eid)] },
+    })
+  }
   console.log(order)
 
   //columns for data grid
@@ -107,11 +115,15 @@ const Order = () => {
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/order/edit/' + cellValue?.row?.eid)}>
-              <EditIcon />
+            <span className="pencil-icon">
+              <EditIcon onClick={(e) => navigate('/order/edit/' + cellValue?.row?.eid)} />
             </span>
             <span className="delete-icon">
-              <DeleteIcon />
+              <DeleteIcon
+                onClick={() => {
+                  handleDelete(cellValue.row.eid)
+                }}
+              />
             </span>
           </div>
         )

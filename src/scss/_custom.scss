@@ -839,7 +839,7 @@
     justify-content: flex-end;
     align-items: center;
     button{
-        margin:0 0.2em;
+        margin: auto 0 1em auto;
         padding: 0.4em 0.8em;
         background-color: $dashboard-blue;
         border:none;
@@ -855,4 +855,10 @@
 
         }
     }
+}
+.setImageGrid{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }

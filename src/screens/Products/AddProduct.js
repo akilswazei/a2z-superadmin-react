@@ -1,38 +1,27 @@
 /* eslint-disable prettier/prettier */
+//react imports
 import { useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRoles } from 'src/services/RolesServices'
-import { addProduct, updateProduct, getProduct } from 'src/services/ProductService'
-import { getSuppliers } from 'src/services/SupplierService'
-import { getCategories } from 'src/services/CategoryService'
-import MainBoard from 'src/components/include/MainBoard'
+import { useParams } from 'react-router-dom'
+//material UI imports
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { useParams } from 'react-router-dom'
+import { Container, Button, Grid } from '@material-ui/core'
+//custom style
+
+//custom imports
+import { addProduct, updateProduct, getProduct } from 'src/services/ProductService'
+import { getSuppliers } from 'src/services/SupplierService'
+import { getCategories } from 'src/services/CategoryService'
+import MainBoard from 'src/components/include/MainBoard'
 import { validate } from 'src/helper/validation'
-import {
-  Container,
-  Button,
-  Icon,
-  InputLabel,
-  TextField,
-  MenuItem,
-  Select,
-  Paper,
-  Typography,
-  Grid,
-} from '@material-ui/core'
-import { styled } from '@material-ui/styles'
-import { InputBase } from '@mui/material'
-import { CustomEmail, CustomPasssword, CustomText, CustomSelect, CustomFileUpload } from 'src/helper/helper'
-import { cilChevronDoubleLeft } from '@coreui/icons'
+import { CustomText, CustomSelect, CustomFileUpload } from 'src/helper/helper'
+import ImageUpload from '../../helper/ImageUpload'
 
 function AddProduct() {
   let suupliers
@@ -51,7 +40,6 @@ function AddProduct() {
   const [suppliers, setSuppliers] = useState([])
   const [categories, setCategories] = useState([])
 
-  const [roles, setRoles] = useState({})
   const [open, setOpen] = useState(false)
   const [errors, setErros] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -75,6 +63,7 @@ function AddProduct() {
         let saveinfo = inputs
         saveinfo['image'] = fileFields['image']['id']
         response = await addProduct(userInfo, inputs)
+        setOpen(true)
       }
       if (response.data && Object.keys(response.data).length != 0) {
         allerrors = response.data
@@ -90,10 +79,6 @@ function AddProduct() {
     setErros(allerrors)
   }
 
-  const getRolesData = async () => {
-    setRoles(await getRoles(userInfo))
-  }
-
   const handleClose = () => {
     setOpen(false)
     navigate('../products', { replace: true })
@@ -102,46 +87,37 @@ function AddProduct() {
     const beforeUpdateData = await getProduct(userInfo, eid)
     setInputs(beforeUpdateData.data)
   }
+
   const get_supplier_list = async (eid) => {
+    const tempSuppliers = []
     const supplier_data = await getSuppliers(userInfo)
     supplier_data?.data?.data.map((value, key) => {
-      suppliers.push({ eid: value.eid, name: value.supplier_name })
+      tempSuppliers.push({ eid: value.eid, name: value.supplier_name })
     })
+    setSuppliers(tempSuppliers)
   }
   const get_category_list = async (eid) => {
+    const tempCategories = []
     const category_data = await getCategories(userInfo)
     category_data?.data?.data.map((value, key) => {
-      categories.push({ eid: value.eid, name: value.category_name })
+      tempCategories.push({ eid: value.eid, name: value.category_name })
     })
+    setCategories(tempCategories)
   }
 
   useEffect(() => {
     get_supplier_list()
     get_category_list()
-    getRolesData()
+
     if (eid) {
       getProductData(eid)
     }
   }, [])
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0
-        }
-        const diff = Math.random() * 10
-        return Math.min(oldProgress + diff, 100)
-      })
-    }, 500)
-
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
   const namePlaceholder = 'Please enter your name'
   return (
     <MainBoard>
+      <ImageUpload />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -162,7 +138,7 @@ function AddProduct() {
           <h6>Add Product</h6>
         </Container>
         <Container className="background-white-theme my-3 custom-container-white">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Details</h6>
@@ -361,18 +337,6 @@ function AddProduct() {
               </Grid>
 
               <Grid container xs={12}>
-                <Grid item xs={3}>
-                  <CustomFileUpload
-                    handleChange={(e) => handleChange(e)}
-                    name="image"
-                    placeholder={namePlaceholder}
-                    id="name"
-                    value="1"
-                    label="Name"
-                    error={false}
-                    required={true}
-                  />
-                </Grid>
                 <Grid item xs={3}>
                   <CustomFileUpload
                     handleChange={(e) => handleChange(e)}

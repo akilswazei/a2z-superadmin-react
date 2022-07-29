@@ -34,15 +34,16 @@ function AddSupplier() {
   //states
   const [inputs, setInputs] = useState(initialInputState)
   const [suppliers, setSuppliers] = useState({})
-  const [open, setOpen] = React.useState(false)
-  const [errors, setErros] = React.useState({})
-  const [categories, setCategories] = React.useState([])
+  const [open, setOpen] = useState(false)
+  const [errors, setErros] = useState({})
+  const [categories, setCategories] = useState([])
 
   //events starts here
   const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
     setInputs((values) => ({ ...values, [name]: value }))
+    console.log(event.traget.value)
   }
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -134,13 +135,13 @@ function AddSupplier() {
 
               <Grid item xs={6}>
                 <CustomText
-                  handleChange={(e) => handleChange(e)}
-                  name="supplier_name"
-                  placeholder={namePlaceholder}
-                  value={inputs.supplier_name ? inputs.supplier_name : ''}
                   label="Supplier Name"
-                  error={false}
+                  name="supplier_name"
                   required={true}
+                  error={errors}
+                  value={inputs.supplier_name ? inputs.supplier_name : ''}
+                  placeholder=""
+                  handleChange={(e) => handleChange(e)}
                 />
               </Grid>
 
@@ -157,26 +158,26 @@ function AddSupplier() {
               </Grid>
 
               <Grid item xs={6}>
-                <CustomEmail
+                <CustomText
                   label="Email"
-                  name="email"
+                  name="authorize_person_email"
                   required={true}
-                  value={inputs.email ? inputs.email : ''}
-                  error={false}
-                  placeholder={emailPlaceholder}
+                  error={errors}
+                  value={inputs.email ? inputs.authorize_person_email : ''}
+                  placeholder=""
                   handleChange={(e) => handleChange(e)}
                 />
               </Grid>
 
               <Grid item xs={6}>
                 <CustomText
-                  handleChange={(e) => handleChange(e)}
-                  name="address"
-                  placeholder={addressPlaceholder}
-                  value={inputs.address ? inputs.address : ''}
                   label="Address"
-                  error={false}
+                  name="address"
                   required={true}
+                  error={errors}
+                  value={inputs.address ? inputs.address : ''}
+                  placeholder=""
+                  handleChange={(e) => handleChange(e)}
                 />
               </Grid>
 

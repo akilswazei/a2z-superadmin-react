@@ -23,3 +23,17 @@ export const getOrder = async (userInfo, eid = '') => {
   })
   return data
 }
+export const deleteOrder = async (userInfo, eid) => {
+  const { data } = await axios.post(
+    process.env.REACT_APP_BASE_URL + '/admin/order/delete',
+    {
+      eid: eid,
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + userInfo.data.token,
+      },
+    },
+  )
+  return data
+}

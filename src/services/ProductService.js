@@ -65,3 +65,17 @@ export const updateProduct = async (userInfo, userdata) => {
     })
   return data
 }
+export const deleteProduct = async (userInfo, eid) => {
+  const { data } = await axios.post(
+    process.env.REACT_APP_BASE_URL + '/admin/product/delete',
+    {
+      eid: eid,
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + userInfo.data.token,
+      },
+    },
+  )
+  return data
+}
