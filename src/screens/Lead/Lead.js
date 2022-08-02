@@ -62,18 +62,9 @@ class Lead extends Component {
         };
     }
 
-    getLeads = async () => {
+    getLeads = async () => {        
 
-        // console.log(this.state.cards);
-
-        let leads = await getLeads(userInfo);
-        //console.log("LEAD DATA: " + JSON.stringify(objData));
-
-       // var newcolumn = leads.columns;  
-        //var newcard = leads.cards;  
-
-        console.log("======================>" + JSON.stringify(leads.columns));
-        // return false;
+        let leads = await getLeads(userInfo);        
 
         this.setState(state => ({
             newcolumn: [...state.newcolumn, leads.columns],

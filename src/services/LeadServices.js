@@ -58,3 +58,21 @@ export const sendSMS = async (userInfo, userdata) => {
     })
     return data
 }
+
+export const sendEmail = async (userInfo, userdata) => {
+    const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/send-email', userdata, {
+        headers: {
+          Authorization: 'Bearer ' + userInfo.data.token,
+        },
+    })
+    return data
+}
+
+export const getMembers = async (userInfo, lead_id="0") => {
+    const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/get-members?lead_id='+lead_id, {
+        headers: {
+          Authorization: 'Bearer ' + userInfo.data.token,
+        },
+    })
+    return data
+}

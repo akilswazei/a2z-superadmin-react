@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import { validate } from 'src/helper/validation'
-import { CustomText } from 'src/helper/helper'
+import { CustomText,CustomEmail } from 'src/helper/helper'
 
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -27,7 +27,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import Stack from '@mui/material/Stack';
 
-import { sendSMS } from 'src/services/LeadServices'
+import { sendEmail } from 'src/services/LeadServices'
 
 const blue = {
   500: '#007FFF',
@@ -86,15 +86,13 @@ function boldfont(text) {
     return ( <b>{text}</b>);
 }
 
-LeadSMS.propTypes = {
+LeadEmail.propTypes = {
     lead_id: PropTypes.number,
     leadName: PropTypes.string,
     lead_contact_no: PropTypes.string
 }
 
-function LeadSMS(props) {
-
-    console.log("props: " + JSON.stringify(props));
+function LeadEmail(props) {
 
     const getState = useSelector((state) => state)
     const {
@@ -103,35 +101,24 @@ function LeadSMS(props) {
 
     let initialInputState       = { status: 1 }
     const [inputs, setInputs]   = useState(initialInputState)
-    const [open, setOpen]       = React.useState(false)
-    const [errors, setErros]    = React.useState(false)
-    const [dia_title, setDiaTitle]    = React.useState(false)
-    const [dia_content, setDiaContent]    = React.useState(false)
-
+    const [open, setOpen]       = React.useState(false)    
+    const [errors, setErros] = React.useState({})
 
     const submitHandler = async (e) => {
         e.preventDefault()
         
         const fieldData = serialize(e.target, { hash: true });
-
-        let allerrors = validate(inputs, {})        
+        const allerrors = validate(inputs, { email: 'required' })
         if (Object.keys(allerrors).length === 0) {
 
             let response
-
-            response = await sendSMS(userInfo, fieldData)
+            response = await sendEmail(userInfo, fieldData)
 
             if (response.data && Object.keys(response.data).length != 0) {
-
+                allerrors = response.data
             } else {
-
-                setDiaTitle(response.status)
-                setDiaContent(response.message)
-
-                if(response.status != "error")
-                    e.target.reset();
-
-                setOpen(true)                
+                e.target.reset();
+                setOpen(true)
             }
         }
         setErros(allerrors)
@@ -160,14 +147,14 @@ function LeadSMS(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{dia_title}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">{dia_content }</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleClose}>OK</Button>
-                    </DialogActions>
-                </Dialog>
+                <DialogTitle id="alert-dialog-title">{'Alert'}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">Email sent successfully</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>OK</Button>
+                </DialogActions>
+            </Dialog>
 
             <Grid container spacing={2} xs={12}>
                 <Grid item xs={12}>
@@ -175,13 +162,39 @@ function LeadSMS(props) {
                 <input type="hidden" name="lead_id" id="lead_id" value={props.lead_id} />
                 <input type="hidden" name="user_id" id="user_id" value={userInfo.data.user.id} />
 
-                <input type="hidden" name="lead_contact_no" id="lead_contact_no" value={props.lead_contact_no} />
-
                     <Grid item xs={12}>
-                        <Item style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
-                            <List className="mb-3" sx={{ display: 'block' }} xs={12}>
-                                <ListItem><h2>{boldfont('SMS To:')} {boldfont(props.leadName)}</h2></ListItem>
-                            </List>
+
+                        <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                            <ListItem className="mt-6">{boldfont('To')}</ListItem>
+                        </Item>
+
+                        <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                            <ListItem className="mt-6">
+                                <CustomEmail                                      
+                                      name="email"
+                                      required={true} 
+                                      error={false}
+                                      placeholder="Email"
+                                      handleChange={(e) => handleChange(e)}
+                                />
+                            </ListItem>
+                        </Item>
+
+                        <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                            <ListItem className="mt-6">{boldfont('Subject')}</ListItem>
+                        </Item>
+
+                        <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                            <ListItem className="mt-6">
+                                <CustomText
+                                      handleChange={(e) => handleChange(e)}
+                                      name="subject"
+                                      placeholder="Subject"
+                                      id="subject"
+                                      error={false}
+                                      required                                 
+                                />
+                            </ListItem>
                         </Item>
 
                         <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
@@ -193,11 +206,11 @@ function LeadSMS(props) {
                                 <TextareaAutosize fullWidth 
                                     maxRows={7}
                                     minRows={7}
-                                    name="sms_text"
+                                    name="email_text"
                                     aria-label="maximum height"
-                                    placeholder="SMS Text"
+                                    placeholder="Email Text"
                                     style={textareastyle}
-                                    required={true}
+                                    required
                                 />
                             </ListItem>
                         </Item>
@@ -220,4 +233,4 @@ function LeadSMS(props) {
     )
 }
 
-export default LeadSMS
+export default LeadEmail

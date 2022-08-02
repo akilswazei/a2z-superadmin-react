@@ -78,6 +78,7 @@ function LeadAttachment(props) {
             if (response.data && Object.keys(response.data).length != 0) {
                 allerrors = response.data
             } else {
+                e.target.reset();
                 setOpen(true)
             }
         }        

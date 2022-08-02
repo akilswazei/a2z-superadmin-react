@@ -38,6 +38,8 @@ import Modal from '@mui/material/Modal'
 
 import LeadAttachment from 'src/screens/Lead/LeadAttachment'
 import LeadSMS from 'src/screens/Lead/LeadSMS'
+import LeadEmail from 'src/screens/Lead/LeadEmail'
+import LeadMembers from 'src/screens/Lead/LeadMembers'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -276,6 +278,14 @@ function ViewLead(props) {
 
                                 <TabPanel className="tabdiv" value={value} index={2}>
                                     <LeadAttachment lead_id={leads.data.id}/>
+                                </TabPanel>
+
+                                <TabPanel className="tabdiv" value={value} index={3}>
+                                    <LeadEmail leadName={leads.data.customer_name} lead_id={leads.data.id} lead_contact_no={leads.data.authorize_person_phone_no}  />
+                                </TabPanel>
+
+                                <TabPanel className="tabdiv" value={value} index={4}>
+                                    <LeadMembers lead_id={leads.data.id}/>
                                 </TabPanel>
 
                             </div>
