@@ -38,17 +38,18 @@ export function CustomFileUpload({ handleChange, error, value, name, label, requ
   } = getState
   useEffect(() => {
     // if(fileFields[name]==undefined){
-    console.log({ [name]: { id: value, url: '' } })
+
     dispatch({
       type: 'UpdateFileField',
       payload: {
-        [name]: { id: value, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
+        [name]: { eid: value, file: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
       },
     })
     //}
   }, [])
 
-  function handleButton() {
+  function handleButton(e) {
+    e.preventDefault()
     console.log(fileFields)
     dispatch({ type: 'MediaOpen', payload: true })
     dispatch({ type: 'setFileInput', payload: name })
@@ -56,9 +57,9 @@ export function CustomFileUpload({ handleChange, error, value, name, label, requ
   return (
     <>
       <div className="imageUpload-div">
-        <img width="100" src={fileFields?.[name]?.url} />
+        <img width="100" src={fileFields?.[name]?.file} />
         <br />
-        <button onClick={(e) => handleButton()}>Upload Image</button>
+        <button onClick={(e) => handleButton(e)}>Upload Image</button>
       </div>
     </>
   )

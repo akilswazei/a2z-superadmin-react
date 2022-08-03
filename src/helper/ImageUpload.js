@@ -3,6 +3,7 @@ import { cond } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import ImageUploader from 'react-images-upload'
 import { useDispatch, useSelector } from 'react-redux'
+import { addMedia, getMedias } from 'src/services/MediaService'
 //material UI imports
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
@@ -19,20 +20,23 @@ function ImageUpload(props) {
   const dispatch = useDispatch()
 
   const {
+    userSignin: { userInfo },
     media: { mediaOpen, fileFields, fileInput },
   } = getState
 
   function onDrop(pictureFiles, pictureDataURLs) {
     setPictures(pictureDataURLs)
   }
-  function UploadMedia() {
+  async function  UploadMedia() {
     // upload api
     //imageUploader.clearPictures()
-    setMdls([...mdls, { id: Math.floor(Math.random() * 1000), url: pictures }])
+    console.log(pictures)
+    let result= await addMedia(userInfo,{image: pictures})
+     setMdls([...mdls, ...result])
   }
   function Set(fid, url) {
     dispatch({ type: 'MediaOpen', payload: true })
-    dispatch({ type: 'UpdateFileField', payload: { [fileInput]: { id: fid, url: url } } })
+    dispatch({ type: 'UpdateFileField', payload: { [fileInput]: { eid: fid, file: url } } })
   }
   const handleSet = () => {
     dispatch({ type: 'MediaOpen', payload: false })
@@ -54,21 +58,11 @@ function ImageUpload(props) {
   useEffect(() => {
     {
       if (mediaOpen == true) {
-        setMdls([
-          { id: 1, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 2, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-          { id: 4, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 5, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-          { id: 11, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 21, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-          { id: 41, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 51, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-          { id: 12, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 22, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-          { id: 42, url: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-          { id: 52, url: 'https://onlinejpgtools.com/images/examples-onlinejpgtools/sunflower.jpg' },
-        ])
-        console.log('mucore:' + mdls)
+        let fn= async function(){
+          let mediadata=await getMedias(userInfo)
+          setMdls(mediadata.data.data)
+        }()
+
       }
     }
   }, [mediaOpen])
@@ -89,6 +83,7 @@ function ImageUpload(props) {
 
   return (
     <>
+      {        console.log('mucore:' + mdls)}
       <Modal
         open={mediaOpen}
         onClose={handleMediaClose}
@@ -108,7 +103,6 @@ function ImageUpload(props) {
               maxFileSize={5242880}
               sendData={pictures}
               name="imagepicker"
-              singleImage="true"
             />
             <div className="upload-btn">
               <button onClick={(e) => UploadMedia(e)}>Upload</button>
@@ -125,11 +119,11 @@ function ImageUpload(props) {
                           id={value.url}
                           name="image"
                           value={value.url}
-                          onClick={(e) => Set(value.id, value.url)}
+                          onClick={(e) => Set(value.eid, value.file)}
                         />
                         <div className="imageSelect">
-                          <a onClick={(e) => Set(value.id, value.url)}>
-                            <img src={value.url} />
+                          <a onClick={(e) => Set(value.eid, value.file)}>
+                            <img src={value.file} />
                           </a>
                         </div>
                       </Grid>

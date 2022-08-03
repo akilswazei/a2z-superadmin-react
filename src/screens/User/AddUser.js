@@ -56,7 +56,7 @@ function AddTeam() {
     if (inputs.password == inputs.confirm_password) {
       setErrors({ ...errors, confirm_password: '' })
       let saveinfo = inputs
-      saveinfo['image'] = fileFields['image']['id']
+      saveinfo['image'] = fileFields['image']['eid']
       await addUser(userInfo, saveinfo)
       setOpen(true)
     } else {
@@ -217,18 +217,7 @@ function AddTeam() {
                     required={true}
                   />
                 </Grid>
-                <Grid item xs={3}>
-                  <CustomFileUpload
-                    handleChange={(e) => handleChange(e)}
-                    name="image2"
-                    placeholder={namePlaceholder}
-                    id="name"
-                    value={inputs.image2 ? inputs.image2 : ''}
-                    label="Name"
-                    error={false}
-                    required={true}
-                  />
-                </Grid>
+                
               </Grid>
 
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
