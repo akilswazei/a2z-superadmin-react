@@ -46,7 +46,8 @@ const Product = () => {
     setProducts(await getProducts(userInfo, 1, value))
   }
   //change page function used in pagination
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
+    console.log(value)
     setPage(value)
     setProducts(await getProducts(userInfo, value, search))
   }
@@ -88,7 +89,7 @@ const Product = () => {
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
+            <span className="pencil-icon" onClick={(e) => navigate('/product/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
             <span className="delete-icon">

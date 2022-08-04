@@ -18,7 +18,6 @@ import OrderDetail from './screens/Order/OrderDetail'
 import Subscription from './screens/Subscription/Subscription'
 import SubscriptionDetail from './screens/Subscription/SubscriptionDetail'
 
-import { withThemeCreator } from '@material-ui/styles'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 
 import AddMerchant from './screens/Merchants/AddMerchant'
@@ -26,7 +25,6 @@ import AddProduct from './screens/Products/AddProduct'
 
 import Payout from './screens/Payout/Payout'
 import PayoutHistory from './screens/Payout/PayoutHistory'
-import AddPayout from './screens/Payout/AddPayout'
 
 import Roles from './screens/Roles/Roles'
 import AddRoles from './screens/Roles/AddRoles'
@@ -111,7 +109,9 @@ class App extends Component {
                 <Route exact path="/products" element={<Product />} />
                 <Route exact path="/product/add" element={<AddProduct />} />
                 <Route exact path="/product/edit/:eid" element={<AddProduct />} />
-
+                <Route exact path="/merchant-products" element={<MerchantProduct />} />
+                <Route exact path="/merchant-products/add" element={<AddProduct />} />
+                <Route exact path="/merchant-products/edit/:eid" element={<AddProduct />} />
                 {/* <Route exact path="/payouts" element={<Payout />} />
                 <Route exact path="/payout/add" element={<AddPayout />} /> */}
 
@@ -130,7 +130,7 @@ class App extends Component {
                 <Route exact path="/suppliers" element={<Supplier />} />
                 <Route exact path="/supplier/add" element={<AddSupplier />} />
                 <Route exact path="/supplier/edit/:eid" element={<AddSupplier />} />
-                <Route exact path="/merchant-products" element={<MerchantProduct />} />
+
                 <Route exact path="/payouthistory" element={<PayoutHistory />} />
                 <Route exact path="/posts" element={<Post />} />
                 <Route exact path="/post/add" element={<AddPost />} />

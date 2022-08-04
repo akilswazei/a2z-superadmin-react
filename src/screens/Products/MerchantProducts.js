@@ -16,7 +16,7 @@ import FormStyles from 'src/helper/FormStyles'
 //custom component imports
 import MainBoard from 'src/components/include/MainBoard'
 import { deleteIndividual } from 'src/services/IndividualService'
-import { getMerchantProducts } from 'src/services/ProductService'
+import { getInhouseProduct } from 'src/services/ProductService'
 
 //styling for data grid
 const datagridSx = FormStyles
@@ -36,19 +36,19 @@ const MerchantProduct = () => {
 
   //fetch function
   const getProductsData = async () => {
-    setProducts(await getMerchantProducts(userInfo, 1, ''))
+    setProducts(await getInhouseProduct(userInfo, 1, ''))
   }
 
   //search function
   const searchMerchantProduct = async (value) => {
     setSearch(value)
     setPage(1)
-    setProducts(await getMerchantProducts(userInfo, 1, value))
+    setProducts(await getInhouseProduct(userInfo, 1, value))
   }
 
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
     setPage(value)
-    setProducts(await getMerchantProducts(userInfo, value, search))
+    setProducts(await getInhouseProduct(userInfo, value, search))
   }
 
   const handleDelete = async (eid, e) => {
@@ -89,7 +89,7 @@ const MerchantProduct = () => {
       renderCell: (cellValue) => {
         return (
           <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
+            <span className="pencil-icon" onClick={(e) => navigate('/merchant-products/edit/' + cellValue?.row?.eid)}>
               <EditIcon />
             </span>
             <span className="delete-icon" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>

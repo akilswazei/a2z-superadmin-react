@@ -49,6 +49,7 @@ const Subscription = () => {
     setPage(value)
     setSubscription(await getSubscriptions(userInfo, value, search))
   }
+  //delete
 
   //custom function to retrive amount for data grid
   const getAmount = (params) => {
@@ -86,22 +87,22 @@ const Subscription = () => {
         )
       },
     },
-    {
-      field: 'actions',
-      width: 100,
-      renderCell: (cellValue) => {
-        return (
-          <div className="edit-delete-div">
-            <span className="pencil-icon" onClick={(e) => navigate('/individual/edit/' + cellValue?.row?.eid)}>
-              <EditIcon />
-            </span>
-            <span className="delete-icon">
-              <DeleteIcon />
-            </span>
-          </div>
-        )
-      },
-    },
+    // {
+    //   field: 'actions',
+    //   width: 100,
+    //   renderCell: (cellValue) => {
+    //     return (
+    //       <div className="edit-delete-div">
+    //         <span className="pencil-icon" onClick={(e) => navigate('/subscription/edit/' + cellValue?.row?.eid)}>
+    //           <EditIcon />
+    //         </span>
+    //         <span className="delete-icon">
+    //           <DeleteIcon />
+    //         </span>
+    //       </div>
+    //     )
+    //   },
+    // },
   ]
 
   return (

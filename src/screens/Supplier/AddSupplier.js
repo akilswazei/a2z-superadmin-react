@@ -43,11 +43,10 @@ function AddSupplier() {
     const name = event.target.name
     const value = event.target.value
     setInputs((values) => ({ ...values, [name]: value }))
-    console.log(event.traget.value)
   }
   const submitHandler = async (e) => {
     e.preventDefault()
-    let allerrors = validate(inputs, { name: 'required', password: 'required|confirm_password' })
+    let allerrors = validate(inputs, {})
     if (Object.keys(allerrors).length === 0) {
       let response
       if (eid) {
@@ -89,7 +88,7 @@ function AddSupplier() {
   //close and navigate
   const handleClose = () => {
     setOpen(false)
-    navigate('../individuals', { replace: true })
+    navigate('../suppliers', { replace: true })
   }
 
   //re-renderer
@@ -104,7 +103,7 @@ function AddSupplier() {
   const namePlaceholder = 'Please enter your name'
   const emailPlaceholder = 'Please enter your e-mail'
   const phonePlaceholder = 'Please enter phone number'
-  const addressPlaceholder = 'Please enter address'
+
   return (
     <MainBoard>
       <Dialog
@@ -251,6 +250,7 @@ function AddSupplier() {
                   color="primary"
                   className="name"
                   style={{ margin: '15px 5px' }}
+                  onClick={(e) => navigate('../suppliers', { replace: true })}
                 >
                   Cancel
                 </Button>

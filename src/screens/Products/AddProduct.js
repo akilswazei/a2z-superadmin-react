@@ -42,7 +42,6 @@ function AddProduct() {
 
   const [open, setOpen] = useState(false)
   const [errors, setErros] = useState(false)
-  const [progress, setProgress] = useState(0)
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -58,6 +57,8 @@ function AddProduct() {
       let response
       if (eid) {
         console.log('update will done')
+        let saveinfo = inputs
+        saveinfo['image'] = fileFields['image']['id']
         response = await updateProduct(userInfo, inputs)
       } else {
         let saveinfo = inputs
@@ -99,6 +100,7 @@ function AddProduct() {
   const get_category_list = async (eid) => {
     const tempCategories = []
     const category_data = await getCategories(userInfo)
+
     category_data?.data?.data.map((value, key) => {
       tempCategories.push({ eid: value.eid, name: value.category_name })
     })
@@ -252,7 +254,7 @@ function AddProduct() {
                     handleChange={(e) => handleChange(e)}
                     options={[
                       { eid: 1, name: 'In house' },
-                      { eid: 2, name: 'marketplace' },
+                      { eid: 0, name: 'marketplace' },
                     ]}
                   />
                 </FormGroup>
@@ -340,10 +342,10 @@ function AddProduct() {
                 <Grid item xs={3}>
                   <CustomFileUpload
                     handleChange={(e) => handleChange(e)}
-                    name="image2"
+                    name="image_eid"
                     placeholder={namePlaceholder}
-                    id="name"
-                    value={inputs.image2 ? inputs.image2 : ''}
+                    id="image_eid"
+                    value={inputs.image_eid ? inputs.image_eid : ''}
                     label="Name"
                     error={false}
                     required={true}
@@ -358,6 +360,7 @@ function AddProduct() {
                   color="primary"
                   className="name"
                   style={{ margin: '15px 5px' }}
+                  onClick={() => navigate('../products', { replace: true })}
                 >
                   Cancel
                 </Button>
