@@ -103,6 +103,8 @@ function LeadEmail(props) {
     const [inputs, setInputs]   = useState(initialInputState)
     const [open, setOpen]       = React.useState(false)    
     const [errors, setErros] = React.useState({})
+    const [dia_title, setDiaTitle]    = React.useState(false)
+    const [dia_content, setDiaContent]    = React.useState(false)
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -117,7 +119,13 @@ function LeadEmail(props) {
             if (response.data && Object.keys(response.data).length != 0) {
                 allerrors = response.data
             } else {
-                e.target.reset();
+
+                setDiaTitle(response.status)
+                setDiaContent(response.message)
+
+                if(response.status != "error")
+                    e.target.reset();
+
                 setOpen(true)
             }
         }
@@ -147,9 +155,9 @@ function LeadEmail(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{'Alert'}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{dia_title}</DialogTitle>
                 <DialogContent>
-                  <DialogContentText id="alert-dialog-description">Email sent successfully</DialogContentText>
+                  <DialogContentText id="alert-dialog-description">{dia_content }</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>OK</Button>
