@@ -47,7 +47,7 @@ const Order = () => {
   }
 
   //pagiantion fucntion for changing page
-  const changePage = async (value) => {
+  const changePage = async (e, value) => {
     setPage(value)
     setOrder(await getOrders(userInfo, value, search))
   }

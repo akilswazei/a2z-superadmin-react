@@ -13,13 +13,13 @@ export const getProducts = async (userInfo, page = 1, search_keyword = '') => {
   })
   return data
 }
-export const getMerchantProducts = async (userInfo, page = 1, search_keyword = '') => {
+export const getInhouseProduct = async (userInfo, page = 1, search_keyword = '') => {
   console.log(search_keyword)
   let getpara = []
   getpara[0] = page == 1 ? '' : 'page=' + page
   getpara[1] = search_keyword == '' ? '' : 's=' + search_keyword
   const para = getpara.join('&')
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + 'admin/product/list-in-house?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/product/list-in-house?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },

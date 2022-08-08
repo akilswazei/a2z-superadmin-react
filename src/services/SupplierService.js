@@ -18,7 +18,7 @@ export const getSuppliers = async (userInfo, page = 1, search_keyword = '') => {
 export const getSupplier = async (userInfo, eid = '') => {
   const para = 'eid=' + eid
 
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/team/show-individual?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/supplier/show?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },
@@ -28,7 +28,7 @@ export const getSupplier = async (userInfo, eid = '') => {
 
 export const deleteSupplier = async (userInfo, eid) => {
   const { data } = await axios.post(
-    process.env.REACT_APP_BASE_URL + '/admin/team/delete',
+    process.env.REACT_APP_BASE_URL + '/admin/supplier/delete',
     {
       eid: eid,
     },
@@ -42,7 +42,7 @@ export const deleteSupplier = async (userInfo, eid) => {
 }
 export const addSupplier = async (userInfo, userdata) => {
   const { data } = await axios
-    .post(process.env.REACT_APP_BASE_URL + '/admin/team/store-individual', userdata, {
+    .post(process.env.REACT_APP_BASE_URL + '/admin/supplier/store', userdata, {
       headers: {
         Authorization: 'Bearer ' + userInfo.data.token,
       },
@@ -54,7 +54,7 @@ export const addSupplier = async (userInfo, userdata) => {
 }
 export const updateSupplier = async (userInfo, userdata) => {
   const { data } = await axios
-    .post(process.env.REACT_APP_BASE_URL + '/admin/team/update-individual', userdata, {
+    .post(process.env.REACT_APP_BASE_URL + '/admin/supplier/update', userdata, {
       headers: {
         Authorization: 'Bearer ' + userInfo.data.token,
       },

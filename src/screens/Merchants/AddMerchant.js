@@ -80,8 +80,6 @@ function AddMerchant() {
     navigate('../merchants', { replace: true })
   }
 
-  
-
   useEffect(() => {
     ;(async () => {
       setRoles(await getRoles(userInfo))
@@ -248,28 +246,6 @@ function AddMerchant() {
               <Grid item xs={12} className="my-3 p-0">
                 <h6 className="m-0 p-0">Authorize Person to contact</h6>
               </Grid>
-              <Grid item md={12}>
-                <FormControl className="custom-radio">
-                  <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                    {['sole-proprietor', 'partnership', 'corporation', 'other'].map((value, key) => {
-                      return (
-                        <FormControlLabel
-                          key={key}
-                          control={
-                            <Radio
-                              name="ownership"
-                              value={value}
-                              checked={inputs.ownership && inputs.ownership == value ? 'checked' : ''}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          }
-                          label="Sole Proprietor"
-                        />
-                      )
-                    })}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
 
               <Grid item sx={6} md={4}>
                 <CustomSelect
@@ -348,6 +324,28 @@ function AddMerchant() {
                     Type of Ownership :<sup>*</sup>
                   </h6>
                 </div>
+              </Grid>
+              <Grid item md={12}>
+                <FormControl className="custom-radio">
+                  <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+                    {['sole-proprietor', 'partnership', 'corporation', 'other'].map((value, key) => {
+                      return (
+                        <FormControlLabel
+                          key={key}
+                          control={
+                            <Radio
+                              name="ownership"
+                              value={value}
+                              checked={inputs.ownership && inputs.ownership == value ? 'checked' : ''}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          }
+                          label={value}
+                        />
+                      )
+                    })}
+                  </RadioGroup>
+                </FormControl>
               </Grid>
             </Grid>
             <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>

@@ -46,10 +46,10 @@ const Merchant = () => {
         return (
           <div className="edit-delete-div">
             <span className="pencil-icon">
-              <EditIcon  onClick={(e) => navigate('/merchant/edit/' + cellValue?.row?.eid)} />
+              <EditIcon onClick={(e) => navigate('/merchant/edit/' + cellValue?.row?.eid)} />
             </span>
             <span className="delete-icon">
-              <DeleteIcon onClick={(e) =>handleDelete(cellValue?.row?.eid,e) } />
+              <DeleteIcon onClick={(e) => handleDelete(cellValue?.row?.eid, e)} />
             </span>
           </div>
         )
