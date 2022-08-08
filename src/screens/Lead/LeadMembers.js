@@ -60,10 +60,12 @@ function LeadMembers(props) {
     const [dia_title, setDiaTitle]           = React.useState(false)
     const [dia_content, setDiaContent]       = React.useState(false)
     const [members, setMembers]              = React.useState()    
-    const [name, setName] = useState('');
+    const [name, setName]                    = useState('');
+    const [renderMembers, setRenderMembers]  = React.useState(2);
 
     React.useEffect(() => {
         let active = true;
+        let newKey = 2;
 
         if (!loading) {
           return undefined;
@@ -104,7 +106,7 @@ function LeadMembers(props) {
     const handleClose = () => {
         setName('')
         setOpenDialog(false)
-    }
+    }    
 
     const handleTagvalue = async (value) => {
         console.log("User: " + value.title + " User ID: " + value.id);
@@ -124,6 +126,7 @@ function LeadMembers(props) {
             setDiaTitle(response.status)
             setDiaContent(response.message)
             setOpenDialog(true)
+            setRenderMembers(renderMembers * 89)
         }
     };
 
@@ -156,14 +159,14 @@ return (
         <Grid container spacing={2} xs={12}>
             <Grid item xs={12}>
 
-                <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                <Item style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
                     <List className="mb-3" sx={{ display: 'block' }} xs={12}>                            
                         <ListItem ><h3>{boldfont('Add Members')}</h3></ListItem>
                     </List>
                 </Item>
 
 
-                <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+                <Item style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
 
                     <ListItem className="mt-0">
                         <Autocomplete
@@ -206,7 +209,7 @@ return (
 
                 </Item>
 
-                <LeadAssignedMembers />
+                <LeadAssignedMembers key={renderMembers} lead_id={props.lead_id} team_id={userInfo.data.user.team_id} />
 
             </Grid>
         </Grid>

@@ -41,6 +41,8 @@ import LeadSMS from 'src/screens/Lead/LeadSMS'
 import LeadEmail from 'src/screens/Lead/LeadEmail'
 import LeadMembers from 'src/screens/Lead/LeadMembers'
 
+import EditIcon from '@mui/icons-material/Edit';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -203,7 +205,7 @@ function ViewLead(props) {
                                             <List className="mb-3" sx={{ display: 'block' }} xs={12}>
                                                 <ListItem disablePadding><ListItemText className="form_heading" variant="h1" primary="Merchant Detail" /></ListItem>
                                                 <Divider />
-                                                <ListItem >{formtitle('Name')}<ListItemText primary={leads.data.customer_name} /></ListItem>
+                                                <ListItem >{formtitle('Name')}<ListItemText primary={leads.data.customer_name} /> <EditIcon color="primary" /></ListItem>
                                                 <ListItem >{formtitle('Email')}<ListItemText  primary={leads.data.authorize_person_email} /></ListItem>
                                                 <ListItem >{formtitle('Title')}<ListItemText  primary={leads.data.authorize_person_title} /></ListItem>
                                                 <ListItem >{formtitle('Phone')}<ListItemText  primary={leads.data.authorize_person_phone_no} /></ListItem>

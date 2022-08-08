@@ -91,3 +91,17 @@ export const assignMembers = async (userInfo, userdata) => {
     })
     return data
 }
+
+export const getAssignedMembers = async (userInfo, lead_id="0", team_id="0") => {
+    let getpara=[]
+    getpara[0]="lead_id="+lead_id;
+    getpara[1]="team_id="+team_id;
+    const para = getpara.join('&');
+
+    const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/get-assigned-members?'+para, {
+        headers: {
+          Authorization: 'Bearer ' + userInfo.data.token,
+        },
+    })
+    return data
+}
