@@ -16,7 +16,7 @@ export const getMedias = async (userInfo, page = 1, search_keyword = '') => {
 
 export const getMedia = async (userInfo, eid = '') => {
   const para = 'eid=' + eid
-  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/media/show?' + para, {
+  const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/media/single?' + para, {
     headers: {
       Authorization: 'Bearer ' + userInfo.data.token,
     },

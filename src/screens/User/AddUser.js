@@ -211,7 +211,7 @@ function AddTeam() {
                     name="image"
                     placeholder={namePlaceholder}
                     id="name"
-                    value="1"
+                    value="TXpaOGZGSlFRbTV2VUVscFVGcFZlWEI2VUdWS1kwSnNWR1ZvUnpWemNXMXdWMXBLTWs5b2VIaG9UbnB5YW1NPQ=="
                     label="Name"
                     error={false}
                     required={true}

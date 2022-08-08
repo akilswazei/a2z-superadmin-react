@@ -32,7 +32,8 @@ function ImageUpload(props) {
     //imageUploader.clearPictures()
     console.log(pictures)
     let result= await addMedia(userInfo,{image: pictures})
-     setMdls([...mdls, ...result])
+    console.log(...result.data.media)
+    setMdls([...mdls, ...result.data.media])
   }
   function Set(fid, url) {
     dispatch({ type: 'MediaOpen', payload: true })

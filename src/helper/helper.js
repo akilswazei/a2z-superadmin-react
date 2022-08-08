@@ -2,6 +2,7 @@
 import { TextField } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { getMedia } from 'src/services/MediaService'
 
 import React from 'react'
 
@@ -34,17 +35,21 @@ export function CustomFileUpload({ handleChange, error, value, name, label, requ
   const getState = useSelector((state) => state)
   const dispatch = useDispatch()
   const {
+    userSignin: { userInfo },
     media: { mediaOpen, fileFields, fileInput },
   } = getState
   useEffect(() => {
     // if(fileFields[name]==undefined){
-
-    dispatch({
-      type: 'UpdateFileField',
-      payload: {
-        [name]: { eid: value, file: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg' },
-      },
-    })
+    
+    let fn= async function(){
+      let image=await getMedia(userInfo,value)
+      dispatch({
+        type: 'UpdateFileField',
+        payload: {
+          [name]: { eid: value, file: image.data },
+        },
+      })
+    }()
     //}
   }, [])
 
