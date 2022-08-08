@@ -60,6 +60,7 @@ const UserProfile = React.lazy(() => import('./screens/User/UserProfile'))
 
 const Lead = React.lazy(() => import('./screens/Lead/Lead'))
 const AddLead = React.lazy(() => import('./screens/Lead/AddLead'))
+const ViewLead = React.lazy(() => import('./screens/Lead/ViewLead'))
 
 const Teams = React.lazy(() => import('./screens/Team/Teams'))
 const AddTeam = React.lazy(() => import('./screens/Team/AddTeam'))
@@ -91,6 +92,7 @@ const routes = [
 
   { path: '/leads', name: 'Lead', element: Lead },
   { path: '/leads/add-lead', name: 'Add Lead', element: AddLead },
+  { path: '/leads/view-lead', name: 'View Lead', element: ViewLead },
 
   { path: '/users-management/roles', name: 'Roles', element: Roles },
   { path: '/users-management/roles/add-roles', name: 'Add Role', element: AddRoles },

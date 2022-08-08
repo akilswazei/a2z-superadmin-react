@@ -3,8 +3,17 @@ import {DragSource, DropTarget} from 'react-dnd';
 import cn from 'classnames';
 import _ from 'lodash';
 import { leadUpdateStatus } from 'src/services/LeadServices'
+import { useNavigate } from 'react-router-dom'
 
 export function Card(props) {
+
+    const navigate = useNavigate()
+
+    //navigating to lead view page
+    function navigateFunction(lead_id) {
+        navigate('/leads/view-lead/'+lead_id)
+    }
+    
   // console.log(props);
   return _.flowRight(props.connectDragSource, props.connectDropTarget)(
     <div
@@ -16,7 +25,7 @@ export function Card(props) {
       {/*<div className="Card__title">{props.title}</div>*/}
       <div className="Card_priority_low">Low</div>
       <div className="name_and_dropdown">
-          <div className="Card_title">{props.title}</div>
+          <div className="Card_title"><span onClick={(e) => props.handleHistoryOpen(props.id, e)} style={{ cursor: 'pointer' }}>{props.title}</span></div>
           <div className="Card_dropdown">...</div>
       </div>
       <div className="Card_sub_title">{props.desc}</div>

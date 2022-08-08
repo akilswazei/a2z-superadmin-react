@@ -62,18 +62,9 @@ class Lead extends Component {
         };
     }
 
-    getLeads = async () => {
+    getLeads = async () => {        
 
-        // console.log(this.state.cards);
-
-        let leads = await getLeads(userInfo);
-        //console.log("LEAD DATA: " + JSON.stringify(objData));
-
-       // var newcolumn = leads.columns;  
-        //var newcard = leads.cards;  
-
-        console.log("======================>" + JSON.stringify(leads.columns));
-        // return false;
+        let leads = await getLeads(userInfo);        
 
         this.setState(state => ({
             newcolumn: [...state.newcolumn, leads.columns],
@@ -148,11 +139,12 @@ class Lead extends Component {
     return (
        <>
         <MainBoard>
-            <Container fluid>
-                <Container className="p-0 mt-4">
+            <div className="p-2">
+                
+                <div className=" p-0 mt-4">
                     <h6 className="p-0">A2Z Leads</h6>
-                </Container>
-                <Container className="background-white-theme custom-container-white">
+                </div>
+                <div className=" background-white-theme custom-container-white">
                     <div className="justify-flex-end input-div">
                         <button className="custom-blue-btn m-2">
                             Export Lead<span></span>
@@ -169,8 +161,8 @@ class Lead extends Component {
                             addColumn={this.addColumn}                            
                         />
                     </div>
-                </Container>
-            </Container>
+                </div>
+            </div>
         </MainBoard>
         </>
     );

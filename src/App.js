@@ -53,6 +53,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 const Lead = React.lazy(() => import('./screens/Lead/Lead'))
+const ViewLead = React.lazy(() => import('./screens/Lead/ViewLead'))
 
 //app theme component
 const theme = createTheme({
@@ -90,6 +91,7 @@ class App extends Component {
                 <Route exact path="/user/add" element={<AddUser />} />
 
                 <Route exact path="/leads" element={<Lead />} />
+                <Route exact path="/leads/view-lead/:id" element={<ViewLead />} />
 
                 <Route exact path="/teams" element={<Teams />} />
                 <Route exact path="/team/add" element={<AddTeam />} />
