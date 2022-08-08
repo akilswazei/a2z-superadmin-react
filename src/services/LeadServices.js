@@ -69,7 +69,22 @@ export const sendEmail = async (userInfo, userdata) => {
 }
 
 export const getMembers = async (userInfo, lead_id="0") => {
-    const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/get-members?lead_id='+lead_id, {
+    let team_id = userInfo.data.user.team_id;
+    let getpara=[]
+    getpara[0]="lead_id="+lead_id;
+    getpara[1]="team_id="+team_id;
+    const para = getpara.join('&');
+
+    const { data } = await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/get-members?'+para, {
+        headers: {
+          Authorization: 'Bearer ' + userInfo.data.token,
+        },
+    })
+    return data
+}
+
+export const assignMembers = async (userInfo, userdata) => {    
+    const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/assign-members', userdata, {
         headers: {
           Authorization: 'Bearer ' + userInfo.data.token,
         },

@@ -21,7 +21,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 
 import { getMembers } from 'src/services/LeadServices'
 import { assignMembers } from 'src/services/LeadServices'
-import LeadAssignedMembers from 'src/screens/Lead/LeadAssignedMembers'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -31,7 +30,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-LeadMembers.propTypes = {
+LeadAssignedMembers.propTypes = {
     lead_id: PropTypes.number,
 
 }
@@ -46,7 +45,7 @@ function sleep(delay = 0) {
   });
 }
 
-function LeadMembers(props) {
+function LeadAssignedMembers(props) {
 
     const getState = useSelector((state) => state)
     const {
@@ -137,82 +136,33 @@ function LeadMembers(props) {
 
 return (
 
-    <div>
-
-        <Dialog
-            open={openDialog}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">{dia_title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">{dia_content }</DialogContentText>
-                </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>OK</Button>
-            </DialogActions>
-        </Dialog>
-
-        <Grid container spacing={2} xs={12}>
-            <Grid item xs={12}>
-
-                <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
-                    <List className="mb-3" sx={{ display: 'block' }} xs={12}>                            
-                        <ListItem ><h3>{boldfont('Add Members')}</h3></ListItem>
-                    </List>
-                </Item>
-
-
-                <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
-
-                    <ListItem className="mt-0">
-                        <Autocomplete
-                            id="asynchronous-demo"
-                            sx={{ width: 600 }}
-                            open={open}
-                            onOpen={() => {
-                                setOpen(true);
-                            }}
-                            onClose={() => {
-                                setOpen(false);
-                            }}
-                            key="false"
-                            isOptionEqualToValue={(option, value) => option.title === value.title}
-                            getOptionLabel={(option) => option.title}
-                            options={options}
-                            loading={loading}
-                            inputValue={name}
-                            onChange={(event, value) => handleTagvalue(value)}
-
-                                renderInput={(params) => 
-
-                                    <TextField
-                                      {...params}
-                                      label="Members"
-                                      InputProps={{
-                                        ...params.InputProps,
-                                        endAdornment: (
-                                          <React.Fragment>
-                                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                            {params.InputProps.endAdornment}
-                                          </React.Fragment>
-                                        ),
-                                      }}
-                                    />
-                            }
-                            
-                        />
-                    </ListItem>
-
-                </Item>
-
-                <LeadAssignedMembers />
-
-            </Grid>
-        </Grid>
+    <div>        
+        <Item  style={{ display: "flex", justifyContent: " flex-start"  , "box-shadow": "none" }}>
+            <List className="mb-3" sx={{ display: 'block' }} xs={12}>                            
+                <ListItem ><h3>{boldfont('Members')}</h3></ListItem>
+                <ListItem >
+                    <div className="user_image justify-content-center d-flex mt-0">
+                        <img alt="Remy Sharp" src="/static/media/2.0c06e43dc16bee6cdfed.jpg" className="MuiAvatar-img css-1pqm26d-MuiAvatar-img" style={{ width: "40px" }} />
+                    </div> 
+                    &nbsp;&nbsp;&nbsp;{boldfont('Arkan Somo')}
+                </ListItem>
+                <ListItem >
+                    <div className="user_image justify-content-center d-flex mt-0">
+                        <img alt="Remy Sharp" src="/static/media/2.0c06e43dc16bee6cdfed.jpg" className="MuiAvatar-img css-1pqm26d-MuiAvatar-img" style={{ width: "40px" }} />
+                    </div> 
+                    &nbsp;&nbsp;&nbsp;{boldfont('Abhijeet Raghuvanshi')}
+                </ListItem>
+                <ListItem >
+                    <div className="user_image justify-content-center d-flex mt-0">
+                        <img alt="Remy Sharp" src="/static/media/2.0c06e43dc16bee6cdfed.jpg" className="MuiAvatar-img css-1pqm26d-MuiAvatar-img" style={{ width: "40px" }} />
+                    </div> 
+                    &nbsp;&nbsp;&nbsp;{boldfont('Payal Motvani')}
+                </ListItem>
+            </List>
+        </Item>
     </div>
 
   );
 }
 
-export default LeadMembers
+export default LeadAssignedMembers
