@@ -49,6 +49,8 @@ const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
+console.log("userInfo: " + JSON.stringify(userInfo));
+
 class Lead extends Component {    
 
     constructor(props) {
