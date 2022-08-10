@@ -41,7 +41,7 @@ function AddProduct() {
   const [categories, setCategories] = useState([])
 
   const [open, setOpen] = useState(false)
-  const [errors, setErros] = useState(false)
+  const [errors, setErrors] = useState(false)
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -52,32 +52,18 @@ function AddProduct() {
   //const [validated, setValidated] = useState(false);
   const submitHandler = async (e) => {
     e.preventDefault()
-    let allerrors = validate(inputs, {})
-    if (Object.keys(allerrors).length === 0) {
-      let response
-      if (eid) {
-        console.log('update will done')
-        let saveinfo = inputs
-        saveinfo['image'] = fileFields['image']['id']
-        response = await updateProduct(userInfo, inputs)
-      } else {
-        let saveinfo = inputs
-        saveinfo['image'] = fileFields['image']['id']
-        response = await addProduct(userInfo, inputs)
-        setOpen(true)
-      }
-      if (response.data && Object.keys(response.data).length != 0) {
-        allerrors = response.data
-        console.log(allerrors.email)
-        Object.keys(allerrors).forEach(function (ckey) {
-          allerrors[ckey] = allerrors[ckey].join()
-          console.log(allerrors[ckey])
-        })
-      } else {
-        setOpen(true)
-      }
+    console.log(fileFields)
+    console.log(inputs)
+    if (inputs.password == inputs.confirm_password) {
+      setErrors({ ...errors, confirm_password: '' })
+      let saveinfo = inputs
+      saveinfo['image'] = fileFields['image_eid']['eid']
+      //saveinfo['image'] = fileFields?.image_eid?.eid
+      await addProduct(userInfo, saveinfo)
+      setOpen(true)
+    } else {
+      setErrors({ ...errors, confirm_password: 'password not matched' })
     }
-    setErros(allerrors)
   }
 
   const handleClose = () => {

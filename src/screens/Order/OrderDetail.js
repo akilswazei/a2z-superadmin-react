@@ -1,5 +1,5 @@
 //react imports
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -12,7 +12,8 @@ import EmailIcon from '@mui/icons-material/Email'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 //custom components imports
 import MainBoard from 'src/components/include/MainBoard'
-import { getOrder } from 'src/services/OrderService'
+import { changeStatus, getOrder } from 'src/services/OrderService'
+import { CustomSelect } from 'src/helper/helper'
 
 //main fucntion starts here
 function OrderDetail() {
@@ -21,12 +22,30 @@ function OrderDetail() {
     userSignin: { userInfo },
   } = getState
   const { eid } = useParams()
-
-  const [order_data, setOrder] = React.useState({})
-  const handleChange = (event) => {
-    // setAge(event.target.value)
+  let initialInputState = {
+    eid: eid,
+    status: 1,
   }
+  const [inputs, setInputs] = useState(initialInputState)
+  const [order_data, setOrder] = useState({})
+  const [errors, setErrors] = useState(false)
+  const [currentStatus, setCurrentStatus] = useState(1)
 
+  //handlers
+  // const handleChange = (event) => {
+  //   const name = event.target.name
+  //   const value = event.target.value
+  //   console.log(name, value)
+  //   setInputs((values) => ({ ...values, [name]: value }))
+  // }
+  const onStatusChange = async (e) => {
+    e.preventDefault()
+    const name = e.target.name
+    const value = e.target.value
+    setInputs((values) => ({ ...values, [name]: value }))
+    setCurrentStatus(value)
+    await changeStatus(userInfo, inputs)
+  }
   const getOrdertData = async (eid) => {
     const { data } = await getOrder(userInfo, eid)
     console.log(data)
@@ -37,6 +56,14 @@ function OrderDetail() {
       getOrdertData(eid)
     }
   }, [])
+
+  useEffect(() => {
+    if (currentStatus) {
+    }
+  }, [currentStatus])
+
+  // let current_status = order_data?.order?.status
+  // console.log(current_status)
 
   return (
     <MainBoard>
@@ -62,7 +89,27 @@ function OrderDetail() {
 
               <Grid item xs={12}>
                 <div className="input-div mt-4">
-                  <input type="text" placeholder="Processing" />
+                  <CustomSelect
+                    handleChange={(e) => onStatusChange(e)}
+                    name="status"
+                    status="1"
+                    placeholder="Status"
+                    value={inputs.status ? inputs.status : ''}
+                    label="Status"
+                    error={false}
+                    required={true}
+                    options={[
+                      { eid: 1, name: 'active' },
+                      { eid: 2, name: 'processing' },
+                      { eid: 3, name: 'shipped' },
+                      { eid: 4, name: 'cancelled' },
+                      { eid: 5, name: 'complete' },
+                      { eid: 6, name: 'partial_refund' },
+                      { eid: 7, name: 'refund_complete' },
+                      { eid: 8, name: 'partial_payment' },
+                      { eid: 9, name: 'payment_complete' },
+                    ]}
+                  />
                 </div>
               </Grid>
             </Grid>
@@ -85,7 +132,27 @@ function OrderDetail() {
             </Grid>
             <Grid item xs={4}>
               <div className="btn-div">
-                <button className="order-status-btn">{order_data?.order?.status == 2 ? 'Proccessing' : ''}</button>
+                <button className="order-status-btn">
+                  {currentStatus == 1
+                    ? 'Active'
+                    : currentStatus == 2
+                    ? 'Processing'
+                    : currentStatus == 3
+                    ? 'Shipping'
+                    : currentStatus == 4
+                    ? 'Cancelled'
+                    : currentStatus == 5
+                    ? 'Complete'
+                    : currentStatus == 6
+                    ? 'Partial Refund'
+                    : currentStatus == 7
+                    ? 'Refund Complete'
+                    : currentStatus == 8
+                    ? 'Partial Payment'
+                    : currentStatus == 9
+                    ? 'Payment Complete'
+                    : ''}
+                </button>
               </div>
             </Grid>
             <Grid item xs={8} className="my-5">

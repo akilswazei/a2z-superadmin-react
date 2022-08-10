@@ -30,7 +30,7 @@ import Roles from './screens/Roles/Roles'
 import AddRoles from './screens/Roles/AddRoles'
 import Supplier from './screens/Supplier/Supplier'
 import AddSupplier from './screens/Supplier/AddSupplier'
-import MerchantProduct from './screens/Products/MerchantProducts'
+import InhouseProducts from './screens/Products/InhouseProducts'
 import Post from './screens/Support/Posts'
 import AddPost from './screens/Support/AddPost'
 const loading = (
@@ -111,9 +111,9 @@ class App extends Component {
                 <Route exact path="/products" element={<Product />} />
                 <Route exact path="/product/add" element={<AddProduct />} />
                 <Route exact path="/product/edit/:eid" element={<AddProduct />} />
-                <Route exact path="/merchant-products" element={<MerchantProduct />} />
-                <Route exact path="/merchant-products/add" element={<AddProduct />} />
-                <Route exact path="/merchant-products/edit/:eid" element={<AddProduct />} />
+                <Route exact path="/inhouse-products" element={<InhouseProducts />} />
+                <Route exact path="/inhouse-products/add" element={<AddProduct />} />
+                <Route exact path="/inhouse-products/edit/:eid" element={<AddProduct />} />
                 {/* <Route exact path="/payouts" element={<Payout />} />
                 <Route exact path="/payout/add" element={<AddPayout />} /> */}
 

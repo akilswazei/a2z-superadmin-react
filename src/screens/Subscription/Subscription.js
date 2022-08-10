@@ -16,6 +16,7 @@ import FormStyles from 'src/helper/FormStyles'
 import MainBoard from 'src/components/include/MainBoard'
 import { getSubscriptions } from 'src/services/SubscriptionService'
 import { useNavigate } from 'react-router-dom'
+
 //style for data grid
 const datagridSx = FormStyles
 
@@ -87,22 +88,22 @@ const Subscription = () => {
         )
       },
     },
-    // {
-    //   field: 'actions',
-    //   width: 100,
-    //   renderCell: (cellValue) => {
-    //     return (
-    //       <div className="edit-delete-div">
-    //         <span className="pencil-icon" onClick={(e) => navigate('/subscription/edit/' + cellValue?.row?.eid)}>
-    //           <EditIcon />
-    //         </span>
-    //         <span className="delete-icon">
-    //           <DeleteIcon />
-    //         </span>
-    //       </div>
-    //     )
-    //   },
-    // },
+    {
+      field: 'actions',
+      width: 100,
+      renderCell: (cellValue) => {
+        return (
+          <div className="edit-delete-div">
+            <span className="pencil-icon" onClick={(e) => navigate('/subscription/edit/' + cellValue?.row?.eid)}>
+              <EditIcon />
+            </span>
+            {/* <span className="delete-icon">
+              <DeleteIcon />
+            </span> */}
+          </div>
+        )
+      },
+    },
   ]
 
   return (
