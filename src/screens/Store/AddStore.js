@@ -33,11 +33,10 @@ function AddStore() {
   } = getState
 
   //states
-  const { eid } = useParams()
+  const { eid,merchant_id } = useParams()
   const [inputs, setInputs] = useState({
     status: 0,
-    merchant_id: '211019041655',
-    eid: 'TmpaOGZGSlFRbTV2VUVscFVGcFZlWEI2VUdWS1kwSnNWR1ZvUnpWemNXMXdWMXBLTWs5b2VIaG9UbnB5YW1NPQ==',
+    merchant_id: merchant_id,
   })
 
   const [open, setOpen] = useState(false)

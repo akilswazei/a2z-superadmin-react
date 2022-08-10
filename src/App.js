@@ -9,6 +9,7 @@ import AddIndividual from './screens/Individuals/AddIndividual'
 import Product from './screens/Products/Product'
 
 import Stores from './screens/Store/Stores'
+import Devices from './screens/Store/Devices'
 import AddStore from './screens/Store/AddStore'
 import Merchants from './screens/Merchants/Merchants'
 
@@ -101,7 +102,9 @@ class App extends Component {
                 <Route exact path="/individual/edit/:eid" element={<AddIndividual />} />
 
                 <Route exact path="/stores" element={<Stores />} />
-                <Route exact path="/store/add" element={<AddStore />} />
+                <Route exact path="/store/devices/:eid" element={<Devices />} />
+                <Route exact path="/merchant/stores/:eid" element={<Stores />} />
+                <Route exact path="/store/add/:merchant_id" element={<AddStore />} />
                 <Route exact path="/store/edit/:eid" element={<AddStore />} />
 
                 <Route exact path="/merchants" element={<Merchants />} />

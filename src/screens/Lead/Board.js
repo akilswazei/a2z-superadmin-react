@@ -76,20 +76,19 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
               cardtotal={column.cardIds.length}              
               addCard={addCard.bind(null, column.id)}
             >
-              {column.cardIds
-                .map(cardId => cards.find(card => card.id === cardId))
+              {cards.filter(card => card.column_id === column.id)
                 .map((card, index) => (
                   <DraggableCard
                     key={card.id}
                     id={card.id}
-                    columnId={column.id}
+                    columnId={card.column_id}
                     columnIndex={index}
                     title={card.title}
                     desc={card.desc}
                     email={card.email}
                     phone={card.phone}                    
                     lead_date={card.lead_date}
-                    current_column_id={column.id}
+                    current_column_id={card.column_id}
                     moveCard={moveCard}    
                     handleHistoryOpen = {handleHistoryOpen}                
                   />

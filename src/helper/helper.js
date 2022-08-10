@@ -139,7 +139,7 @@ export function CustomPhone({ handleChange, value, name, placeholder, label, req
     </>
   )
 }
-export function CustomSelect({ handleChange, options, value, name, label, required }) {
+export function CustomSelect({ handleChange, error, options, value, name, label, required }) {
   return (
     <>
       <h6 className="color-gray">
@@ -166,6 +166,7 @@ export function CustomSelect({ handleChange, options, value, name, label, requir
           )
         })}
       </select>
+      <p>{error?.[name]}</p>
     </>
   )
 }

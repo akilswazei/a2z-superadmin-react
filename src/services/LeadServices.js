@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 export const getLeads = async (userInfo,page=1,search_keyword="") => {
-    let getpara=[]
-    getpara[0]=page==1?'':"page="+page;
-    getpara[1]=search_keyword==""?'':"s="+search_keyword;
-    const para = getpara.join('&');
-    const {data}= await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/list?'+para, {
-        headers: {
-          Authorization: 'Bearer ' + userInfo.data.token,
-        }
-      })
-      return data
+    // let getpara=[]
+    // getpara[0]=page==1?'':"page="+page;
+    // getpara[1]=search_keyword==""?'':"s="+search_keyword;
+    // const para = getpara.join('&');
+    // const {data}= await axios.get(process.env.REACT_APP_BASE_URL + '/admin/lead/list?'+para, {
+    //     headers: {
+    //       Authorization: 'Bearer ' + userInfo.data.token,
+    //     }
+    //   })
+      return {"status":"success","message":"Lead found successfully.","columns":[{"id":1,"title":"New","cardIds":[80]},{"id":2,"title":"contacted","cardIds":[79,83]},{"id":3,"title":"proposal sent","cardIds":[]},{"id":4,"title":"Meeting","cardIds":[]},{"id":5,"title":"Negotiation","cardIds":[]},{"id":6,"title":"Converted","cardIds":[]}],"cards":[{"id":80, "column_id": 1,"title":"Sebastian Gibson","desc":"manager","email":"kshlerin.toy@reilly.com","phone":"+15204253234","lead_date":"Jun 22,2022"},{"id":79,"column_id": 2,"title":"Mario Hale","desc":"manager","email":"eula81@hessel.com","phone":"457-631-5443","lead_date":"Jun 22,2022"},,{"id":83,"column_id": 2,"title":"tMario Hale","desc":"manager","email":"teula81@hessel.com","phone":"457-631-5443","lead_date":"Jun 22,2022"}]}
 }
 
 export const leadUpdateStatus = async (userInfo, userdata) => {

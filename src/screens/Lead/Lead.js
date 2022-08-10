@@ -115,8 +115,18 @@ class Lead extends Component {
 
   moveCard = (cardId, destColumnId, index, current_column_id) => {
     console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);
-
+    
     this.setState(state => ({
+      cards: current_column_id === destColumnId?
+      [...state.cards.slice(0, index), state.cards.find((tcard)=>cardId===tcard.id), ...state.cards.slice(index)]
+      :state.cards.map(card=>{
+        if(cardId==card.id){
+          card.column_id=destColumnId
+          return card
+        } else{
+          return card
+        }
+      }),
       columns: state.columns.map(column => ({
         ...column,
         cardIds: _.flowRight(

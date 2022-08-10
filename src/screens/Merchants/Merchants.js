@@ -12,6 +12,7 @@ import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import StoreIcon from '@mui/icons-material/Store';
 //custom components imports
 import { deleteMerchant, getMerchants } from 'src/services/MerchantService'
 import MainBoard from 'src/components/include/MainBoard'
@@ -47,6 +48,9 @@ const Merchant = () => {
           <div className="edit-delete-div">
             <span className="pencil-icon">
               <EditIcon onClick={(e) => navigate('/merchant/edit/' + cellValue?.row?.eid)} />
+            </span>
+            <span className="pencil-icon">
+              <StoreIcon onClick={(e) => navigate('/merchant/stores/' + cellValue?.row?.eid)} />
             </span>
             <span className="delete-icon">
               <DeleteIcon onClick={(e) => handleDelete(cellValue?.row?.eid, e)} />

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 //material UI imports
 import { Container } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
@@ -11,6 +11,8 @@ import { Pagination } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import { getMerchant } from 'src/services/MerchantService'
 //custom style imports
 import FormStyles from 'src/helper/FormStyles'
 //custom components imports
@@ -22,6 +24,10 @@ const datagridSx = FormStyles
 //main function starts here
 const Store = () => {
   //columns for data grid
+  const navigate = useNavigate()
+ 
+  const { eid } = useParams()
+
   const columns = [
     { field: 'eid', headerName: 'Store ID', width: 150 },
     { field: 'store_name', headerName: 'Name', width: 300 },
@@ -35,8 +41,17 @@ const Store = () => {
         return (
           <div className="edit-delete-div">
             <span className="pencil-icon">
-              <EditIcon />
+              <EditIcon onClick={(e) => {
+                  navigate('/store/edit/'+cellValue.row.eid)
+                }} />
             </span>
+            <span className="pencil-icon">
+              <DeviceHubIcon onClick={(e) => {
+                  navigate('/store/devices/'+cellValue.row.eid)
+                }} />
+            </span>
+
+            
             <span className="delete-icon">
               <DeleteIcon
                 onClick={() => {
@@ -49,6 +64,7 @@ const Store = () => {
       },
     },
   ]
+  
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
@@ -56,12 +72,14 @@ const Store = () => {
 
   //states
   const [stores, setStore] = useState()
+  const [merchant, setMerchant] = useState()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [merchantId, setMercantId] = useState('211019041655')
+  const [merchantId, setMercantId] = useState('')
 
   //fetch
   const getStoreData = async (value) => {
+    console.log("tet")
     setStore(await getStores(userInfo, 1, value, merchantId))
   }
 
@@ -85,22 +103,29 @@ const Store = () => {
 
   //rendering
   useEffect(() => {
+    
+    if(eid){
+      let fn=async function(){
+        let merchant_data=await getMerchant(userInfo,eid)
+         setMerchant(merchant_data)
+         setMercantId(merchant_data.data.merchant.merchant_id)
+      }()
+    }
     getStoreData()
-  }, [])
+   
+  }, [merchantId])
 
   //navigate
-  const navigate = useNavigate()
   const navigateFunction = (e) => {
     e.preventDefault()
-    navigate('/store/add')
+    navigate('/store/add/'+merchantId)
   }
 
-  console.log(stores)
   return (
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Stores</h6>
+          <h6>Stores{merchant?.data?.merchant?' of Merchant:'+merchant.data.merchant.legal_business_name:''}</h6>
         </Container>
         <Container className="background-white-theme custom-container-white">
           <div className="justify-flex-end input-div">
