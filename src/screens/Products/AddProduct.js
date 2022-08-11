@@ -57,7 +57,7 @@ function AddProduct() {
     if (inputs.password == inputs.confirm_password) {
       setErrors({ ...errors, confirm_password: '' })
       let saveinfo = inputs
-      saveinfo['image'] = fileFields['image_eid']['eid']
+      saveinfo['image_eid'] = fileFields['image_eid']['eid']
       //saveinfo['image'] = fileFields?.image_eid?.eid
       await addProduct(userInfo, saveinfo)
       setOpen(true)
