@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import {Column} from './Column';
 import {DraggableCard} from './Card';
 
 import { useEffect, useState } from 'react'
 import { getPayoutsHistory } from 'src/services/PayoutService'
-import PayoutHistory from 'src/screens/Payout/PayoutHistory'
 import ViewLeadPopup from 'src/screens/Lead/ViewLead'
 
 Board.propTypes = {
@@ -14,6 +14,7 @@ Board.propTypes = {
     moveCard: PropTypes.func,
     addCard: PropTypes.func,
     addColumn: PropTypes.func,
+    lead_obj: PropTypes.object,
 }
 
 const style = {
@@ -30,40 +31,33 @@ const style = {
     height:'800px',
 }  
 
-const userInfo = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null
+export function Board({cards, columns, moveCard, addCard, addColumn,lead_obj}) { 
 
-export function Board({cards, columns, moveCard, addCard, addColumn}) { 
-
-  const [payoutHistory, setPayoutHistory] = useState({})
+    const getState = useSelector((state) => state)
+    const {
+        userSignin: { userInfo },
+    } = getState
+  
   const [openHistoryPayout, setHistoryPayout] = useState(false)
   const [eidNum, setEidNum] = useState('')
-
-  /*const getPayoutHistoryData = async () => {
-    setPayoutHistory(await getPayoutsHistory(userInfo, eidNum))
-  }*/
 
   const captureId = (cellValue) => {
     setEidNum(cellValue)
   }
 
   const handleHistoryClose = () => setHistoryPayout(false)
-  const handleHistoryOpen = (cellValue, e) => {
-    console.log("Cell ID" + cellValue)
+  const handleHistoryOpen = (cellValue, e) => {    
     captureId(cellValue)
     setHistoryPayout(true)
   }
 
-
   return (   
-     <>
 
-
+     <>     
+     
      <ViewLeadPopup
         openHistoryPayout={openHistoryPayout}
-        handleHistoryClose={handleHistoryClose}
-        payoutHistory={payoutHistory}
+        handleHistoryClose={handleHistoryClose}        
         style={style}
         eidNum = {eidNum}
       />
@@ -76,30 +70,30 @@ export function Board({cards, columns, moveCard, addCard, addColumn}) {
               cardtotal={column.cardIds.length}              
               addCard={addCard.bind(null, column.id)}
             >
-              {column.cardIds
-                .map(cardId => cards.find(card => card.id === cardId))
-                .map((card, index) => (
-                  <DraggableCard
-                    key={card.id}
-                    id={card.id}
-                    columnId={column.id}
-                    columnIndex={index}
-                    title={card.title}
-                    desc={card.desc}
-                    email={card.email}
-                    phone={card.phone}                    
-                    lead_date={card.lead_date}
-                    current_column_id={column.id}
-                    moveCard={moveCard}    
-                    handleHistoryOpen = {handleHistoryOpen}                
-                  />
+                {column.cardIds
+                    .map(cardId => cards.find(card => card.id === cardId))
+                    .map((card, index) => (
+                      <DraggableCard
+                        key={index}
+                        id={card.id}
+                        columnId={column.id}
+                        columnIndex={index}
+                        title={card.title}
+                        desc={card.desc}
+                        email={card.email}
+                        phone={card.phone}                    
+                        lead_date={card.lead_date}
+                        current_column_id={column.id}
+                        moveCard={moveCard}    
+                        handleHistoryOpen = {handleHistoryOpen}                
+                      />
                 ))}
-              {column.cardIds.length === 0 && (
-                <DraggableCard
-                  isSpacer
-                  moveCard={cardId => moveCard(cardId, column.id, 0)}                  
-                />
-              )}
+                {column.cardIds.length === 0 && (
+                    <DraggableCard
+                      isSpacer
+                      moveCard={cardId => moveCard(cardId, column.id, 0)}                  
+                    />
+                )}
             </Column>
           ))}
 

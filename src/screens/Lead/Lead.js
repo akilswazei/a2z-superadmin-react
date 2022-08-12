@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import * as React from 'react'
 
 import {Component} from 'react';
@@ -14,6 +15,8 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { AddLeadPopup } from 'src/screens/Lead/AddLeadPopup'
 import serialize from "form-serialize";
 import { getLeads } from 'src/services/LeadServices'
+import { connect } from 'react-redux';
+// import { getLeads,setColumnToLead } from 'src/redux/actions/LeadActions'
 
 let _columnId = 0;
 let _cardId = 0;
@@ -28,30 +31,25 @@ const onSubmit = (event) => {
       name,      
       email      
     } = fieldData;
-    // console.log(fieldData);
-    /*alert(
-      `
-        Hello ${name} !\r\n
-        email: ${email}\r\n
-        Thanks!
-      `
-    );*/        
-    // console.log(event.target.name.value);
-    // console.log(event.target.email.value);
 };
 // EN - Modal
 
-const handleDragEnd = (event) => {
-    console.log("Stop");
-};
+/*const mapStateToProps = state => ({
+    userSignin: state.userSignin,
+    leads: state.leads
+});
 
-const userInfo = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null
+const mapDispatchToProps = () => ({ 
+    getLeads,
+    setColumnToLead
+});*/
 
-console.log("userInfo: " + JSON.stringify(userInfo));
+const mapStateToProps = state => ({
+    userSignin: state.userSignin,
+});
+const mapDispatchToProps = () => ({});
 
-class Lead extends Component {    
+class Lead extends Component {
 
     constructor(props) {
         super(props);
@@ -64,16 +62,19 @@ class Lead extends Component {
         };
     }
 
-    getLeads = async () => {        
+    getLeads = async () => {
 
-        let leads = await getLeads(userInfo);        
+        const userInfo = this.props.userSignin.userInfo
+        //const leadInfo = this.props.lead
+        
+        let leads = await getLeads(userInfo);
 
         this.setState(state => ({
-            newcolumn: [...state.newcolumn, leads.columns],
+            newcolumn: [...state.newcolumn, leads.data.columns],
         }));
 
         this.setState(state => ({
-            newcard: [...state.newcard, leads.cards],
+            newcard: [...state.newcard, leads.data.cards],
         }));
 
         this.setState({ cards: this.state.newcard[0] })
@@ -82,62 +83,66 @@ class Lead extends Component {
     
     componentDidMount() {
         this.getLeads(); // function call
+        // this.props.getLeads()        
     }
-  
 
-  addColumn = _title => {
-    const title = _title.trim();
-    if (!title) return;
+    addColumn = _title => {
+        const title = _title.trim();
+        if (!title) return;
 
-    const newColumn = {
-      id: ++_columnId,
-      title,
-      cardIds: [],
+        const newColumn = {
+          id: ++_columnId,
+          title,
+          cardIds: [],
+        };
+        this.setState(state => ({
+          columns: [...state.columns, newColumn],
+        }));
     };
-    this.setState(state => ({
-      columns: [...state.columns, newColumn],
-    }));
-  };
 
-  addCard = (columnId, _title) => {
-    const title = _title.trim();
-    if (!title) return;
+    addCard = (columnId, _title) => {
+        const title = _title.trim();
+        if (!title) return;
 
-    const newCard = {id: ++_cardId, title};
-    this.setState(state => ({
-      cards: [...state.cards, newCard],
-      columns: state.columns.map(
-        column =>
-          column.id === columnId
-            ? {...column, cardIds: [...column.cardIds, newCard.id]}
-            : column
-      ),
-    }));
-  };
+        const newCard = {id: ++_cardId, title};
+        this.setState(state => ({
+          cards: [...state.cards, newCard],
+          columns: state.columns.map(
+            column =>
+              column.id === columnId
+                ? {...column, cardIds: [...column.cardIds, newCard.id]}
+                : column
+          ),
+        }));
+    };
 
-  moveCard = (cardId, destColumnId, index, current_column_id) => {
-    console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);
+    moveCard = (cardId, destColumnId, index, current_column_id,is_dropped) => {
+        // console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);        
+        // console.log("moveCard " , this.props.leads.leads.columns);    
 
-    this.setState(state => ({
-      columns: state.columns.map(column => ({
-        ...column,
-        cardIds: _.flowRight(
-          // 2) If this is the destination column, insert the cardId.
-          ids =>
-            column.id === destColumnId
-              ? [...ids.slice(0, index), cardId, ...ids.slice(index)]
-              : ids,
-          // 1) Remove the cardId for all columns
-          ids => ids.filter(id => id !== cardId)
-        )(column.cardIds),        
-      })),      
-    }));
+        this.setState(state => ({
+          columns: state.columns.map(column => ({
+            ...column,
+            cardIds: _.flowRight(
+              // 2) If this is the destination column, insert the cardId.
+              ids =>
+                column.id === destColumnId
+                  ? [...ids.slice(0, index), cardId, ...ids.slice(index)]
+                  : ids,
+              // 1) Remove the cardId for all columns
+              ids => ids.filter(id => id !== cardId)
+            )(column.cardIds),        
+          })),      
+        }));
 
-    
+        /*if(is_dropped) {
+            this.props.setColumnToLead(cardId,destColumnId)
+        }
+        console.log("moveCard " , this.state.columns);*/
+      
+    };
 
-  };
-
-  render() {
+  render() {    
     return (
        <>
         <MainBoard>
@@ -155,6 +160,21 @@ class Lead extends Component {
                     </div>
                     <hr></hr>
                     <div style={{ height: '100vh', width: '100%',overflow:'y' }} className="py-2">
+                    
+                    {/*
+                    {this.props.leads.leads?.data && (
+                        <Board
+                                cards={this.props.leads.leads.data.cards}
+                                columns={this.props.leads.leads.data.columns}
+                                moveCard={this.moveCard}
+                                addCard={this.addCard}
+                                addColumn={this.addColumn}
+                                lead_obj={this.props.leads.leads}
+                        />
+                    )}
+                    */}
+
+                    
                         <Board
                             cards={this.state.cards}
                             columns={this.state.columns}
@@ -162,6 +182,7 @@ class Lead extends Component {
                             addCard={this.addCard}
                             addColumn={this.addColumn}                            
                         />
+                    
                     </div>
                 </div>
             </div>
@@ -170,4 +191,13 @@ class Lead extends Component {
     );
   }
 }
-export default DragDropContext(HTML5Backend)(Lead);
+
+export default connect(mapStateToProps,mapDispatchToProps())(DragDropContext(HTML5Backend)(Lead));
+
+Lead.propTypes = {
+    userSignin: PropTypes.object,
+    getLeads: PropTypes.object,    
+    leads: PropTypes.object,    
+    /*leadData: PropTypes.object, 
+    setColumnToLead : PropTypes.object   */
+}

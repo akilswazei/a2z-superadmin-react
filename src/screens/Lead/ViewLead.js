@@ -9,6 +9,7 @@ import _ from 'lodash';
 import MainBoard from 'src/components/include/MainBoard'
 import { Container, createStyles } from '@material-ui/core'
 import { useParams } from 'react-router';
+import { leadUpdate } from 'src/services/LeadServices'
 import { getLeadInfo } from 'src/services/LeadServices'
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import LinkIcon from '@mui/icons-material/Link';
@@ -23,7 +24,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -43,6 +43,14 @@ import LeadMembers from 'src/screens/Lead/LeadMembers'
 
 import EditIcon from '@mui/icons-material/Edit';
 
+import InlineEdit from "src/components/InlineEditor/InlineEditor";
+
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -51,8 +59,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+/* tab imlementation start */
 
-/* tab imlementation */
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -97,14 +105,9 @@ function boldfont(user) {
   return ( <b>{user}</b>);
 }
 
+/* tab imlementation over */
 
-
-/* tab imlementation over */  
-const userInfo = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null
-
-function ViewLeadPopup({ openHistoryPayout, handleHistoryClose, payoutHistory = '', style,eidNum }) {
+function ViewLeadPopup({ openHistoryPayout, handleHistoryClose, style,eidNum }) {
   return (
 
         <>
@@ -137,6 +140,18 @@ function ViewLeadPopup({ openHistoryPayout, handleHistoryClose, payoutHistory = 
 
 function ViewLead(props) {
 
+	const [open, setOpen] 				= React.useState(false)
+	const [isUpdate, setIsUpdate] 		= React.useState(0)
+	const [leads, setLeads] 			= useState()
+    const [errors, setErros] 			= React.useState({})
+    const [dia_title, setDiaTitle]    	= React.useState(false)
+    const [dia_content, setDiaContent]  = React.useState(false)
+
+	const getState = useSelector((state) => state)
+    const {
+        userSignin: { userInfo },
+    } = getState
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -144,25 +159,70 @@ function ViewLead(props) {
     };
 
     const { id } = props.lead_id;
+    
+    const getUpdatedLeadData = async () => {
 
-    const [leads, setLeads] = useState()
+        let response = await leadUpdate(userInfo, leads)
+        if (response.data && Object.keys(response.data).length != 0) {
+            
+        } else {
+        	setIsUpdate(0)
+        	setDiaTitle(response.status)
+            setDiaContent(response.message)
+            setOpen(true)
+        }
+    }
 
     const getLeadsData = async () => {
-        setLeads(await getLeadInfo(userInfo,props.lead_id))
+        setLeads(await getLeadInfo(userInfo,props.lead_id))        
+    }
+
+    const _setState = key => value => {
+     	setIsUpdate(1)
+		setLeads(leads => {
+		    return {
+		        ...leads,
+		        data: {
+	          		...leads.data,
+		          	[key] : value
+		        },
+		    }
+		});
+	};
+
+	const handleClose = () => {
+    	setOpen(false)
     }
 
     useEffect(() => {
-        getLeadsData()
-    }, [])
-
-    console.log(leads);
-    // return false;
+    	if(!leads) {
+    		getLeadsData()
+        }
+        if(isUpdate == 1) {        	
+        	getUpdatedLeadData()
+        }
+    })
 
     return (
        <>
         {leads?.data && (
         
             <div className="p-2">
+
+            	<Dialog
+	                open={open}
+	                onClose={handleClose}
+	                aria-labelledby="alert-dialog-title"
+	                aria-describedby="alert-dialog-description"
+	            >
+	                <DialogTitle id="alert-dialog-title">{dia_title}</DialogTitle>
+	                <DialogContent>
+	                  <DialogContentText id="alert-dialog-description">{dia_content }</DialogContentText>
+	                </DialogContent>
+	                <DialogActions>
+	                  <Button onClick={handleClose}>OK</Button>
+	                </DialogActions>
+	            </Dialog>
 
                 <div className="ViewLead">
                     <div  className="py-2">
@@ -186,8 +246,6 @@ function ViewLead(props) {
                                 </div>
                             </div>
                             
-
-                            
                             <div className="col-md-7 p-2 leaddetail_middle">
                                 <Box className="mb-2" sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -205,7 +263,14 @@ function ViewLead(props) {
                                             <List className="mb-3" sx={{ display: 'block' }} xs={12}>
                                                 <ListItem disablePadding><ListItemText className="form_heading" variant="h1" primary="Merchant Detail" /></ListItem>
                                                 <Divider />
-                                                <ListItem >{formtitle('Name')}<ListItemText primary={leads.data.customer_name} /> <EditIcon color="primary" /></ListItem>
+                                                <ListItem >                                                	
+                                                	<InlineEdit
+											          labelText={formtitle('Name')}
+											          value={leads.data.customer_name}
+											          variant="body1"
+											          onConfirmChange={_setState("customer_name")}
+											        />                                                	
+                                            	</ListItem>
                                                 <ListItem >{formtitle('Email')}<ListItemText  primary={leads.data.authorize_person_email} /></ListItem>
                                                 <ListItem >{formtitle('Title')}<ListItemText  primary={leads.data.authorize_person_title} /></ListItem>
                                                 <ListItem >{formtitle('Phone')}<ListItemText  primary={leads.data.authorize_person_phone_no} /></ListItem>
@@ -340,14 +405,13 @@ function ViewLead(props) {
 ViewLeadPopup.propTypes = {
     id: PropTypes.number,
     openHistoryPayout: PropTypes.func,
-    handleHistoryClose: PropTypes.func,
-    payoutHistory: PropTypes.object,
+    handleHistoryClose: PropTypes.func,    
     style: PropTypes.string,
     eidNum:PropTypes.number
 }
 
 ViewLead.propTypes = {
-    lead_id: PropTypes.number,
-    
+    lead_id: PropTypes.number
 }
+
 export default ViewLeadPopup

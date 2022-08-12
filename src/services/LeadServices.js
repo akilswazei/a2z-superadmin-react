@@ -105,3 +105,13 @@ export const getAssignedMembers = async (userInfo, lead_id="0", team_id="0") => 
     })
     return data
 }
+
+export const leadUpdate = async (userInfo, userdata) => {
+    
+  const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/lead-update', userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
+}
