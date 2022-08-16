@@ -14,7 +14,6 @@ import { Container, createStyles } from '@material-ui/core'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import { AddLeadPopup } from 'src/screens/Lead/AddLeadPopup'
 import serialize from "form-serialize";
-//import { getLeads } from 'src/services/LeadServices'
 import { connect } from 'react-redux';
 import { getLeads, setColumnToLead } from 'src/redux/actions/LeadActions'
 
@@ -57,10 +56,7 @@ class Lead extends Component {
             cards: this.props.leads.cards,
             columns: this.props.leads.columns,
             newcolumn:  [],
-            newcard: '',
-            open: false,
-            dia_title: false,
-            dia_content: false
+            newcard: ''
         };
     }
         
@@ -97,13 +93,6 @@ class Lead extends Component {
         }));
     };
 
-    leadHandleClose = () => {
-        console.log("handleClosehandleClosehandleClosehandleClosehandleClosehandleClosehandleClose");
-        this.setState(state => ({
-            open: false
-        }));
-    }
-
     moveCard = (cardId, destColumnId, index, current_column_id,is_dropped) => {
         // console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);        
         // console.log("moveCard " , this.props.leads.leads.columns);    
@@ -131,22 +120,7 @@ class Lead extends Component {
   render() {    
     return (
        <>
-        <MainBoard>
-
-            <Dialog
-                    open={this.state.open}
-                    onClose={this.leadHandleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{this.state.dia_title}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">{ this.state.dia_content }</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.leadHandleClose}>OK</Button>
-                    </DialogActions>
-            </Dialog>
+        <MainBoard>            
 
             <div className="p-2">
                 
@@ -163,7 +137,7 @@ class Lead extends Component {
                     <hr></hr>
                     <div style={{ height: '100vh', width: '100%',overflow:'y' }} className="py-2">
 
-                    {this.props?.leads && (
+                    {this.props.leads?.cards && (
                         <Board
                             cards={this.props.leads.cards}
                             columns={this.state.columns}
@@ -187,6 +161,6 @@ export default connect(mapStateToProps,mapDispatchToProps())(DragDropContext(HTM
 Lead.propTypes = {
     userSignin: PropTypes.object,
     leads: PropTypes.object,
-    setColumnToLead : PropTypes.object
+    setColumnToLead : PropTypes.func
     /*leadData: PropTypes.object, */
 }

@@ -11,11 +11,12 @@ import {
         } from '../../constants/LeadConstants';
 
 
-const leadInfo = localStorage.getItem('leads')        
-
+const leadInfo = localStorage.getItem('leads')
+  ? JSON.parse(localStorage.getItem('leads'))
+  : ''
 
 const initialState = {
-    leads: leadInfo.data
+    leads: leadInfo.data ? leadInfo.data : ''
 };
 
 export const leadReducers = (state = initialState, {type, payload}) => {
@@ -24,7 +25,7 @@ export const leadReducers = (state = initialState, {type, payload}) => {
 
     switch (type) {
         case GET_LEAD :
-            return { loading: false, leads: payload }
+            return { loading: false, cards : payload.cards, columns : payload.columns }
         case GET_LEAD_FAIL : 
             return { loading: false, error: payload }
         case LEAD_UPDATE: 
@@ -32,7 +33,7 @@ export const leadReducers = (state = initialState, {type, payload}) => {
         case LEAD_UPDATE_DETAIL: 
             return { loading: true, success: true, cards : payload.cards, columns : payload.columns}
         case LEAD_UPDATE_FAIL : 
-            return {loading: false, error: payload }            
+            return {loading: false, error: payload }
         default:
             return state;
     }

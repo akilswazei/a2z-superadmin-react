@@ -21,7 +21,7 @@ export const getLeads = () => async(dispatch, getState) => {
             }
         })
         localStorage.setItem('leads', JSON.stringify(data.data))
-        dispatch({type: GET_LEAD, payload: data});
+        dispatch({type: GET_LEAD, payload: data.data});
     } catch (error) {
         dispatch({
             type: GET_LEAD_FAIL,
