@@ -12,19 +12,26 @@ import {
 } from './redux/reducers/MediaReducers'
 
 import {
-  leadReducers
+  leadReducers,
 } from './redux/reducers/LeadReducers'
 
 const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
+
+
+const leads_storage = localStorage.getItem('leads')
+  ? JSON.parse(localStorage.getItem('leads'))
+  : null  
   
+console.log ("Store ", leads_storage)  
 
 const initialState = {
   userSignin: {
     userInfo: userInfo,
-    isLoggedIn: !!userInfo,
-  }  
+    isLoggedIn: !!userInfo,    
+  } ,
+  leads: leads_storage, 
 }
 
 const reducer = combineReducers({

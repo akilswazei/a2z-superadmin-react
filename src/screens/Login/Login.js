@@ -18,6 +18,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { signin } from 'src/redux/actions/UserActions'
+import { getLeads } from 'src/redux/actions/LeadActions'
 
 const Login = () => {
   const [validated, setValidated] = useState(false)
@@ -46,7 +47,8 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/dashboard')
+        dispatch(getLeads())
+        navigate('/dashboard')
     }
   }, [userInfo, navigate])
 

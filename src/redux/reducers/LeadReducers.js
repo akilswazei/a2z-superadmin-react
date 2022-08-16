@@ -6,35 +6,38 @@ import {
             LEAD_DETAIL_REQUEST, 
             LEAD_DETAIL_SECCESS, 
             LEAD_UPDATE, 
+            LEAD_UPDATE_DETAIL,
             LEAD_UPDATE_FAIL 
         } from '../../constants/LeadConstants';
 
+
+const leadInfo = localStorage.getItem('leads')        
+
+
 const initialState = {
-    leads: [],
-    lead: null
+    leads: leadInfo.data
 };
 
 export const leadReducers = (state = initialState, {type, payload}) => {
+
+    console.log("Lead Reducers ",state)
+
     switch (type) {
         case GET_LEAD :
             return { loading: false, leads: payload }
         case GET_LEAD_FAIL : 
             return { loading: false, error: payload }
+        case LEAD_UPDATE: 
+            return { loading: true, success: true, cards : payload.cards, columns : payload.columns}
+        case LEAD_UPDATE_DETAIL: 
+            return { loading: true, success: true, cards : payload.cards, columns : payload.columns}
+        case LEAD_UPDATE_FAIL : 
+            return {loading: false, error: payload }            
         default:
             return state;
     }
 };
 
-export const updateLeadReducers = (state = initialState, {type, payload}) => {
-    switch (type) {
-        case LEAD_UPDATE: 
-            return { loading: false, success: true, leads: payload}
-        case LEAD_UPDATE_FAIL : 
-            return {loading: false, error: payload }
-        default:
-            return state;
-    }
-}
 
 export const leadDetailReducer = (state = {post: {}, loading: true}, action) => {
     switch (action.type) {

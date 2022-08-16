@@ -16,14 +16,7 @@ import { AddLeadPopup } from 'src/screens/Lead/AddLeadPopup'
 import serialize from "form-serialize";
 //import { getLeads } from 'src/services/LeadServices'
 import { connect } from 'react-redux';
-import { getLeads, setColumnToLead } from 'src/redux/actions/LeadActions'
-
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
-import Button from '@mui/material/Button';
+import { getLeads,setColumnToLead } from 'src/redux/actions/LeadActions'
 
 let _columnId = 0;
 let _cardId = 0;
@@ -41,30 +34,68 @@ const onSubmit = (event) => {
 };
 // EN - Modal
 
+/*const mapStateToProps = state => ({
+    userSignin: state.userSignin,
+    leads: state.leads
+});
+
+const mapDispatchToProps = () => ({ 
+    getLeads,
+    setColumnToLead
+});*/
+
 const mapStateToProps = state => ({
     userSignin: state.userSignin,
     leads: state.leads
 });
-const mapDispatchToProps = () => ({
-    setColumnToLead
-});
+const mapDispatchToProps = () => ({});
 
 class Lead extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            cards: this.props.leads.cards,
-            columns: this.props.leads.columns,
+            cards: this.props.leads.data.cards,
+            columns: this.props.leads.data.columns,
             newcolumn:  [],
-            newcard: '',
-            open: false,
-            dia_title: false,
-            dia_content: false
+            newcard: ''
         };
     }
+
+    getLeads = async () => {
+
+       // const userInfo = this.props.userSignin.userInfo
+        //const leadInfo = this.props.lead
         
+        //let leads = await getLeads(userInfo);
+
+        //console.log("Props Column ==> ",this.props.leads.leads.data.columns)
+
+        //console.log(leads.data)
+
+       /*this.setState(state => ({
+            newcolumn: [...state.newcolumn, leads.data.columns],
+        }));
+
+        this.setState(state => ({
+            newcard: [...state.newcard, leads.data.cards],
+        }));*/
+
+        //this.setState({ cards: this.props.leads.leads.data.cards })
+        //this.setState({ columns: this.props.leads.leads.data.columns })
+
+
+        //console.log(this.state.cards)
+        //console.log(this.state.columns)
+    }
+    
     componentDidMount() {
+        //this.getLeads(); // function call
+        // this.props.getLeads()        
+
+        // console.log("Local Storage", localStorage.getItem('leads'))
+        console.log("===================>" , this.props.leads.data.cards);
+        // console.log("Local Storage", this.props.leads.leads.data.cards)        
     }
 
     addColumn = _title => {
@@ -97,13 +128,6 @@ class Lead extends Component {
         }));
     };
 
-    leadHandleClose = () => {
-        console.log("handleClosehandleClosehandleClosehandleClosehandleClosehandleClosehandleClose");
-        this.setState(state => ({
-            open: false
-        }));
-    }
-
     moveCard = (cardId, destColumnId, index, current_column_id,is_dropped) => {
         // console.log("destColumnId: " + destColumnId + " current_column_id: " + current_column_id);        
         // console.log("moveCard " , this.props.leads.leads.columns);    
@@ -123,31 +147,17 @@ class Lead extends Component {
           })),      
         }));
 
-        if(is_dropped) {
-            let response = this.props.setColumnToLead(cardId,destColumnId)            
-        }      
+        /*if(is_dropped) {
+            this.props.setColumnToLead(cardId,destColumnId)
+        }
+        console.log("moveCard " , this.state.columns);*/
+      
     };
 
   render() {    
     return (
        <>
         <MainBoard>
-
-            <Dialog
-                    open={this.state.open}
-                    onClose={this.leadHandleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{this.state.dia_title}</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">{ this.state.dia_content }</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.leadHandleClose}>OK</Button>
-                    </DialogActions>
-            </Dialog>
-
             <div className="p-2">
                 
                 <div className=" p-0 mt-4">
@@ -162,10 +172,23 @@ class Lead extends Component {
                     </div>
                     <hr></hr>
                     <div style={{ height: '100vh', width: '100%',overflow:'y' }} className="py-2">
-
-                    {this.props?.leads && (
+                    
+                    {/*
+                    {this.props.leads.leads?.data && (
                         <Board
-                            cards={this.props.leads.cards}
+                                cards={this.props.leads.leads.data.cards}
+                                columns={this.props.leads.leads.data.columns}
+                                moveCard={this.moveCard}
+                                addCard={this.addCard}
+                                addColumn={this.addColumn}
+                                lead_obj={this.props.leads.leads}
+                        />
+                    )}
+                    */}
+
+                    {this.props.leads?.data && (
+                        <Board
+                            cards={this.state.cards}
                             columns={this.state.columns}
                             moveCard={this.moveCard}
                             addCard={this.addCard}
@@ -186,7 +209,8 @@ export default connect(mapStateToProps,mapDispatchToProps())(DragDropContext(HTM
 
 Lead.propTypes = {
     userSignin: PropTypes.object,
-    leads: PropTypes.object,
-    setColumnToLead : PropTypes.object
-    /*leadData: PropTypes.object, */
+    getLeads: PropTypes.object,    
+    leads: PropTypes.object,    
+    /*leadData: PropTypes.object, 
+    setColumnToLead : PropTypes.object   */
 }

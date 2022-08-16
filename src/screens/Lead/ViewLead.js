@@ -51,6 +51,8 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
+import {updateLead} from 'src/redux/actions/LeadActions'
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -142,15 +144,23 @@ function ViewLead(props) {
 
 	const [open, setOpen] 				= React.useState(false)
 	const [isUpdate, setIsUpdate] 		= React.useState(0)
-	const [leads, setLeads] 			= useState()
+	const [leadsLocal, setLeadsLocal] 			= useState()
     const [errors, setErros] 			= React.useState({})
     const [dia_title, setDiaTitle]    	= React.useState(false)
     const [dia_content, setDiaContent]  = React.useState(false)
+    const dispatch                      = useDispatch()
 
 	const getState = useSelector((state) => state)
     const {
         userSignin: { userInfo },
     } = getState
+
+    const getCards = useSelector((state) => state)
+    const {
+        leads: { leads },
+    } = getCards
+
+    console.log("getCards: " , getCards);
 
     const [value, setValue] = React.useState(0);
 
@@ -162,28 +172,40 @@ function ViewLead(props) {
     
     const getUpdatedLeadData = async () => {
 
-        let response = await leadUpdate(userInfo, leads)
-        if (response.data && Object.keys(response.data).length != 0) {
-            
-        } else {
-        	setIsUpdate(0)
-        	setDiaTitle(response.status)
-            setDiaContent(response.message)
+        // let response = await leadUpdate(userInfo, leads)
+        let response =  dispatch(updateLead(leadsLocal))
+
+        response.then(
+          function(value) 
+          { 
+            console.log("REturn 1 ",value)
+            /* code if successful */ 
+
+            setIsUpdate(0)
+            setDiaTitle(value.status)
+            setDiaContent(value.message)
             setOpen(true)
-        }
+          },
+          function(error) {            
+            /* code if some error */ 
+          }
+        );
+        
+        
     }
 
     const getLeadsData = async () => {
-        setLeads(await getLeadInfo(userInfo,props.lead_id))        
+        setLeadsLocal(await getLeadInfo(userInfo,props.lead_id))        
     }
 
     const _setState = key => value => {
+
      	setIsUpdate(1)
-		setLeads(leads => {
+		setLeadsLocal(leadsLocal => {
 		    return {
-		        ...leads,
+		        ...leadsLocal,
 		        data: {
-	          		...leads.data,
+	          		...leadsLocal.data,
 		          	[key] : value
 		        },
 		    }
@@ -195,7 +217,7 @@ function ViewLead(props) {
     }
 
     useEffect(() => {
-    	if(!leads) {
+    	if(!leadsLocal) {
     		getLeadsData()
         }
         if(isUpdate == 1) {        	
@@ -205,7 +227,7 @@ function ViewLead(props) {
 
     return (
        <>
-        {leads?.data && (
+        {leadsLocal?.data && (
         
             <div className="p-2">
 
@@ -233,7 +255,7 @@ function ViewLead(props) {
                                 <div className="user_image justify-content-center d-flex mt-2">
                                     <img alt="Remy Sharp" src="/static/media/2.0c06e43dc16bee6cdfed.jpg" className="MuiAvatar-img css-1pqm26d-MuiAvatar-img" />
                                 </div>
-                                <h4 className="justify-content-center  d-flex">{leads.data.customer_name}</h4>
+                                <h4 className="justify-content-center  d-flex">{leadsLocal.data.customer_name}</h4>
                                 <h5 className="justify-content-center  d-flex">Lead owner</h5>
                                 <h6 className="justify-content-center  d-flex">Amount $100</h6>
 
@@ -266,16 +288,16 @@ function ViewLead(props) {
                                                 <ListItem >                                                	
                                                 	<InlineEdit
 											          labelText={formtitle('Name')}
-											          value={leads.data.customer_name}
+											          value={leadsLocal.data.customer_name}
 											          variant="body1"
 											          onConfirmChange={_setState("customer_name")}
 											        />                                                	
                                             	</ListItem>
-                                                <ListItem >{formtitle('Email')}<ListItemText  primary={leads.data.authorize_person_email} /></ListItem>
-                                                <ListItem >{formtitle('Title')}<ListItemText  primary={leads.data.authorize_person_title} /></ListItem>
-                                                <ListItem >{formtitle('Phone')}<ListItemText  primary={leads.data.authorize_person_phone_no} /></ListItem>
-                                                <ListItem >{formtitle('Fax')}<ListItemText  primary={leads.data.authorize_person_fax_no} /></ListItem>
-                                                <ListItem >{formtitle('Address')}<ListItemText  primary={leads.data.address} /></ListItem>
+                                                <ListItem >{formtitle('Email')}<ListItemText  primary={leadsLocal.data.authorize_person_email} /></ListItem>
+                                                <ListItem >{formtitle('Title')}<ListItemText  primary={leadsLocal.data.authorize_person_title} /></ListItem>
+                                                <ListItem >{formtitle('Phone')}<ListItemText  primary={leadsLocal.data.authorize_person_phone_no} /></ListItem>
+                                                <ListItem >{formtitle('Fax')}<ListItemText  primary={leadsLocal.data.authorize_person_fax_no} /></ListItem>
+                                                <ListItem >{formtitle('Address')}<ListItemText  primary={leadsLocal.data.address} /></ListItem>
                                                 <ListItem >{formtitle('Date')}<ListItemText  primary="04-15-2021" /></ListItem>
                                             </List>               
                                         </Item>
@@ -285,11 +307,11 @@ function ViewLead(props) {
                                             <List>
                                                 <ListItem disablePadding><ListItemText className="form_heading" primary="Business Details" /></ListItem>
                                                 <Divider />
-                                                <ListItem >{formtitle('Legal Business Name of Entity',180)}<ListItemText inset primary={leads.data.legal_business_name} /></ListItem>
-                                                <ListItem >{formtitle('Business Address',180)}<ListItemText inset primary={leads.data.business_address} /></ListItem>
-                                                <ListItem >{formtitle('City',180)}<ListItemText inset primary={leads.data.business_city} /></ListItem>
-                                                <ListItem >{formtitle('State',180)}<ListItemText inset primary={leads.data.business_state} /></ListItem>
-                                                <ListItem >{formtitle('Zip Code',180)}<ListItemText inset primary={leads.data.business_zip} /></ListItem>
+                                                <ListItem >{formtitle('Legal Business Name of Entity',180)}<ListItemText inset primary={leadsLocal.data.legal_business_name} /></ListItem>
+                                                <ListItem >{formtitle('Business Address',180)}<ListItemText inset primary={leadsLocal.data.business_address} /></ListItem>
+                                                <ListItem >{formtitle('City',180)}<ListItemText inset primary={leadsLocal.data.business_city} /></ListItem>
+                                                <ListItem >{formtitle('State',180)}<ListItemText inset primary={leadsLocal.data.business_state} /></ListItem>
+                                                <ListItem >{formtitle('Zip Code',180)}<ListItemText inset primary={leadsLocal.data.business_zip} /></ListItem>
                                             </List>
                                         </Item>
                                       </Grid>
@@ -321,9 +343,9 @@ function ViewLead(props) {
                                             <List className="mb-3" sx={{ display: 'block' }} xs={12}>
                                                 <ListItem className="mt-10"  disablePadding><ListItemText className="form_heading" primary="Business Contact" /></ListItem>
                                                 <Divider />
-                                                <ListItem >{formtitle('Business Ph')}<ListItemText primary={leads.data.business_phone_number} /></ListItem>
-                                                <ListItem >{formtitle('Cell Phone')}<ListItemText primary={leads.data.mobile_no} /></ListItem>
-                                                <ListItem >{formtitle('Website/URL')}<ListItemText primary={leads.data.website} /></ListItem>
+                                                <ListItem >{formtitle('Business Ph')}<ListItemText primary={leadsLocal.data.business_phone_number} /></ListItem>
+                                                <ListItem >{formtitle('Cell Phone')}<ListItemText primary={leadsLocal.data.mobile_no} /></ListItem>
+                                                <ListItem >{formtitle('Website/URL')}<ListItemText primary={leadsLocal.data.website} /></ListItem>
                                             </List>               
                                         </Item>
                                       </Grid>
@@ -340,19 +362,19 @@ function ViewLead(props) {
 
                                 </TabPanel>
                                 <TabPanel className="tabdiv" value={value} index={1}>
-                                    <LeadSMS leadName={leads.data.customer_name} lead_id={leads.data.id} lead_contact_no={leads.data.authorize_person_phone_no}  />
+                                    <LeadSMS leadName={leadsLocal.data.customer_name} lead_id={leadsLocal.data.id} lead_contact_no={leadsLocal.data.authorize_person_phone_no}  />
                                 </TabPanel>
 
                                 <TabPanel className="tabdiv" value={value} index={2}>
-                                    <LeadAttachment lead_id={leads.data.id}/>
+                                    <LeadAttachment lead_id={leadsLocal.data.id}/>
                                 </TabPanel>
 
                                 <TabPanel className="tabdiv" value={value} index={3}>
-                                    <LeadEmail leadName={leads.data.customer_name} lead_id={leads.data.id} lead_contact_no={leads.data.authorize_person_phone_no}  />
+                                    <LeadEmail leadName={leadsLocal.data.customer_name} lead_id={leadsLocal.data.id} lead_contact_no={leadsLocal.data.authorize_person_phone_no}  />
                                 </TabPanel>
 
                                 <TabPanel className="tabdiv" value={value} index={4}>
-                                    <LeadMembers lead_id={leads.data.id}/>
+                                    <LeadMembers lead_id={leadsLocal.data.id}/>
                                 </TabPanel>
 
                             </div>

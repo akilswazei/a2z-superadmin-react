@@ -7,18 +7,20 @@ import {
             LEAD_DETAIL_REQUEST, 
             LEAD_DETAIL_SECCESS, 
             LEAD_UPDATE, 
+            LEAD_UPDATE_DETAIL,
             LEAD_UPDATE_FAIL 
         } from '../../constants/LeadConstants';
 
 
 export const getLeads = () => async(dispatch, getState) => {
     try {        
-        const {userSignin: {userInfo}} = getState();
+        const {userSignin: {userInfo}} = getState();        
         const {data} = await axios.get( process.env.REACT_APP_BASE_URL + "/admin/lead/list", {
             headers: {
                 Authorization: "Bearer " + userInfo.data.token,
             }
         })
+        localStorage.setItem('leads', JSON.stringify(data.data))
         dispatch({type: GET_LEAD, payload: data});
     } catch (error) {
         dispatch({
@@ -41,10 +43,20 @@ export const getLeadsbyId = (id) => async(dispatch) => {
     } 
 }
 
-export const updateLead = (id) => async(dispatch) => {
+export const updateLead = (leads_json) => async(dispatch, getState) => {
+    console.log("leadssssssssss" , leads_json);
+    const {userSignin: {userInfo}} = getState();
     try {
-        const {data} = await axios.put("https://jsonplaceholder.typicode.com/TEAMs/"+ id );
-        dispatch({type: LEAD_UPDATE, payload: data});
+
+        const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/lead-update', leads_json, {
+            headers: {
+              Authorization: 'Bearer ' + userInfo.data.token,
+            },
+        })
+        //console.log("Updated After Name Update ", data)
+        localStorage.setItem('leads', JSON.stringify(data.data))
+        dispatch({type: LEAD_UPDATE_DETAIL, payload: data.data});
+        return data;
     } catch (error) {
         dispatch({
             type: LEAD_UPDATE_FAIL,
@@ -64,15 +76,15 @@ export const setColumnToLead = (card_id,column_id) => async(dispatch, getState) 
             "userinfo" : userInfo
         }
 
-    try {    
-
+    try {
         const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/lead/lead-update-status', userdata, {
             headers: {
               Authorization: 'Bearer ' + userInfo.data.token,
             },
         })        
-
-        dispatch({type: LEAD_UPDATE, payload: data});
+        localStorage.setItem('leads', JSON.stringify(data.data))
+        dispatch({type: LEAD_UPDATE, payload: data.data});
+        return data;
     } catch (error) {
         dispatch({
             type: GET_LEAD_FAIL,

@@ -59,7 +59,7 @@ export const DraggableCard = _.flowRight([
         const {columnId, columnIndex} = props;
         const draggingItem = monitor.getItem();
         if (draggingItem.id !== props.id) {
-            props.moveCard(draggingItem.id, columnId, columnIndex, draggingItem.current_column_id,true);
+            props.moveCard(draggingItem.id, columnId, columnIndex, draggingItem.current_column_id,false);
         }
       },
 
@@ -67,10 +67,7 @@ export const DraggableCard = _.flowRight([
 
         const {columnId, columnIndex} = props;
         const draggingItem = monitor.getItem();
-
-        // console.log("Card.JS ID: " + draggingItem.id +  " Lead Old Status --- "  + draggingItem.current_column_id + " Lead New Status --- " + columnId)
-        // console.log("userInfo" + userInfo.data.user.name)
-
+        
         const lead_arr = {
             "card_id" : draggingItem.id,
             "lead_new_status" : columnId,
@@ -80,11 +77,8 @@ export const DraggableCard = _.flowRight([
 
         if(draggingItem.current_column_id!=columnId)
         {
-            let response = leadUpdateStatus(userObj, lead_arr)
-            props.moveCard(draggingItem.id, columnId, columnIndex, draggingItem.current_column_id, true);
-            
-        }
-          
+          props.moveCard(draggingItem.id, columnId, columnIndex, draggingItem.current_column_id, true);            
+        }          
        
       },
 

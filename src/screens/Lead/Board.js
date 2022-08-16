@@ -73,20 +73,21 @@ export function Board({cards, columns, moveCard, addCard, addColumn,lead_obj}) {
                 {column.cardIds
                     .map(cardId => cards.find(card => card.id === cardId))
                     .map((card, index) => (
-                      <DraggableCard
-                        key={index}
-                        id={card.id}
-                        columnId={column.id}
-                        columnIndex={index}
-                        title={card.title}
-                        desc={card.desc}
-                        email={card.email}
-                        phone={card.phone}                    
-                        lead_date={card.lead_date}
-                        current_column_id={column.id}
-                        moveCard={moveCard}    
-                        handleHistoryOpen = {handleHistoryOpen}                
-                      />
+                     <DraggableCard
+                            key={card.id}
+                            id={card.id}
+                            columnId={column.id}
+                            columnIndex={index}
+                            title={card.title}
+                            desc={card.desc}
+                            email={card.email}
+                            phone={card.phone}                    
+                            lead_date={card.lead_date}
+                            current_column_id={column.id}
+                            moveCard={moveCard}    
+                            handleHistoryOpen = {handleHistoryOpen}                
+                        />      
+                      
                 ))}
                 {column.cardIds.length === 0 && (
                     <DraggableCard
