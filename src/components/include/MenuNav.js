@@ -133,8 +133,8 @@ function getItems() {
           },
           {
             id: 4,
-            name: 'Merchant Products',
-            link: '/merchant-products',
+            name: 'In-house Products',
+            link: '/inhouse-products',
           },
         ],
       },

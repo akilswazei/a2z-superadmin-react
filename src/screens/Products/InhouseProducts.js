@@ -22,7 +22,7 @@ import { getInhouseProduct } from 'src/services/ProductService'
 const datagridSx = FormStyles
 
 //main fucntion starts here
-const MerchantProduct = () => {
+const InhouseProducts = () => {
   const navigate = useNavigate()
   const getState = useSelector((state) => state)
   const {
@@ -110,7 +110,7 @@ const MerchantProduct = () => {
     <MainBoard>
       <Container fluid>
         <Container className="p-0 mt-4">
-          <h6>Merchant Products</h6>
+          <h6>In House Products</h6>
         </Container>
         <Container className="background-white-theme">
           <div className="justify-flex-end input-div">
@@ -155,4 +155,4 @@ const MerchantProduct = () => {
     </MainBoard>
   )
 }
-export default MerchantProduct
+export default InhouseProducts

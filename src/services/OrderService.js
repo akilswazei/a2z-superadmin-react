@@ -37,3 +37,11 @@ export const deleteOrder = async (userInfo, eid) => {
   )
   return data
 }
+export const changeStatus = async (userInfo, userdata) => {
+  const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/order/status-change', userdata, {
+    headers: {
+      Authorization: 'Bearer ' + userInfo.data.token,
+    },
+  })
+  return data
+}
