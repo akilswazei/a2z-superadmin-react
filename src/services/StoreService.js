@@ -25,6 +25,10 @@ export const getStore = async (userInfo, eid = '') => {
   return data
 }
 
+export const updateStoreDevices=async(userInfo, userdata) =>{
+  console.log(userdata)
+}
+
 export const addStore = async (userInfo, userdata) => {
   const { data } = await axios.post(process.env.REACT_APP_BASE_URL + '/admin/store/store', userdata, {
     headers: {
