@@ -87,22 +87,22 @@ const Subscription = () => {
         )
       },
     },
-    // {
-    //   field: 'actions',
-    //   width: 100,
-    //   renderCell: (cellValue) => {
-    //     return (
-    //       <div className="edit-delete-div">
-    //         <span className="pencil-icon" onClick={(e) => navigate('/subscription/edit/' + cellValue?.row?.eid)}>
-    //           <EditIcon />
-    //         </span>
-    //         <span className="delete-icon">
-    //           <DeleteIcon />
-    //         </span>
-    //       </div>
-    //     )
-    //   },
-    // },
+    {
+      field: 'actions',
+      width: 100,
+      renderCell: (cellValue) => {
+        return (
+          <div className="edit-delete-div">
+            <span className="pencil-icon" onClick={(e) => navigate('/subscription/edit/' + cellValue?.row?.eid)}>
+              <EditIcon />
+            </span>
+            {/* <span className="delete-icon">
+              <DeleteIcon />
+            </span> */}
+          </div>
+        )
+      },
+    },
   ]
 
   return (
