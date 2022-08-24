@@ -10,7 +10,7 @@ import Box from '@mui/material/Box'
 import { addPay } from 'src/services/PayoutService'
 
 //main function starts here
-function Pay({ openPay, handlePayClose, style, eidNum }) {
+function Pay({ openPay, handlePayClose, style, eidNum, getPayoutData }) {
   const getState = useSelector((state) => state)
   const {
     userSignin: { userInfo },
@@ -35,7 +35,9 @@ function Pay({ openPay, handlePayClose, style, eidNum }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     await addPay(userInfo, payData)
+    console.log(e)
     handlePayClose()
+    getPayoutData()
   }
 
   return (

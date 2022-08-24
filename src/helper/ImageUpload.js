@@ -27,11 +27,11 @@ function ImageUpload(props) {
   function onDrop(pictureFiles, pictureDataURLs) {
     setPictures(pictureDataURLs)
   }
-  async function  UploadMedia() {
+  async function UploadMedia() {
     // upload api
     //imageUploader.clearPictures()
     console.log(pictures)
-    let result= await addMedia(userInfo,{image: pictures})
+    let result = await addMedia(userInfo, { image: pictures })
     console.log(...result.data.media)
     setMdls([...mdls, ...result.data.media])
   }
@@ -59,11 +59,10 @@ function ImageUpload(props) {
   useEffect(() => {
     {
       if (mediaOpen == true) {
-        let fn= async function(){
-          let mediadata=await getMedias(userInfo)
+        let fn = (async function () {
+          let mediadata = await getMedias(userInfo)
           setMdls(mediadata.data.data)
-        }()
-
+        })()
       }
     }
   }, [mediaOpen])
@@ -84,7 +83,7 @@ function ImageUpload(props) {
 
   return (
     <>
-      {        console.log('mucore:' + mdls)}
+      {console.log('mucore:' + mdls)}
       <Modal
         open={mediaOpen}
         onClose={handleMediaClose}

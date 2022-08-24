@@ -10,10 +10,7 @@ import Collapse from '@material-ui/core/Collapse'
 
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-
-import Divider from '@material-ui/core/Divider'
 import { withStyles } from '@material-ui/core/styles'
-
 import { NavLink } from 'react-router-dom'
 
 //icons
@@ -41,7 +38,7 @@ function getItems() {
     link: '',
     items: [
       {
-        id: 1,
+        id: 101,
         name: 'Dashboard',
         link: '/dashboard',
         icon: <DashboardIcon />,
@@ -53,12 +50,12 @@ function getItems() {
         link: '',
         subitems: [
           {
-            id: 1,
+            id: 201,
             name: 'A2Z Users',
             link: '/users',
           },
           {
-            id: 2,
+            id: 202,
             name: 'Outsource',
             link: '',
             subitems: [
@@ -68,14 +65,14 @@ function getItems() {
                 link: '/individuals',
               },
               {
-                id: 2,
+                id: 203,
                 name: 'Agency',
                 link: '/teams',
               },
             ],
           },
           {
-            id: 3,
+            id: 301,
             name: 'Role',
             link: '/roles',
           },
@@ -94,12 +91,12 @@ function getItems() {
         link: '',
         subitems: [
           {
-            id: 1,
+            id: 401,
             name: 'All Merchant',
             link: '/merchants',
           },
           {
-            id: 2,
+            id: 402,
             name: 'Store',
             link: '/stores',
           },
@@ -112,27 +109,27 @@ function getItems() {
         link: '',
         subitems: [
           {
-            id: 1,
+            id: 501,
             name: 'Order',
             link: '/orders',
           },
           {
-            id: 2,
+            id: 502,
             name: 'Subscription',
             link: '/subscriptions',
           },
           {
-            id: 2,
+            id: 503,
             name: 'Product',
             link: '/products',
           },
           {
-            id: 3,
+            id: 504,
             name: 'Supplier',
             link: '/suppliers',
           },
           {
-            id: 4,
+            id: 505,
             name: 'In-house Products',
             link: '/inhouse-products',
           },
@@ -145,7 +142,7 @@ function getItems() {
         link: '',
         subitems: [
           {
-            id: 1,
+            id: 601,
             name: 'Payouts',
             link: '/payouts',
           },
@@ -158,7 +155,7 @@ function getItems() {
         link: '',
         subitems: [
           {
-            id: 7,
+            id: 701,
             name: 'Post',
             link: '/posts',
           },
@@ -169,11 +166,13 @@ function getItems() {
 
   return json
 }
+
 class Navlist extends React.Component {
   state = {}
   handleClick = (e) => {
     this.setState({ [e]: !this.state[e] })
   }
+
   render() {
     const nav = getItems()
     const { classes } = this.props

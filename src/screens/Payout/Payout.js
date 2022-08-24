@@ -40,6 +40,7 @@ const Payout = () => {
   const [eidNum, setEidNum] = useState('')
   const [payoutHistory, setPayoutHistory] = useState({})
   const [payHistory, setPayHistory] = useState({})
+  const [rerender, setRerender] = useState(false)
   //state ends here
 
   //fetch function
@@ -68,13 +69,13 @@ const Payout = () => {
     setPayout(await getPayouts(userInfo, value, search))
   }
 
-  const handleDelete = async (eid, e) => {
-    // deletePayout(userInfo, eid)
-    // setPayout({
-    //   ...payout,
-    //   data: { ...payout.data, data: [...payout.data.data.filter((v, i) => v.eid != eid)] },
-    // })
-  }
+  // const handleDelete = async (eid, e) => {
+  // deletePayout(userInfo, eid)
+  // setPayout({
+  //   ...payout,
+  //   data: { ...payout.data, data: [...payout.data.data.filter((v, i) => v.eid != eid)] },
+  // })
+  // }
 
   //use effect for re render of fetch fucntion call
   useEffect(() => {
@@ -132,7 +133,7 @@ const Payout = () => {
       renderCell: (cellValue) => {
         return (
           <div className="">
-            <span className="" onClick={(e) => handleDelete(cellValue?.row?.eid, e)}>
+            <span className="">
               <button className="custom-pay-btn" onClick={(e) => handlePayOpen(cellValue?.row?.eid, e)}>
                 Pay
               </button>
@@ -170,7 +171,13 @@ const Payout = () => {
     <MainBoard>
       {/* this dialogue box is for pay */}
 
-      <Pay openPay={openPay} handlePayClose={handlePayClose} style={style} eidNum={eidNum} />
+      <Pay
+        openPay={openPay}
+        handlePayClose={handlePayClose}
+        style={style}
+        eidNum={eidNum}
+        getPayoutData={getPayoutData}
+      />
       {/* pay dialogue box ends here */}
       {/* this dialogue box is for pay history */}
       <PayoutHistory
